@@ -6,7 +6,7 @@ export default {
     return {
       postForm: {},
       rulesForm: {},
-      labelWidth: '120px',
+      labelWidth: '260px',
       submitLoading: false,
       updateId: 0
     }

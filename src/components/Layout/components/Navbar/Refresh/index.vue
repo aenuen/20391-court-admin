@@ -23,7 +23,6 @@ export default {
   methods: {
     refreshToken() {
       store.dispatch('user/refreshToken').then((data) => {
-        console.log('🚀 ~ file: index.vue ~ line 27 ~ store.dispatch ~ data', data)
         this.$message.success('刷新token成功')
       })
     }

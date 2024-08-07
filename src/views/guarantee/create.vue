@@ -1,9 +1,10 @@
 <template>
-  <div></div>
+  <Detail />
 </template>
 <script>
 // api
 // components
+import Detail from './components/Detail'
 // data
 // filter
 // function
@@ -11,10 +12,14 @@
 // plugins
 // settings
 export default {
-  components: {},
+  name: 'GuaranteeCreate',
+  components: { Detail },
+  mixin: [],
   data() {
     return {}
-  }
+  },
+  created() {},
+  methods: {}
 }
 </script>
 <style lang="scss" scoped></style>

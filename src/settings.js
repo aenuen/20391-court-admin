@@ -1,7 +1,7 @@
 
-const servePort = 20370
-const adminPort = 20371
-const title = '标书制作'
+const servePort = 20390
+const adminPort = 20391
+const title = '诉讼保函-智慧法院电子管理平台'
 const isDevMode = process.env.NODE_ENV === 'development'
 module.exports = {
   port: adminPort, // 项目端口
