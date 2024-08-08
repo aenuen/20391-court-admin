@@ -76,7 +76,7 @@ import { DetailRule as rulesForm, DetailPasswordRule as rulesPassword } from '..
 import { createDefaultData } from '../modules/default'
 // function
 import { CryptoJsEncode } from '@/libs/cryptojs'
-// mixin
+// mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins

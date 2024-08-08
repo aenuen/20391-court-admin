@@ -1,21 +1,24 @@
 <template>
-  <detail is-update />
+  <div></div>
 </template>
-
 <script>
 // api
 // components
-import Detail from './components/Detail'
 // data
 // filter
 // function
-// mixins
+// mixin
 // plugins
 // settings
 export default {
-  name: 'PersonalUpdate',
-  components: { Detail }
+  name: '',
+  components: {},
+  mixins: [],
+  data() {
+    return {}
+  },
+  created() {},
+  methods: {}
 }
 </script>
-
 <style lang="scss" scoped></style>

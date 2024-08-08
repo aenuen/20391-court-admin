@@ -11,7 +11,7 @@
 // data
 // filter
 // function
-// mixin
+// mixins
 // plugins
 import store from '@/store'
 // settings

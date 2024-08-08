@@ -9,7 +9,7 @@ import Detail from './components/Detail'
 // data
 // filter
 // function
-// mixin
+// mixins
 // plugins
 // settings
 export default {

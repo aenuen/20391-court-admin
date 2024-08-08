@@ -8,8 +8,9 @@ export const userApi = {
   detail: params => request({ url: '/user/detail?' + qs.stringify(params), method: 'get' }), // 详情
   list: params => request({ url: '/user/list?' + qs.stringify(params), method: 'get' }), // 列表
   avatarList: params => request({ url: '/user/avatarList?' + qs.stringify(params), method: 'get' }), // 头像列表
+  authCode: () => request({ url: '/user/getCode', method: 'get' }), // 用户信息
   // post
-  login: data => request({ url: '/user/login', method: 'post', data }), // 登录
+  login: data => request({ url: '/user/getCode', method: 'get', data }), // 登录
   refreshToken: data => request({ url: '/user/refreshToken', method: 'post', data }), // 重置token
   logout: () => request({ url: '/user/logout', method: 'post' }), // 登出
   baseData: data => request({ url: '/user/baseData', method: 'post', data }), // 基本资料

@@ -16,7 +16,7 @@
 import { apiBaseUrl } from '@/libs/axios/settings'
 // filter
 // function
-// mixin
+// mixins
 // plugins
 import { fileClassify } from 'abbott-methods/import'
 // settings

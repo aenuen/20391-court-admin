@@ -1,15 +1,14 @@
-<!--suppress JSUnresolvedFunction, CssUnknownProperty -->
 <template>
   <div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="off" label-position="left">
       <div class="title-container">
-        <h3 class="title">管理员登录</h3>
+        <h3 class="title">用户登录</h3>
       </div>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input ref="username" v-model="loginForm.username" placeholder="用户名" name="username" type="text" tabindex="1" autocomplete="off" @keyup.enter.native="login" />
+        <el-input ref="username" v-model="loginForm.username" placeholder="手机号码" name="username" type="text" tabindex="1" autocomplete="off" maxlength="11" @keyup.enter.native="login" />
       </el-form-item>
       <el-tooltip v-model="capsTooltip" content="您输入的是大写" placement="right" manual>
         <el-form-item prop="password">
@@ -17,13 +16,21 @@
             <svg-icon icon-class="password" />
           </span>
           <!-- eslint-disable-next-line vue/max-attributes-per-line -->
-          <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" placeholder="密码" name="password" tabindex="2" autocomplete="off" @keyup.native="checkCapsLock" @blur="capsTooltip = false" @keyup.enter.native="login" />
+          <el-input ref="password" v-model="loginForm.password" :type="passwordType" placeholder="登录密码" name="password" tabindex="2" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" @keyup.enter.native="login" />
           <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
       </el-tooltip>
+      <el-form-item style="position: relative">
+        <span class="svg-container">
+          <svg-icon icon-class="form" />
+        </span>
+        <el-input ref="code" v-model="loginForm.code" placeholder="验证码" name="code" type="text" autocomplete="off" style="width: 200px" />
+        <img class="authCode" :src="authCode" @click="refreshCode" />
+      </el-form-item>
       <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="login"> 登录 </el-button>
+      <div class="toRegister"><i @click="toRegister">还没有账号?去注册</i></div>
     </el-form>
   </div>
 </template>
@@ -31,6 +38,7 @@
 <script>
 import { validateUsername, validateRequire } from 'abbott-methods/import'
 import { CryptoJsEncode } from '@/libs/cryptojs'
+import { apiBaseUrl } from '@/settings'
 
 export default {
   name: 'LoginForm',
@@ -43,7 +51,7 @@ export default {
         username: [{ validator: validateUsername }],
         password: [
           {
-            validator: (rule, value, callback) => validateRequire(rule, value, callback, '密码', 6, 20)
+            validator: (rule, value, callback) => validateRequire(rule, value, callback, '密码', 6, 30)
           }
         ]
       },
@@ -52,16 +60,17 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      authCode: `${apiBaseUrl}/user/getCode`
     }
   },
   mounted() {
     // 自动聚焦
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
-    }
+    // if (this.loginForm.username === '') {
+    //   this.$refs.username.focus()
+    // } else if (this.loginForm.password === '') {
+    //   this.$refs.password.focus()
+    // }
   },
   methods: {
     checkCapsLock(e) {
@@ -71,6 +80,15 @@ export default {
     showPwd() {
       this.passwordType = this.passwordType === 'password' ? '' : 'password'
       this.$nextTick(() => this.$refs.password.focus()) // 自动聚焦
+    },
+    refreshCode() {
+      this.authCode = `${apiBaseUrl}/user/getCode?timestamp=${Date.now()}`
+    },
+    toRegister() {
+      console.log(1)
+      this.$router.push({
+        path: 'register'
+      })
     },
     login() {
       this.$refs.loginForm.validate((valid) => {
@@ -99,60 +117,23 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-$bgColor: #283443;
-$lightColor: #fff;
-$cursorColor: #fff;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursorColor)) {
-  .login-form .el-input input {
-    color: $cursorColor;
-  }
-}
-
-.login-form {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-
-    input {
-      background: transparent;
-      border: 0;
-      -webkit-appearance: none;
-      border-radius: 0;
-      padding: 12px 5px 12px 15px;
-      color: $lightColor;
-      height: 47px;
-      caret-color: $cursorColor;
-
-      &:-webkit-autofill {
-        box-shadow: 0 0 0 1000px $bgColor inset !important;
-        -webkit-text-fill-color: $cursorColor !important;
-      }
-    }
-  }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
-}
+@import url('./total.scss');
 </style>
 
 <style lang="scss" scoped>
-$dark_gray: #889aa4;
-$light_gray: #eee;
+$dark_gray: #333;
+$light_gray: #333;
 
 .login-form {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 250px;
   width: 520px;
   max-width: 100%;
-  padding: 160px 35px 0;
+  padding: 20px 50px;
   margin: 0 auto;
   overflow: hidden;
+  margin-left: -260px;
 }
 
 .svg-container {
@@ -168,7 +149,7 @@ $light_gray: #eee;
 
   .title {
     font-size: 26px;
-    color: $light_gray;
+    color: #333;
     margin: 0 auto 40px auto;
     text-align: center;
     font-weight: bold;
@@ -183,5 +164,25 @@ $light_gray: #eee;
   color: $dark_gray;
   cursor: pointer;
   user-select: none;
+}
+
+.authCode {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  cursor: pointer;
+}
+
+.toRegister {
+  text-align: center;
+  i {
+    font-size: 14px;
+    font-style: normal;
+    cursor: pointer;
+    color: #333;
+    &:hover {
+      color: #1890ff;
+    }
+  }
 }
 </style>

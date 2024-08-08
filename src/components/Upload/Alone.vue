@@ -50,7 +50,7 @@ import FileShow from '@/components/FileShow'
 // data
 // filter
 // function
-// mixin
+// mixins
 // plugins
 import { getToken } from '@/libs/utils/token'
 import { fileClassify } from 'abbott-methods/import'

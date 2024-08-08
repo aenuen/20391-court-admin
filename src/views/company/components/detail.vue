@@ -89,7 +89,7 @@
 import { fields, companyTypeAry, companyIndustryAry } from '../modules/fields'
 // filter
 // function
-// mixin
+// mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 // plugins
 // settings

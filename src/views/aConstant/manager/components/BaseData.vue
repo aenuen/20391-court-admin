@@ -38,7 +38,7 @@ import { fields } from '../modules/fields'
 import { BaseDataRule as rulesForm } from '../modules/rules'
 // filter
 // function
-// mixin
+// mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 // plugins
 import { mapGetters } from 'vuex'

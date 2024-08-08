@@ -70,7 +70,7 @@ import noneImage from '@/assets/image/noneImage.png'
 // filter
 import { Y_M_D_H_I_Filter } from '@/libs/filter'
 // function
-// mixin
+// mixins
 import TableMixin from '@/components/Mixins/TableMixin'
 // plugins
 // settings

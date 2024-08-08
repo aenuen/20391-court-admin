@@ -7,13 +7,13 @@
 // data
 // filter
 // function
-// mixin
+// mixins
 // plugins
 // settings
 export default {
   name: 'GuaranteeList',
   components: {},
-  mixin: [],
+  mixins: [],
   data() {
     return {}
   },

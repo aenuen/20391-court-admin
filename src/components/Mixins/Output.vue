@@ -4,7 +4,7 @@
 // data
 // filter
 // function
-// mixin
+// mixins
 // plugins
 // settings
 import { exportData } from '@/libs/export'

@@ -71,7 +71,7 @@ import { fields } from './modules/fields'
 import { rolesAry, rolesObject, rolesParse } from './modules/roles'
 // filter
 // function
-// mixin
+// mixins
 import ListMixin from '@/components/Mixins/ListMixin'
 import Output from '@/components/Mixins/Output'
 // plugins

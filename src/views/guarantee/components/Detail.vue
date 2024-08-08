@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="postForm" :model="postForm" :rules="rulesForm">
+    <el-form ref="postForm" :model="postForm">
       <el-row>
         <el-col>
           <el-form-item prop="court" :label="fields.court" :label-width="labelWidth">
@@ -84,7 +84,7 @@
       <el-row>
         <el-col>
           <el-form-item :label-width="labelWidth">
-            <el-button type="primary" @click="submitForm">提交申请</el-button>
+            <el-button type="primary" @click="submitForm">{{ submitTxt }}</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -95,23 +95,27 @@
 // api
 // components
 // data
-import { fields } from '../modules/fields'
+import { DetailFields } from '../modules/fields'
 // filter
 // function
-// mixin
+// mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
 import { controlInputPrice, numberPriceBigWrite } from 'abbott-methods/import'
 // settings
 export default {
-  name: '',
+  name: 'GuaranteeDetail',
   components: {},
   mixins: [DetailMixin, MethodsMixin],
+  props: {
+    isUpdate: { type: Boolean, default: false }
+  },
   data() {
     return {
-      fields,
+      fields: DetailFields,
       commonWidth: 500,
+      submitTxt: '',
       bigWritePrice: '',
       postForm: {
         period: 1,
@@ -143,7 +147,10 @@ export default {
       immediate: false // 如果需要在组件创建时立即触发，设置immediate为true
     }
   },
-  created() {},
+  created() {
+    this.labelWidth = (this.isUpdate ? 120 : 260) + 'px'
+    this.submitTxt = this.isUpdate ? '编辑资料' : '提交资料'
+  },
   methods: {
     submitForm() {
       this.$router.push({

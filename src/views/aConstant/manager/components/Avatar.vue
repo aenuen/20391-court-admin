@@ -45,7 +45,7 @@ import { userApi } from '@/api/user'
 import { fields } from '../modules/fields'
 // filter
 // function
-// mixin
+// mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 // plugins
 import { mapGetters } from 'vuex'

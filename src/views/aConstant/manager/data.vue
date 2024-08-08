@@ -52,7 +52,7 @@ import { rolesParse } from './modules/roles'
 import NoneImage from '@/assets/image/noneImage.png'
 // filter
 // function
-// mixin
+// mixins
 import ListMixin from '@/components/Mixins/ListMixin'
 // plugins
 import { mapGetters } from 'vuex'
