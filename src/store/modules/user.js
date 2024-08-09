@@ -47,19 +47,44 @@ const mutations = {
 const actions = {
   // 用户登录
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { telephone, password, code } = userInfo
     return new Promise((resolve, reject) => {
       userApi.login({
-        username: username.trim(),
-        password: password
+        telephone: telephone.trim(),
+        password: password,
+        code: code.trim()
       }).then(({
         code,
         data: { token }
       }) => {
         if (code === 200) {
+          console.log('aaaaaaa')
           commit('SET_TOKEN', token)
           setToken(token)
           resolve()
+        } else {
+          reject('登录失败')
+        }
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  // 用户注册
+  register({ commit }, userInfo) {
+    const { telephone, telCode, password, name, cardNo } = userInfo
+    return new Promise((resolve, reject) => {
+      userApi.register({
+        telephone: telephone.trim(),
+        telCode: telCode.trim(),
+        password: password,
+        name: name.trim(),
+        cardNo: cardNo.trim()
+      }).then(({
+        code, msg
+      }) => {
+        if (code === 200) {
+          resolve({ code, msg })
         } else {
           reject('登录失败')
         }

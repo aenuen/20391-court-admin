@@ -8,7 +8,7 @@ import { apiBaseUrl, successCode, tokenCode } from './settings'
 
 const service = axios.create({ // 创建一个axios实例
   baseURL: apiBaseUrl,
-  // withCredentials: true, // 跨域请求时发送cookies
+  withCredentials: true, // 跨域请求时发送cookies
   timeout: 5000 // 超时时间
 })
 

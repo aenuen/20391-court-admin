@@ -9,7 +9,14 @@ $cursorColor: #fff;
   }
 }
 
-.login-form {
+.login-form,
+.register-form {
+  .el-form-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(81, 113, 255, 0.1);
+    border-radius: 5px;
+    color: #333;
+  }
   .el-input {
     display: inline-block;
     height: 47px;
@@ -29,12 +36,5 @@ $cursorColor: #fff;
         -webkit-text-fill-color: $cursorColor !important;
       }
     }
-  }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(81, 113, 255, 0.1);
-    border-radius: 5px;
-    color: #333;
   }
 }

@@ -6,7 +6,7 @@
       </div>
       <el-form-item prop="username">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="mobile" />
         </span>
         <el-input ref="username" v-model="loginForm.username" placeholder="手机号码" name="username" type="text" tabindex="1" autocomplete="off" maxlength="11" @keyup.enter.native="login" />
       </el-form-item>
@@ -30,7 +30,7 @@
         <img class="authCode" :src="authCode" @click="refreshCode" />
       </el-form-item>
       <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="login"> 登录 </el-button>
-      <div class="toRegister"><i @click="toRegister">还没有账号?去注册</i></div>
+      <div class="toRegister"><i @click="toRegister">还没有账号?去注册</i><b>忘记密码？</b></div>
     </el-form>
   </div>
 </template>
@@ -85,7 +85,6 @@ export default {
       this.authCode = `${apiBaseUrl}/user/getCode?timestamp=${Date.now()}`
     },
     toRegister() {
-      console.log(1)
       this.$router.push({
         path: 'register'
       })
@@ -138,7 +137,7 @@ $light_gray: #333;
 
 .svg-container {
   padding: 6px 5px 6px 15px;
-  color: $dark_gray;
+  color: #333;
   vertical-align: middle;
   width: 15%;
   display: inline-block;

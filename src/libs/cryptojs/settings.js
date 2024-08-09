@@ -1,3 +1,3 @@
 // noinspection SpellCheckingInspection
 
-module.exports = 'eyJfaWRfIjoiYWJib3R0IiwiZXhwIjoxNjM3NTg2MTcxLCJpYXQiOjE2Mzc0OTk3NzF9'
+module.exports = '00B1E5452B9D453EC109D9B656150AF2'

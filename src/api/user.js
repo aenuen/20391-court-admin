@@ -2,7 +2,10 @@ import request from '@/libs/axios/request'
 import qs from 'qs'
 
 export const userApi = {
+  // put
+  register: data => request({ url: '/user/register', method: 'put', data }), // 登录
   // get
+  getRegSMS: params => request({ url: '/user/getRegSMS/' + params, method: 'get' }), // 详情
   info: () => request({ url: '/user/info', method: 'get' }), // 用户信息
   isFirst: () => request({ url: '/user/isFirst', method: 'get' }), // 用户是否第一次
   detail: params => request({ url: '/user/detail?' + qs.stringify(params), method: 'get' }), // 详情
@@ -10,7 +13,7 @@ export const userApi = {
   avatarList: params => request({ url: '/user/avatarList?' + qs.stringify(params), method: 'get' }), // 头像列表
   authCode: () => request({ url: '/user/getCode', method: 'get' }), // 用户信息
   // post
-  login: data => request({ url: '/user/getCode', method: 'get', data }), // 登录
+  login: data => request({ url: '/user/login', method: 'post', data }), // 登录
   refreshToken: data => request({ url: '/user/refreshToken', method: 'post', data }), // 重置token
   logout: () => request({ url: '/user/logout', method: 'post' }), // 登出
   baseData: data => request({ url: '/user/baseData', method: 'post', data }), // 基本资料
