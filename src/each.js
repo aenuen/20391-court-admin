@@ -9,7 +9,7 @@ import { getToken } from '@/libs/utils/token'
 import pageTitle from '@/libs/utils/pageTitle'
 
 NProgress.configure({ showSpinner: false }) // 隐藏右侧旋转的小圆环
-const whiteList = ['/login', '/auth-redirect', '/register'] // 设置白名单
+const whiteList = ['/login', '/auth-redirect', '/register', '/find'] // 设置白名单
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
   document.title = pageTitle(to.meta.title) // 设置title

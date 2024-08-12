@@ -4,8 +4,7 @@ const guaranteeRouter = {
   path: '/guarantee', name: 'guarantee', component: Layout, redirect: '/guarantee/create',
   meta: {
     title: '担保管理',
-    icon: 'peoples',
-    roles: ['guarantee']
+    icon: 'peoples'
   },
   children: [
     {
@@ -13,8 +12,7 @@ const guaranteeRouter = {
       name: 'guaranteeList',
       component: () => import('@/views/guarantee/list'),
       meta: {
-        title: '担保列表',
-        roles: ['manager']
+        title: '担保列表'
       }
     },
     {
@@ -22,8 +20,7 @@ const guaranteeRouter = {
       name: 'guaranteeCreate',
       component: () => import('@/views/guarantee/create'),
       meta: {
-        title: '担保申请',
-        roles: ['manager']
+        title: '担保申请'
       }
     },
     {
@@ -32,7 +29,6 @@ const guaranteeRouter = {
       component: () => import('@/views/guarantee/details'),
       meta: {
         title: '担保资料',
-        roles: ['manager'],
         activeMenu: '/guarantee/create' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中

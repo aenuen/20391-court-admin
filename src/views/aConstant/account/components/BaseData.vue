@@ -3,13 +3,6 @@
     <el-form ref="postForm" :model="postForm" :rules="rulesForm">
       <el-row>
         <el-col>
-          <el-form-item prop="petName" :label="fields.petName" :label-width="labelWidth">
-            <el-input v-model.trim="postForm.petName" :placeholder="fields.petName" maxlength="30" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col>
           <el-form-item prop="realName" :label="fields.realName" :label-width="labelWidth">
             <el-input v-model.trim="postForm.realName" :placeholder="fields.realName" maxlength="10" />
           </el-form-item>
@@ -17,8 +10,8 @@
       </el-row>
       <el-row>
         <el-col>
-          <el-form-item prop="introduction" :label="fields.introduction" :label-width="labelWidth">
-            <el-input v-model.trim="postForm.introduction" type="textarea" :rows="4" resize="none" :placeholder="fields.introduction" maxlength="140" />
+          <el-form-item prop="cardNo" :label="fields.cardNo" :label-width="labelWidth">
+            <el-input v-model.trim="postForm.cardNo" :placeholder="fields.cardNo" maxlength="30" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -53,15 +46,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['aid', 'realName', 'petName', 'introduction'])
+    ...mapGetters(['aid', 'realName', 'cardNo'])
   },
   created() {
     this.postForm = {
       ...{
         id: this.aid,
         realName: this.realName,
-        petName: this.petName,
-        introduction: this.introduction
+        cardNo: this.cardNo
       }
     }
   },

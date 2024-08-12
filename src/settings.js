@@ -13,5 +13,5 @@ module.exports = {
   errorLog: 'development', // 使用errorLog的模式(可使用数组,如:['development','production'])
   cryptoJsSecretKey: 'SecretKey', // CryptoJs加密Key
   isDevMode,
-  apiBaseUrl: isDevMode ? `http://192.168.2.53:${servePort}/wc/sys` : `http://192.168.2.53:${servePort}/wc/sys`
+  apiBaseUrl: isDevMode ? `http://192.168.2.53:${servePort}/wc/sys` : `http://192.168.2.53:${servePort}/wc/sys` // http://121.41.65.226/
 }

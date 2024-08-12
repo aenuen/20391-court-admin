@@ -1,45 +1,38 @@
 import { userApi } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/libs/utils/token'
 import router, { resetRouter } from '@/router/constant'
+import { rolesAry } from '@/views/aConstant/account/modules/roles'
 
 const state = {
   aid: '',
   token: getToken(),
   realName: '',
-  petName: '',
-  email: '',
+  cardNo: '',
   mobile: '',
   avatar: '',
-  introduction: '',
   roles: []
 }
 
 const mutations = {
-  SET_AID: (state, aid) => {
+  SET_Aid: (state, aid) => {
     state.aid = aid
   },
-  SET_TOKEN: (state, token) => {
+  SET_Token: (state, token) => {
     state.token = token
   },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
-  },
-  SET_RealNAME: (state, realName) => {
+  SET_RealName: (state, realName) => {
     state.realName = realName
   },
-  SET_PetNAME: (state, petName) => {
-    state.petName = petName
+  SET_CardNo: (state, cardNo) => {
+    state.cardNo = cardNo
   },
-  SET_EMAIL: (state, email) => {
-    state.email = email
-  },
-  SET_MOBILE: (state, mobile) => {
+  SET_Mobile: (state, mobile) => {
     state.mobile = mobile
   },
-  SET_AVATAR: (state, avatar) => {
+  SET_Avatar: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_ROLES: (state, roles) => {
+  SET_Roles: (state, roles) => {
     state.roles = roles
   }
 }
@@ -47,20 +40,20 @@ const mutations = {
 const actions = {
   // 用户登录
   login({ commit }, userInfo) {
-    const { telephone, password, code } = userInfo
+    const { telephone, password, code, codeId } = userInfo
     return new Promise((resolve, reject) => {
       userApi.login({
         telephone: telephone.trim(),
         password: password,
-        code: code.trim()
+        code: code.trim(),
+        codeId
       }).then(({
         code,
-        data: { token }
+        data
       }) => {
         if (code === 200) {
-          console.log('aaaaaaa')
-          commit('SET_TOKEN', token)
-          setToken(token)
+          commit('SET_Token', data)
+          setToken(data)
           resolve()
         } else {
           reject('登录失败')
@@ -99,46 +92,21 @@ const actions = {
       userApi.info(state.token).then(({ code, data }) => {
         if (code === 200) {
           data || reject('验证失败，请重新登录。')
-          const { roles, id, petName, realName, email, mobile, avatar, introduction } = data
-          if (!roles || roles.length <= 0) {
-            reject('您的用户没有任务的权限')
-          }
-          commit('SET_ROLES', roles)
-          commit('SET_AID', id)
-          commit('SET_PetNAME', petName)
-          commit('SET_RealNAME', realName)
-          commit('SET_EMAIL', email)
-          commit('SET_MOBILE', mobile)
-          commit('SET_AVATAR', avatar)
-          commit('SET_INTRODUCTION', introduction)
-          resolve(data)
-        } else {
-          reject('获取用户信息失败')
-        }
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-  // 刷新token
-  refreshToken({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      userApi.refreshToken({ id: state.aid }).then(({ code, data }) => {
-        if (code === 200) {
-          data || reject('验证失败，请重新登录。')
-          const { roles, id, petName, realName, email, mobile, avatar, introduction } = data
-          if (!roles || roles.length <= 0) {
-            reject('您的用户没有任务的权限')
-          }
-          commit('SET_ROLES', roles)
-          commit('SET_AID', id)
-          commit('SET_PetNAME', petName)
-          commit('SET_RealNAME', realName)
-          commit('SET_EMAIL', email)
-          commit('SET_MOBILE', mobile)
-          commit('SET_AVATAR', avatar)
-          commit('SET_INTRODUCTION', introduction)
-          resolve(data)
+          const { cardNo, img, name, roleId, telephone, userId } = data
+          const roles = []
+          rolesAry.forEach((item) => {
+            if (String(item.code) === String(roleId)) {
+              roles.push(item.value)
+            }
+          })
+          const newData = { roles, aid: userId, cardNo, realName: name, mobile: telephone, avatar: img }
+          commit('SET_Roles', newData.roles)
+          commit('SET_Aid', newData.aid)
+          commit('SET_CardNo', newData.cardNo)
+          commit('SET_RealName', newData.realName)
+          commit('SET_Mobile', newData.mobile)
+          commit('SET_Avatar', newData.avatar)
+          resolve(newData)
         } else {
           reject('获取用户信息失败')
         }
@@ -151,8 +119,8 @@ const actions = {
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       try {
-        commit('SET_TOKEN', '') // 清空token
-        commit('SET_ROLES', []) // 清空角色信息
+        commit('SET_Token', '') // 清空token
+        commit('SET_Roles', []) // 清空角色信息
         removeToken() // 移除token
         resetRouter() // 清除所有路由
         dispatch('tagsView/delAllViews', null, { root: true }) // 删除所有tagsView，重置访问的视图和缓存的视图
@@ -165,8 +133,8 @@ const actions = {
   // 移除token
   removeToken({ commit }) {
     return new Promise(resolve => {
-      commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
+      commit('SET_Token', '')
+      commit('SET_Roles', [])
       removeToken()
       resolve()
     })
@@ -174,7 +142,7 @@ const actions = {
   // 动态修改权限
   async changeRoles({ commit, dispatch }, role) {
     const token = role + '-token'
-    commit('SET_TOKEN', token)
+    commit('SET_Token', token)
     setToken(token)
     const { roles } = await dispatch('getInfo')
     resetRouter()

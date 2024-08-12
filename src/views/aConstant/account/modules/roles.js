@@ -3,11 +3,9 @@
  * @type {{}}
  */
 export const rolesAry = [
-  { value: 'admin', label: '超级管理员' },
-  { value: 'manager', label: '管理员' },
-  { value: 'editor', label: '编辑人员' },
-  { value: 'lawyer', label: '律师' },
-  { value: 'user', label: '普通用户' }
+  { value: 'user', code: '0', label: '普通用户' },
+  { value: 'judge', code: '1', label: '法官用户' },
+  { value: 'admin', code: '9', label: '管理员' }
 ]
 
 /**

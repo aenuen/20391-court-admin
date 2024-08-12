@@ -15,7 +15,8 @@ const service = axios.create({ // 创建一个axios实例
 // 请求拦截器 request interceptor
 service.interceptors.request.use(
   config => {
-    store.getters.token && (config.headers['authorization'] = `Bearer ${getToken()}`)
+    store.getters.token && (config.headers['authorization'] = `${getToken()}`)
+    // store.getters.token && (config.headers['authorization'] = `Bearer ${getToken()}`)
     return config
   },
   error => {
@@ -43,8 +44,11 @@ service.interceptors.response.use(response => {
     return res
   }
 }, error => { // 状态非200才会到这里来
+  if (String(error) === 'Error: Network Error') {
+    Message({ message: '网络故障或服务器无响应', type: 'error', duration: 3 * 1000 })
+  }
   const { code, msg } = error.response.data
-  Message({ message: msg || '', type: 'error', duration: 5 * 1000 })
+  Message({ message: msg || '', type: 'error', duration: 3 * 1000 })
   if (code === tokenCode) {
     setTimeout(() => { location.reload() }, 1000)
   }

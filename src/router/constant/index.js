@@ -6,11 +6,13 @@ Vue.use(Router)
 import homeRouter from './modules/home'
 import { loginRouter, httpRedirectRouter, authRedirectRouter } from './modules/login'
 import { registerRouter } from './modules/register'
+import { findRouter } from './modules/find'
 import { errorPage401Router, errorPage404Router } from './modules/errorPage'
 
 export const constantRoutes = [
   loginRouter, // 登录
   registerRouter, // 注册
+  findRouter, // 找回密码
   authRedirectRouter, // 身份重定向
   httpRedirectRouter, // 网址重定向
   errorPage401Router, // 401页面

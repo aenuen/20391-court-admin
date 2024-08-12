@@ -95,11 +95,11 @@ export default {
     },
     // 获取头像列表
     getAvatarList() {
-      userApi.avatarList({ id: this.aid }).then(({ code, data }) => {
-        if (code === 200) {
-          this.avatarList = data
-        }
-      })
+      // userApi.avatarList({ id: this.aid }).then(({ code, data }) => {
+      //   if (code === 200) {
+      //     this.avatarList = data
+      //   }
+      // })
     },
     // 使用头像
     useTheAvatar(avatar) {

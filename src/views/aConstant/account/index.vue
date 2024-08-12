@@ -6,7 +6,7 @@
           <div class="user-data">
             <el-card style="margin-bottom: 20px">
               <div slot="header" class="clearfix">
-                <span>个人资料</span>
+                <span>账号资料</span>
               </div>
               <div class="box-center">
                 <el-avatar :size="100" :src="avatar" @error="true">
@@ -14,7 +14,7 @@
                 </el-avatar>
               </div>
               <div class="user-info">
-                <div class="user-name">{{ petName }}</div>
+                <div class="user-name">{{ mobile }}</div>
                 <div class="user-role text-muted">{{ rolesCn }}</div>
               </div>
             </el-card>
@@ -29,8 +29,6 @@
               <el-tab-pane label="登录密码" name="password"><password /></el-tab-pane>
               <el-tab-pane label="基本资料" name="base"><base-data /></el-tab-pane>
               <el-tab-pane label="更换头像" name="avatar"><avatar /></el-tab-pane>
-              <el-tab-pane label="电子邮箱" name="email"><email /></el-tab-pane>
-              <el-tab-pane label="手机号码" name="mobile"><mobile /></el-tab-pane>
             </el-tabs>
           </el-card>
         </el-col>
@@ -45,8 +43,6 @@
 import Password from './components/Password'
 import BaseData from './components/BaseData'
 import Avatar from './components/Avatar'
-import Email from './components/Email'
-import Mobile from './components/Mobile'
 // data
 import { rolesParse } from './modules/roles'
 import NoneImage from '@/assets/image/noneImage.png'
@@ -59,7 +55,7 @@ import { mapGetters } from 'vuex'
 // settings
 export default {
   name: 'ViewsPersonalIndex',
-  components: { Password, BaseData, Avatar, Email, Mobile },
+  components: { Password, BaseData, Avatar },
   mixins: [ListMixin],
   data() {
     return {
@@ -68,7 +64,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['roles', 'petName', 'avatar'])
+    ...mapGetters(['roles', 'mobile', 'avatar'])
   },
   created() {
     this.rolesCn = rolesParse(this.roles.join(','))
@@ -87,26 +83,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.user-data {
-  .box-center {
-    margin: 0 auto;
-    display: table;
-  }
-
-  .user-info {
-    text-align: center;
-  }
-
-  .user-name {
-    padding-top: 10px;
-    font-weight: bold;
-  }
-
-  .user-role {
-    padding-top: 10px;
-    font-weight: 400;
-    font-size: 14px;
-    color: #777;
-  }
-}
+@import './styles/common.scss';
 </style>

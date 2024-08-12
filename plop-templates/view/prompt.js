@@ -2,12 +2,13 @@ const { notEmpty } = require('../utils.js')
 
 module.exports = {
   description: 'generate a view',
-  prompts: [{
-    type: 'input',
-    name: 'name',
-    message: 'view name please',
-    validate: notEmpty('name')
-  },
+  prompts: [
+    {
+      type: 'input',
+      name: 'name',
+      message: 'view name please',
+      validate: notEmpty('name')
+    },
     {
       type: 'checkbox',
       name: 'blocks',
@@ -17,16 +18,16 @@ module.exports = {
         value: 'template',
         checked: true
       },
-        {
-          name: '<script>',
-          value: 'script',
-          checked: true
-        },
-        {
-          name: 'style',
-          value: 'style',
-          checked: true
-        }
+      {
+        name: '<script>',
+        value: 'script',
+        checked: true
+      },
+      {
+        name: 'style',
+        value: 'style',
+        checked: true
+      }
       ],
       validate(value) {
         if (value.indexOf('script') === -1 && value.indexOf('template') === -1) {

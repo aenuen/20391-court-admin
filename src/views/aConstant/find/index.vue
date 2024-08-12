@@ -12,7 +12,7 @@
     <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm">
       <!-- 标题 -->
       <div class="title-container">
-        <div class="formTitle">用户注册</div>
+        <div class="formTitle">找回密码</div>
       </div>
       <!-- 手机号码 -->
       <el-form-item prop="telephone">
@@ -27,40 +27,36 @@
           <span class="svg-container">
             <svg-icon icon-class="form" />
           </span>
-          <el-input v-model="postForm.telCode" placeholder="短信验证码" name="telCode" type="text" tabindex="2" autocomplete="off" maxlength="6" style="width: 185px" />
+          <el-input v-model="postForm.telCode" placeholder="短信验证码" name="telCode" type="text" tabindex="2" autocomplete="off" maxlength="6" style="width: 160px" />
         </el-form-item>
         <el-button :disabled="disable" class="getCode" @click="getTelCode">
           <template v-if="disable">还有{{ countdown }}秒后可再次获取</template>
           <template v-else>获取短信验证码</template>
         </el-button>
       </div>
-      <!-- 密码 -->
+      <!-- 新的密码 -->
       <el-tooltip v-model="capsTooltip" content="您输入的是大写" placement="right" manual>
-        <el-form-item prop="password">
+        <el-form-item prop="newPwd" style="position: relative">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
-          <el-input v-model="postForm.password" placeholder="登录密码" name="password" type="password" tabindex="3" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" />
+          <el-input ref="newPwd" v-model="postForm.newPwd" placeholder="新的密码" name="newPwd" :type="passwordType" tabindex="3" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" />
+          <span class="showPwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
         </el-form-item>
       </el-tooltip>
-      <!-- 姓名 -->
-      <el-form-item prop="name">
+      <!-- 确定密码 -->
+      <el-form-item prop="conPwd">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="password" />
         </span>
-        <el-input v-model="postForm.name" placeholder="姓名" name="name" type="text" tabindex="4" autocomplete="off" maxlength="30" />
-      </el-form-item>
-      <!-- 身份证号码 -->
-      <el-form-item prop="cardNo">
-        <span class="svg-container">
-          <svg-icon icon-class="id-card" />
-        </span>
-        <el-input v-model="postForm.cardNo" placeholder="身份证号码" name="cardNo" tabindex="5" autocomplete="off" maxlength="30" />
+        <el-input ref="conPwd" v-model="postForm.conPwd" placeholder="确认密码" name="conPwd" :type="passwordType" tabindex="4" autocomplete="off" maxlength="30" />
       </el-form-item>
       <!-- 按钮 -->
-      <el-button :loading="submitLoading" type="primary" style="width: 100%; margin-bottom: 30px" @click="submitForm"> 注册 </el-button>
+      <el-button :loading="submitLoading" type="primary" style="width: 100%; margin-bottom: 30px" @click="submitForm"> 修改密码 </el-button>
       <!-- 链接 -->
-      <div class="routerGo"><i @click="routerGo('/login')">已有账号！去登录</i><b @click="routerGo('/find')">忘记密码？</b></div>
+      <div class="routerGo"><i @click="routerGo('/login')">已有账号！去登录</i><b @click="routerGo('/register')">还没账号？去注册</b></div>
     </el-form>
   </div>
 </template>
@@ -75,7 +71,7 @@ import { userApi } from '@/api/user'
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
-import { validateMobile, validateRequire, validateAllCn, validateIdCard, validateErrMsg, formatMobile } from 'abbott-methods/import'
+import { validateMobile, validateRequire, formatMobile } from 'abbott-methods/import'
 import { CryptoJsEncode } from '@/libs/cryptojs'
 import Cookies from 'js-cookie'
 export default {
@@ -87,10 +83,10 @@ export default {
       formRules: {
         telephone: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }],
         telCode: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '短信验证码', '填写', 6, 6) }],
-        password: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '密码', '填写', 6, 30) }],
-        name: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, '姓名') }],
-        cardNo: [{ validator: (rule, value, callback) => validateIdCard(rule, value, callback) }]
+        newPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '新的密码', '填写', 6, 30) }],
+        conPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '确认密码', '填写', 6, 30) }]
       },
+      passwordType: 'password',
       postForm: { telephone: '' },
       disable: false, // 按钮禁用开关
       countdown: 60, // 初始化倒计时为60秒
@@ -102,13 +98,18 @@ export default {
     this.clearCountdown() // 清除计时器，防止内存泄露
   },
   created() {
-    const countdown = Cookies.get('registerCountdownCookie')
+    const countdown = Cookies.get('findCountdownCookie')
     if (countdown < 60 && countdown > 0) {
       this.countdown = countdown
       this.countPlay()
     }
   },
   methods: {
+    // 大写时开启提示
+    checkCapsLock(e) {
+      const { key } = e
+      this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
+    },
     // 开始倒计时
     countPlay() {
       this.disable = true
@@ -119,7 +120,7 @@ export default {
       this.countTime = setInterval(() => {
         if (this.countdown > 0) {
           this.countdown--
-          Cookies.set('registerCountdownCookie', this.countdown, { expires: this.countdown })
+          Cookies.set('findCountdownCookie', this.countdown, { expires: this.countdown })
         } else {
           this.clearCountdown()
         }
@@ -128,15 +129,15 @@ export default {
     // 清除倒计时函数
     clearCountdown() {
       clearInterval(this.countTime)
-      Cookies.remove('registerCountdownCookie')
+      Cookies.remove('findCountdownCookie')
       this.countdown = 60
       this.countTime = null
       this.disable = false
     },
-    // 大写时开启提示
-    checkCapsLock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
+    // 打开|关闭显示密码
+    showPwd() {
+      this.passwordType = this.passwordType === 'password' ? '' : 'password'
+      this.$nextTick(() => this.$refs.password.focus()) // 自动聚焦
     },
     // 获取短信验证码
     getTelCode() {
@@ -144,9 +145,9 @@ export default {
         this.$message.error('请先输入手机号码')
         this.$refs.telephone.focus()
       } else if (formatMobile(this.postForm.telephone)) {
-        userApi.getRegSMS(this.postForm.telephone).then(({ code, msg }) => {
+        userApi.getUpdSMS(this.postForm.telephone).then(({ code, msg }) => {
           if (code === 200) {
-            this.$message.success('短信验证码已发达，请在1分钟内进行注册')
+            this.$message.success('短信验证码已发达，请在1分钟内进行找回密码')
             this.countPlay()
           } else {
             this.$message.error(msg)
@@ -157,36 +158,37 @@ export default {
         this.$refs.telephone.focus()
       }
     },
-    // 开始注册
+    // 找回密码
     submitForm() {
       this.$refs.postForm.validate((valid, fields) => {
         if (valid) {
-          this.submitLoading = true
-          const newPostForm = {
-            telephone: CryptoJsEncode(this.postForm.telephone),
-            telCode: this.postForm.telCode,
-            password: CryptoJsEncode(this.postForm.password),
-            name: this.postForm.name,
-            cardNo: CryptoJsEncode(this.postForm.cardNo)
+          if (this.postForm.newPwd === this.postForm.conPwd) {
+            this.submitLoadingOpen()
+            const newPostForm = {
+              telephone: CryptoJsEncode(this.postForm.telephone),
+              telCode: this.postForm.telCode,
+              password: CryptoJsEncode(this.postForm.conPwd)
+            }
+            userApi
+              .find(newPostForm)
+              .then(({ code, msg }) => {
+                if (code === 200) {
+                  this.$message.success('密码修改成功，请登录……')
+                  this.routerGo('/login')
+                  this.submitLoadingClose()
+                } else {
+                  this.$message.error(msg)
+                }
+              })
+              .catch(() => {
+                this.submitLoadingClose()
+              })
+          } else {
+            this.$message.error('两次密码不一致')
+            this.$refs.conPwd.focus()
           }
-          this.$store
-            .dispatch('user/register', newPostForm)
-            .then(({ code, msg }) => {
-              if (code === 200) {
-                this.$message.success('注册成功，请登录……')
-                this.routerGo('/login')
-              } else {
-                this.$message.error(msg)
-              }
-              this.submitLoading = false
-            })
-            .catch(() => {
-              this.submitLoading = false
-            })
         } else {
-          const msg = validateErrMsg(fields)
-          this.$message.error(msg)
-          this.submitLoading = false
+          this.validateErrHandle(fields)
         }
       })
     }
@@ -194,8 +196,8 @@ export default {
 }
 </script>
 <style lang="scss">
-@import './css/adjust.scss';
+@import '../register/css/adjust.scss';
 </style>
 <style lang="scss" scoped>
-@import './css/common.scss';
+@import '../register/css/common.scss';
 </style>
