@@ -38,10 +38,10 @@ export default {
   created() {},
   methods: {
     updateAlone() {
-      this.$emit('ApplicantUpdate', this.updateId)
+      this.$emit('RespondentUpdate', this.updateId)
     },
     removeAlone() {
-      this.$emit('ApplicantDelete', this.removeId)
+      this.$emit('RespondentDelete', this.removeId)
     }
   }
 }

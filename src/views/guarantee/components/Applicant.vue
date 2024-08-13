@@ -142,7 +142,6 @@ import { ApplicantFields } from '../modules/fields'
 // function
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
-import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
 import { regionData } from 'element-china-area-data'
 
@@ -150,7 +149,7 @@ import { regionData } from 'element-china-area-data'
 export default {
   name: 'GuaranteeApplicant',
   components: {},
-  mixins: [DetailMixin, MethodsMixin],
+  mixins: [DetailMixin],
   props: {
     applicant: { type: Boolean, default: true }, // true为申请人,false为被申请人
     isUpdate: { type: Boolean, default: false } // true为编辑模式，false为添加模式

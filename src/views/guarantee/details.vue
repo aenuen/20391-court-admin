@@ -24,7 +24,7 @@
           <a class="titleIcon" @click="ApplicantCreate()"><i class="el-icon-plus" />添加</a>
         </div>
         <div class="boxContent">
-          <TableApp :data="tableData" @ApplicantDelete="ApplicantDelete" />
+          <TableApp :data="tableData" @ApplicantDelete="ApplicantDelete" @ApplicantUpdate="ApplicantUpdate" />
         </div>
       </div>
       <!-- 被申请人 -->
@@ -34,20 +34,7 @@
           <a class="titleIcon" @click="RespondentCreate()"><i class="el-icon-plus" />添加</a>
         </div>
         <div class="boxContent">
-          <el-table :data="tableData" border style="width: 100%">
-            <el-table-column type="index" label="序号" width="50" align="center"> </el-table-column>
-            <el-table-column prop="name" label="申请人名称"> </el-table-column>
-            <el-table-column prop="country" label="国别"> </el-table-column>
-            <el-table-column prop="type" label="证件类型"> </el-table-column>
-            <el-table-column prop="number" label="证件号码"> </el-table-column>
-            <el-table-column prop="mobile" label="手机号码"> </el-table-column>
-            <el-table-column label="操作">
-              <template>
-                <el-button size="mini" type="primary" icon="el-icon-edit" @click="RespondentUpdate(3)">编辑</el-button>
-                <el-button size="mini" type="warning" icon="el-icon-delete" @click="RespondentDelete(4)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+          <TableRes :data="tableData" @RespondentDelete="RespondentDelete" @RespondentUpdate="RespondentUpdate" />
         </div>
       </div>
       <!-- 原告代理人 -->
@@ -57,18 +44,7 @@
           <a class="titleIcon" @click="AgentCreate()"><i class="el-icon-plus" />添加</a>
         </div>
         <div class="boxContent">
-          <el-table :data="tableData" border style="width: 100%">
-            <el-table-column type="index" label="序号" width="50" align="center"> </el-table-column>
-            <el-table-column prop="name" label="所属原告"> </el-table-column>
-            <el-table-column prop="country" label="代理人姓名"> </el-table-column>
-            <el-table-column prop="type" label="证件类型"> </el-table-column>
-            <el-table-column prop="number" label="证件号码"> </el-table-column>
-            <el-table-column prop="mobile" label="手机号码"> </el-table-column>
-            <el-table-column label="操作" align="center">
-              <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
-              <el-button size="mini" type="warning" icon="el-icon-delete">删除</el-button>
-            </el-table-column>
-          </el-table>
+          <TableAgent :data="tableData" @AgentDelete="AgentDelete" @AgentUpdate="AgentUpdate" />
         </div>
       </div>
       <!-- 财产线索 -->
@@ -78,17 +54,7 @@
           <a class="titleIcon" @click="PropertyCreate()"><i class="el-icon-plus" />添加</a>
         </div>
         <div class="boxContent">
-          <el-table :data="tableData" border style="width: 100%">
-            <el-table-column type="index" label="序号" width="50" align="center"> </el-table-column>
-            <el-table-column prop="name" label="财产金额"> </el-table-column>
-            <el-table-column prop="country" label="财产类型"> </el-table-column>
-            <el-table-column label="操作">
-              <template>
-                <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
-                <el-button size="mini" type="warning" icon="el-icon-delete">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+          <TablePro :data="tableData" @PropertyDelete="PropertyDelete" @PropertyUpdate="PropertyUpdate" />
         </div>
       </div>
     </div>
@@ -118,6 +84,9 @@ import Applicant from './components/Applicant'
 import Agent from './components/Agent'
 import Property from './components/Property'
 import TableApp from './components/TableApp'
+import TableRes from './components/TableRes'
+import TableAgent from './components/TableAgent'
+import TablePro from './components/TablePro'
 // data
 // filter
 // function
@@ -126,7 +95,7 @@ import TableApp from './components/TableApp'
 // settings
 export default {
   name: 'GuaranteeDetails',
-  components: { Steps, Detail, Applicant, Agent, Property, TableApp },
+  components: { Steps, Detail, Applicant, Agent, Property, TableApp, TableRes, TableAgent, TablePro },
   mixins: [],
   data() {
     return {
@@ -189,6 +158,7 @@ export default {
       this.ApplicantVisible = true
       this.ApplicantIsUpdate = true
       this.ApplicantId = id
+      console.log('this.ApplicantId: ', this.ApplicantId)
     },
     ApplicantDelete(data) {
       console.log(data)

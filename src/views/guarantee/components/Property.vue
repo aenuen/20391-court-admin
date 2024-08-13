@@ -8,12 +8,13 @@
 // filter
 // function
 // mixin
+import DetailMixin from '@/components/Mixins/DetailMixin'
 // plugins
 // settings
 export default {
   name: '',
   components: {},
-  mixins: [],
+  mixins: [DetailMixin],
   data() {
     return {}
   },
