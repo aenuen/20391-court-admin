@@ -4,8 +4,16 @@
       <!-- 手机号码 -->
       <el-row>
         <el-col>
-          <el-form-item :label="fields.mobile" :label-width="labelWidth">
+          <el-form-item :label="fields.oldMobile" :label-width="labelWidth">
             {{ mobile }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <!-- 新手机号码 -->
+      <el-row>
+        <el-col>
+          <el-form-item prop="newMobile" :label="fields.newMobile" :label-width="labelWidth">
+            <el-input ref="newMobile" v-model="postForm.newMobile" :placeholder="fields.newMobile" type="text" tabindex="1" autocomplete="off" maxlength="11" style="width: 340px" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -13,7 +21,7 @@
       <el-row>
         <el-col>
           <el-form-item prop="telCode" :label="fields.telCode" :label-width="labelWidth">
-            <el-input ref="telCode" v-model.trim="postForm.telCode" :placeholder="fields.telCode" maxlength="6" style="width: 150px" />
+            <el-input ref="telCode" v-model.trim="postForm.telCode" :placeholder="fields.telCode" maxlength="6" tabindex="2" style="width: 150px" />
             <el-button :disabled="disable" class="getCode" @click="getTelCode">
               <template v-if="disable">还有{{ countdown }}秒后可再次获取</template>
               <template v-else>获取短信验证码</template>
@@ -21,64 +29,45 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <!-- 新的密码 -->
-      <el-row>
-        <el-col>
-          <el-tooltip v-model="capsTooltip" content="您输入的是大写" placement="right" manual>
-            <el-form-item prop="newPwd" :label="`新的${fields.password}`" :label-width="labelWidth">
-              <el-input ref="newPwd" v-model.trim="postForm.newPwd" :placeholder="`新的${fields.password}`" show-password maxlength="30" style="width: 340px" @keyup.native="checkCapsLock" @blur="capsTooltip = false" />
-            </el-form-item>
-          </el-tooltip>
-        </el-col>
-      </el-row>
-      <!-- 确认密码 -->
-      <el-row>
-        <el-col>
-          <el-form-item prop="conPwd" :label="`确认${fields.password}`" :label-width="labelWidth">
-            <el-input ref="conPwd" v-model.trim="postForm.conPwd" :placeholder="`确认${fields.password}`" show-password maxlength="30" style="width: 340px" />
-          </el-form-item>
-        </el-col>
-      </el-row>
       <!-- 按钮 -->
       <el-form-item :label-width="labelWidth">
-        <el-button :loading="submitLoading" :disabled="submitLoading" type="primary" @click="submitForm"> 修改登录密码 </el-button>
+        <el-button :loading="submitLoading" :disabled="submitLoading" type="primary" @click="submitForm"> 更换手机号码 </el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
-
 <script>
 // api
 import { userApi } from '@/api/user'
 // components
 // data
 import { fields, cdTotalTime } from '../modules/fields'
-import { PasswordRule as rulesForm } from '../modules/rules'
+import { MobileRule as rulesForm } from '../modules/rules'
 // filter
 // function
-// mixins
+// mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 // plugins
 import { mapGetters } from 'vuex'
-import { CryptoJsEncode } from '@/libs/cryptojs'
+import { formatMobile } from 'abbott-methods/import'
 import Cookies from 'js-cookie'
+import { CryptoJsEncode } from '@/libs/cryptojs'
 // settings
 export default {
-  name: 'AccountPassword',
+  name: 'AccountMobile',
+  components: {},
   mixins: [DetailMixin],
   data() {
     return {
       fields,
       rulesForm,
       postForm: {
-        telCode: '',
-        newPwd: '',
-        conPwd: ''
+        newMobile: '',
+        telCode: ''
       },
       disable: false, // 按钮禁用开关
       countdown: cdTotalTime, // 初始化倒计时为60秒
-      countTime: null,
-      capsTooltip: false
+      countTime: null
     }
   },
   computed: {
@@ -96,11 +85,6 @@ export default {
     }
   },
   methods: {
-    // 大写时开启提示
-    checkCapsLock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
-    },
     // 开始倒计时
     countPlay() {
       this.disable = true
@@ -127,34 +111,57 @@ export default {
     },
     // 获取短信验证码
     getTelCode() {
-      userApi.getUpdSMS(this.mobile).then(({ code, msg }) => {
-        if (code === 200) {
-          this.$message.success('短信验证码已发达，请在1分钟内进行找回密码')
-          this.countPlay()
+      if (this.postForm.newMobile.length > 0) {
+        if (formatMobile(this.postForm.newMobile)) {
+          if (this.mobile === this.postForm.newMobile) {
+            this.$message.warning('手机号码一致，无需更换……')
+            this.$refs.newMobile.focus()
+          } else {
+            userApi.getTelSMS(this.postForm.newMobile).then(({ code, msg }) => {
+              if (code === 200) {
+                this.$message.success('短信验证码已发达，请在1分钟内进行找回密码')
+                this.countPlay()
+              } else {
+                this.$message.error(msg)
+              }
+            })
+          }
         } else {
-          this.$message.error(msg)
+          this.$message.error('请先输入正确的手机号码')
+          this.$refs.newMobile.focus()
         }
-      })
+      } else {
+        this.$message.error('请先输入手机号码')
+        this.$refs.newMobile.focus()
+      }
     },
-    // 修改密码
+    // 退出登录
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    // 更换手机号码
     submitForm() {
       if (!this.submitLoading) {
         this.$refs.postForm.validate((valid, fields) => {
           if (valid) {
-            if (this.postForm.newPwd === this.postForm.conPwd) {
-              this.submitLoadingOpen()
-              const newPostForm = {
-                telephone: CryptoJsEncode(this.mobile),
+            if (this.mobile === this.postForm.newMobile) {
+              this.$message.warning('手机号码一致，无需更换……')
+              this.$refs.newMobile.focus()
+            } else {
+              const data = {
+                userId: this.aid,
                 telCode: this.postForm.telCode,
-                password: CryptoJsEncode(this.postForm.conPwd)
+                telephone: CryptoJsEncode(this.postForm.newMobile)
               }
               userApi
-                .find(newPostForm)
+                .baseData(data)
                 .then(({ code, msg }) => {
                   if (code === 200) {
-                    this.$message.success('密码修改成功')
+                    this.$message.success('手机号码更换成功,请重新登录…')
                     this.submitLoadingClose()
                     this.$refs.postForm.resetFields()
+                    this.logout()
                   } else {
                     this.$message.error(msg)
                   }
@@ -162,9 +169,6 @@ export default {
                 .catch(() => {
                   this.submitLoadingClose()
                 })
-            } else {
-              this.$message.error('两次密码不一致')
-              this.$refs.conPwd.focus()
             }
           } else {
             this.validateErrHandle(fields)
@@ -175,7 +179,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .getCode {
   width: 180px;

@@ -1,21 +1,30 @@
 import { validateRequire, validateAllCn, validateIdCard, validateMobile } from 'abbott-methods/import'
 import { fields } from './fields'
 
+// 基本资料
 export const BaseDataRule = {
   realName: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, fields.realName, 2, 20) }],
   cardNo: [{ validator: (rule, value, callback) => validateIdCard(rule, value, callback, fields.cardNo, '填写') }]
 }
 
+// 修改密码
 export const PasswordRule = {
-  passwordOld: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, `旧${fields.password}`, '填写', 6, 20) }],
-  passwordNew: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, `新${fields.password}`, '填写', 6, 20) }],
-  passwordRep: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, `确认${fields.password}`, '填写', 6, 20) }]
+  telCode: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.telCode, '填写', 6, 6) }],
+  newPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.newPwd, '填写', 6, 20) }],
+  conPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.conPwd, '填写', 6, 20) }]
+}
+
+// 更换手机
+export const MobileRule = {
+  newMobile: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }],
+  telCode: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.telCode, '填写', 6, 6) }]
 }
 
 // 登录验证
 export const loginRule = {
   telephone: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }],
-  password: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '登录密码', '填写', 6, 30) }]
+  password: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '登录密码', '填写', 6, 30) }],
+  code: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '验证码', '填写', 5, 5) }]
 }
 
 // 注册验证

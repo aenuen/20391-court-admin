@@ -1,6 +1,7 @@
 
 const servePort = 8000
 const adminPort = 20391
+const serveUrl = 'http://121.41.65.226'
 const title = '诉讼保函-智慧法院电子管理平台'
 const isDevMode = process.env.NODE_ENV === 'development'
 module.exports = {
@@ -13,5 +14,7 @@ module.exports = {
   errorLog: 'development', // 使用errorLog的模式(可使用数组,如:['development','production'])
   cryptoJsSecretKey: 'SecretKey', // CryptoJs加密Key
   isDevMode,
-  apiBaseUrl: isDevMode ? `http://192.168.2.53:${servePort}/wc/sys` : `http://192.168.2.53:${servePort}/wc/sys` // http://121.41.65.226/
+  serveUrl,
+  // apiBaseUrl: isDevMode ? `http://192.168.2.53:${servePort}/wc/sys` : `http://192.168.2.53:${servePort}/wc/sys`
+  apiBaseUrl: isDevMode ? `${serveUrl}:${servePort}/wc/sys` : `${serveUrl}:${servePort}/wc/sys`
 }

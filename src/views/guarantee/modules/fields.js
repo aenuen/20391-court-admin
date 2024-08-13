@@ -32,3 +32,7 @@ export const ApplicantFields = {
   unit_address: '单位地址',
   sign_address: '注册地址'
 }
+
+export const AgentFields = {
+  accuser: '所属原告'
+}

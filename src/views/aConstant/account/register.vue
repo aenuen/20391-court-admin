@@ -150,20 +150,22 @@ export default {
     },
     // 获取短信验证码
     getTelCode() {
-      if (this.$refs.telephone.length) {
-        this.$message.error('请先输入手机号码')
-        this.$refs.telephone.focus()
-      } else if (formatMobile(this.postForm.telephone)) {
-        userApi.getRegSMS(this.postForm.telephone).then(({ code, msg }) => {
-          if (code === 200) {
-            this.$message.success('短信验证码已发达，请在1分钟内进行注册')
-            this.countPlay()
-          } else {
-            this.$message.error(msg)
-          }
-        })
+      if (this.postForm.telephone.length > 0) {
+        if (formatMobile(this.postForm.telephone)) {
+          userApi.getRegSMS(this.postForm.telephone).then(({ code, msg }) => {
+            if (code === 200) {
+              this.$message.success('短信验证码已发达，请在1分钟内进行找回密码')
+              this.countPlay()
+            } else {
+              this.$message.error(msg)
+            }
+          })
+        } else {
+          this.$message.error('请先输入正确的手机号码')
+          this.$refs.telephone.focus()
+        }
       } else {
-        this.$message.error('请先输入正确的手机号码')
+        this.$message.error('请先输入手机号码')
         this.$refs.telephone.focus()
       }
     },

@@ -35,9 +35,10 @@ import { BaseDataRule as rulesForm } from '../modules/rules'
 import DetailMixin from '@/components/Mixins/DetailMixin'
 // plugins
 import { mapGetters } from 'vuex'
+import { CryptoJsEncode } from '@/libs/cryptojs'
 // settings
 export default {
-  name: 'PersonalBaseData',
+  name: 'AccountBaseData',
   mixins: [DetailMixin],
   data() {
     return {
@@ -51,7 +52,7 @@ export default {
   created() {
     this.postForm = {
       ...{
-        id: this.aid,
+        userId: this.aid,
         realName: this.realName,
         cardNo: this.cardNo
       }
@@ -63,16 +64,24 @@ export default {
         this.submitLoadingOpen()
         this.$refs.postForm.validate((valid, fields) => {
           if (valid) {
+            const data = {
+              userId: this.postForm.userId,
+              name: this.postForm.realName,
+              cardNo: CryptoJsEncode(this.postForm.cardNo)
+            }
             userApi
-              .baseData(this.postForm)
-              .then((res) => {
-                const { msg } = res
-                this.$message.success(msg)
-                this.submitLoading = false
-                this.$store.commit('user/SET_PetNAME', this.postForm.petName)
+              .baseData(data)
+              .then(({ code, msg }) => {
+                if (code === 200) {
+                  this.$message.success(msg)
+                  this.$store.commit('user/SET_RealName', this.postForm.realName)
+                } else {
+                  this.$message.success(msg)
+                }
+                this.submitLoadingClose()
               })
               .catch(() => {
-                this.submitLoading = false
+                this.submitLoadingClose()
               })
           } else {
             this.validateErrHandle(fields)

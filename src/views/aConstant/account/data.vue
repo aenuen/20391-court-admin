@@ -14,7 +14,7 @@
                 </el-avatar>
               </div>
               <div class="user-info">
-                <div class="user-name">{{ mobile }}</div>
+                <div class="user-name">{{ realName }}</div>
                 <div class="user-role text-muted">{{ rolesCn }}</div>
               </div>
             </el-card>
@@ -28,6 +28,7 @@
             <el-tabs v-model="queryList.activeTab" @tab-click="tabsClick">
               <el-tab-pane label="登录密码" name="password"><password /></el-tab-pane>
               <el-tab-pane label="基本资料" name="base"><base-data /></el-tab-pane>
+              <el-tab-pane label="手机更换" name="mobile"><mobile /></el-tab-pane>
               <el-tab-pane label="更换头像" name="avatar"><avatar /></el-tab-pane>
             </el-tabs>
           </el-card>
@@ -42,6 +43,7 @@
 // components
 import Password from './components/Password'
 import BaseData from './components/BaseData'
+import Mobile from './components/Mobile'
 import Avatar from './components/Avatar'
 // data
 import { rolesParse } from './modules/roles'
@@ -55,7 +57,7 @@ import { mapGetters } from 'vuex'
 // settings
 export default {
   name: 'ViewsPersonalIndex',
-  components: { Password, BaseData, Avatar },
+  components: { Password, BaseData, Mobile, Avatar },
   mixins: [ListMixin],
   data() {
     return {
@@ -64,7 +66,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['roles', 'mobile', 'avatar'])
+    ...mapGetters(['roles', 'realName', 'avatar'])
   },
   created() {
     this.rolesCn = rolesParse(this.roles.join(','))

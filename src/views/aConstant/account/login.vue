@@ -28,7 +28,7 @@
         </el-form-item>
       </el-tooltip>
       <!-- 验证码 -->
-      <el-form-item style="position: relative">
+      <el-form-item prop="code" style="position: relative">
         <span class="svg-container">
           <svg-icon icon-class="form" />
         </span>

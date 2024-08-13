@@ -99,7 +99,7 @@ const actions = {
               roles.push(item.value)
             }
           })
-          const newData = { roles, aid: userId, cardNo, realName: name, mobile: telephone, avatar: img }
+          const newData = { roles, aid: userId, cardNo, realName: name, mobile: telephone, avatar: img === '' ? '@/assets/image/noneImage.png' : img }
           commit('SET_Roles', newData.roles)
           commit('SET_Aid', newData.aid)
           commit('SET_CardNo', newData.cardNo)

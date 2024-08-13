@@ -12,7 +12,7 @@
         <router-link to="/">
           <el-dropdown-item>首页</el-dropdown-item>
         </router-link>
-        <router-link to="/account/index">
+        <router-link to="/account/data">
           <el-dropdown-item>账号资料</el-dropdown-item>
         </router-link>
         <el-dropdown-item divided @click.native="logout">
