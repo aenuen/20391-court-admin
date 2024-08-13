@@ -2,6 +2,7 @@ import { userApi } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/libs/utils/token'
 import router, { resetRouter } from '@/router/constant'
 import { rolesAry } from '@/views/aConstant/account/modules/roles'
+import { serveUrl } from '@/settings'
 
 const state = {
   aid: '',
@@ -99,7 +100,7 @@ const actions = {
               roles.push(item.value)
             }
           })
-          const newData = { roles, aid: userId, cardNo, realName: name, mobile: telephone, avatar: img === '' ? '@/assets/image/noneImage.png' : img }
+          const newData = { roles, aid: userId, cardNo, realName: name, mobile: telephone, avatar: img === null ? serveUrl + '/images/default.png' : serveUrl + img }
           commit('SET_Roles', newData.roles)
           commit('SET_Aid', newData.aid)
           commit('SET_CardNo', newData.cardNo)

@@ -1,7 +1,8 @@
 
 const servePort = 8000
+const current = 1
+const serveUrl = current === 1 ? 'http://121.41.65.226' : 'http://192.168.2.53'
 const adminPort = 20391
-const serveUrl = 'http://121.41.65.226'
 const title = '诉讼保函-智慧法院电子管理平台'
 const isDevMode = process.env.NODE_ENV === 'development'
 module.exports = {
@@ -15,6 +16,5 @@ module.exports = {
   cryptoJsSecretKey: 'SecretKey', // CryptoJs加密Key
   isDevMode,
   serveUrl,
-  // apiBaseUrl: isDevMode ? `http://192.168.2.53:${servePort}/wc/sys` : `http://192.168.2.53:${servePort}/wc/sys`
   apiBaseUrl: isDevMode ? `${serveUrl}:${servePort}/wc/sys` : `${serveUrl}:${servePort}/wc/sys`
 }
