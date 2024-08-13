@@ -83,5 +83,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import './styles/common.scss';
+@import './styles/data.scss';
 </style>

@@ -1,0 +1,18 @@
+.postForm {
+  .el-input {
+    display: inline-block;
+    height: 36px;
+    width: 370px;
+
+    input {
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 10px 15px;
+      color: #333;
+      height: 36px;
+      caret-color: #fff;
+      caret-color: #000; // 光标在input中的颜色
+    }
+  }
+}

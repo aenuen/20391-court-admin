@@ -5,7 +5,7 @@ const accountRouter = {
   component: Layout,
   children: [
     {
-      path: 'index', name: 'accountIndex', component: () => import('@/views/aConstant/account/index.vue'),
+      path: 'data', name: 'accountData', component: () => import('@/views/aConstant/account/data.vue'),
       meta: {
         title: '账号资料'
       },

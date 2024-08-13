@@ -4,9 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 // 固定加载
 import homeRouter from './modules/home'
-import { loginRouter, httpRedirectRouter, authRedirectRouter } from './modules/login'
-import { registerRouter } from './modules/register'
-import { findRouter } from './modules/find'
+import { loginRouter, registerRouter, findRouter, httpRedirectRouter, authRedirectRouter } from './modules/account'
 import { errorPage401Router, errorPage404Router } from './modules/errorPage'
 
 export const constantRoutes = [

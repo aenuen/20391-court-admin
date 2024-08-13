@@ -1,0 +1,22 @@
+.user-data {
+  .box-center {
+    margin: 0 auto;
+    display: table;
+  }
+
+  .user-info {
+    text-align: center;
+  }
+
+  .user-name {
+    padding-top: 10px;
+    font-weight: bold;
+  }
+
+  .user-role {
+    padding-top: 10px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #777;
+  }
+}
