@@ -8,7 +8,7 @@
 <template>
   <div class="theContainer">
     <div class="logo"></div>
-    <div class="title">智慧法院电子管理平台</div>
+    <div class="title">{{ someText.bigTitle }}</div>
     <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm">
       <!-- 标题 -->
       <div class="title-container">
@@ -19,7 +19,7 @@
         <span class="svg-container">
           <svg-icon icon-class="mobile" />
         </span>
-        <el-input ref="telephone" v-model="postForm.telephone" placeholder="手机号码" name="telephone" type="text" tabindex="1" autocomplete="off" maxlength="11" />
+        <el-input ref="telephone" v-model="postForm.telephone" :placeholder="fields.telephone" name="telephone" type="text" tabindex="1" autocomplete="off" maxlength="11" />
       </el-form-item>
       <!-- 短信验证码 -->
       <div class="telCode">
@@ -27,7 +27,7 @@
           <span class="svg-container">
             <svg-icon icon-class="form" />
           </span>
-          <el-input v-model="postForm.telCode" placeholder="短信验证码" name="telCode" type="text" tabindex="2" autocomplete="off" maxlength="6" style="width: 185px" />
+          <el-input v-model="postForm.telCode" :placeholder="fields.telCode" name="telCode" type="text" tabindex="2" autocomplete="off" maxlength="6" style="width: 185px" />
         </el-form-item>
         <el-button :disabled="disable" class="getCode" @click="getTelCode">
           <template v-if="disable">还有{{ countdown }}秒后可再次获取</template>
@@ -35,12 +35,15 @@
         </el-button>
       </div>
       <!-- 密码 -->
-      <el-tooltip v-model="capsTooltip" content="您输入的是大写" placement="right" manual>
-        <el-form-item prop="password">
+      <el-tooltip v-model="capsTooltip" :content="someText.capsLock" placement="right" manual>
+        <el-form-item prop="password" style="position: relative">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
-          <el-input v-model="postForm.password" placeholder="登录密码" name="password" type="password" tabindex="3" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" />
+          <el-input v-model="postForm.password" :placeholder="fields.password" name="password" :type="passwordType" tabindex="3" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" />
+          <span class="showPwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
         </el-form-item>
       </el-tooltip>
       <!-- 姓名 -->
@@ -48,19 +51,22 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="postForm.name" placeholder="姓名" name="name" type="text" tabindex="4" autocomplete="off" maxlength="30" />
+        <el-input v-model="postForm.name" :placeholder="fields.name" name="name" type="text" tabindex="4" autocomplete="off" maxlength="30" />
       </el-form-item>
       <!-- 身份证号码 -->
       <el-form-item prop="cardNo">
         <span class="svg-container">
           <svg-icon icon-class="id-card" />
         </span>
-        <el-input v-model="postForm.cardNo" placeholder="身份证号码" name="cardNo" tabindex="5" autocomplete="off" maxlength="30" />
+        <el-input v-model="postForm.cardNo" :placeholder="fields.cardNo" name="cardNo" tabindex="5" autocomplete="off" maxlength="30" />
       </el-form-item>
       <!-- 按钮 -->
-      <el-button :loading="submitLoading" type="primary" style="width: 100%; margin-bottom: 30px" @click="submitForm"> 注册 </el-button>
+      <el-button :loading="submitLoading" type="primary" class="submitBtn" @click="submitForm"> {{ someText.submitRegister }} </el-button>
       <!-- 链接 -->
-      <div class="routerGo"><i @click="routerGo('/login')">已有账号！去登录</i><b @click="routerGo('/find')">忘记密码？</b></div>
+      <div class="routerGo">
+        <i @click="routerGo('/login')">{{ someText.toLogin }}</i>
+        <b @click="routerGo('/find')">{{ someText.toFind }}</b>
+      </div>
     </el-form>
   </div>
 </template>
@@ -69,13 +75,15 @@
 import { userApi } from '@/api/user'
 // components
 // data
+import { fields, someText } from './modules/fields'
+import { registerRule } from './modules/rules'
 // filter
 // function
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
-import { validateMobile, validateRequire, validateAllCn, validateIdCard, validateErrMsg, formatMobile } from 'abbott-methods/import'
+import { formatMobile } from 'abbott-methods/import'
 import { CryptoJsEncode } from '@/libs/cryptojs'
 import Cookies from 'js-cookie'
 export default {
@@ -84,14 +92,11 @@ export default {
   mixins: [DetailMixin, MethodsMixin],
   data() {
     return {
-      formRules: {
-        telephone: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }],
-        telCode: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '短信验证码', '填写', 6, 6) }],
-        password: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '密码', '填写', 6, 30) }],
-        name: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, '姓名') }],
-        cardNo: [{ validator: (rule, value, callback) => validateIdCard(rule, value, callback) }]
-      },
+      fields,
+      someText,
+      formRules: registerRule,
       postForm: { telephone: '' },
+      passwordType: 'password',
       disable: false, // 按钮禁用开关
       countdown: 60, // 初始化倒计时为60秒
       countTime: null,
@@ -133,6 +138,11 @@ export default {
       this.countTime = null
       this.disable = false
     },
+    // 打开|关闭显示密码
+    showPwd() {
+      this.passwordType = this.passwordType === 'password' ? '' : 'password'
+      this.$nextTick(() => this.$refs.password.focus()) // 自动聚焦
+    },
     // 大写时开启提示
     checkCapsLock(e) {
       const { key } = e
@@ -161,7 +171,7 @@ export default {
     submitForm() {
       this.$refs.postForm.validate((valid, fields) => {
         if (valid) {
-          this.submitLoading = true
+          this.submitLoadingOpen()
           const newPostForm = {
             telephone: CryptoJsEncode(this.postForm.telephone),
             telCode: this.postForm.telCode,
@@ -178,15 +188,13 @@ export default {
               } else {
                 this.$message.error(msg)
               }
-              this.submitLoading = false
+              this.submitLoadingClose()
             })
             .catch(() => {
-              this.submitLoading = false
+              this.submitLoadingClose()
             })
         } else {
-          const msg = validateErrMsg(fields)
-          this.$message.error(msg)
-          this.submitLoading = false
+          this.validateErrHandle(fields)
         }
       })
     }

@@ -8,7 +8,7 @@
 <template>
   <div class="theContainer">
     <div class="logo"></div>
-    <div class="title">智慧法院电子管理平台</div>
+    <div class="title">{{ someText.bigTitle }}</div>
     <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm">
       <!-- 标题 -->
       <div class="title-container">
@@ -19,7 +19,7 @@
         <span class="svg-container">
           <svg-icon icon-class="mobile" />
         </span>
-        <el-input ref="telephone" v-model="postForm.telephone" placeholder="手机号码" name="telephone" type="text" tabindex="1" autocomplete="off" maxlength="11" />
+        <el-input ref="telephone" v-model="postForm.telephone" :placeholder="fields.telephone" name="telephone" type="text" tabindex="1" autocomplete="off" maxlength="11" />
       </el-form-item>
       <!-- 短信验证码 -->
       <div class="telCode">
@@ -27,7 +27,7 @@
           <span class="svg-container">
             <svg-icon icon-class="form" />
           </span>
-          <el-input v-model="postForm.telCode" placeholder="短信验证码" name="telCode" type="text" tabindex="2" autocomplete="off" maxlength="6" style="width: 160px" />
+          <el-input v-model="postForm.telCode" :placeholder="fields.telCode" name="telCode" type="text" tabindex="2" autocomplete="off" maxlength="6" style="width: 160px" />
         </el-form-item>
         <el-button :disabled="disable" class="getCode" @click="getTelCode">
           <template v-if="disable">还有{{ countdown }}秒后可再次获取</template>
@@ -35,12 +35,12 @@
         </el-button>
       </div>
       <!-- 新的密码 -->
-      <el-tooltip v-model="capsTooltip" content="您输入的是大写" placement="right" manual>
+      <el-tooltip v-model="capsTooltip" :content="someText.capsLock" placement="right" manual>
         <el-form-item prop="newPwd" style="position: relative">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
-          <el-input ref="newPwd" v-model="postForm.newPwd" placeholder="新的密码" name="newPwd" :type="passwordType" tabindex="3" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" />
+          <el-input ref="newPwd" v-model="postForm.newPwd" :placeholder="fields.newPwd" name="newPwd" :type="passwordType" tabindex="3" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" />
           <span class="showPwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
@@ -51,12 +51,15 @@
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input ref="conPwd" v-model="postForm.conPwd" placeholder="确认密码" name="conPwd" :type="passwordType" tabindex="4" autocomplete="off" maxlength="30" />
+        <el-input ref="conPwd" v-model="postForm.conPwd" :placeholder="fields.conPwd" name="conPwd" :type="passwordType" tabindex="4" autocomplete="off" maxlength="30" />
       </el-form-item>
       <!-- 按钮 -->
-      <el-button :loading="submitLoading" type="primary" style="width: 100%; margin-bottom: 30px" @click="submitForm"> 修改密码 </el-button>
+      <el-button :loading="submitLoading" type="primary" class="submitBtn" @click="submitForm"> {{ someText.submitFind }} </el-button>
       <!-- 链接 -->
-      <div class="routerGo"><i @click="routerGo('/login')">已有账号！去登录</i><b @click="routerGo('/register')">还没账号？去注册</b></div>
+      <div class="routerGo">
+        <i @click="routerGo('/login')">{{ someText.toLogin }}</i>
+        <b @click="routerGo('/register')">{{ someText.toRegister }}</b>
+      </div>
     </el-form>
   </div>
 </template>
@@ -65,13 +68,15 @@
 import { userApi } from '@/api/user'
 // components
 // data
+import { fields, someText } from './modules/fields'
+import { findRule } from './modules/rules'
 // filter
 // function
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
-import { validateMobile, validateRequire, formatMobile } from 'abbott-methods/import'
+import { formatMobile } from 'abbott-methods/import'
 import { CryptoJsEncode } from '@/libs/cryptojs'
 import Cookies from 'js-cookie'
 export default {
@@ -80,12 +85,9 @@ export default {
   mixins: [DetailMixin, MethodsMixin],
   data() {
     return {
-      formRules: {
-        telephone: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }],
-        telCode: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '短信验证码', '填写', 6, 6) }],
-        newPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '新的密码', '填写', 6, 30) }],
-        conPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '确认密码', '填写', 6, 30) }]
-      },
+      fields,
+      someText,
+      formRules: findRule,
       passwordType: 'password',
       postForm: { telephone: '' },
       disable: false, // 按钮禁用开关

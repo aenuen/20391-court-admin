@@ -1,7 +1,7 @@
 <template>
   <div class="theContainer">
     <div class="logo"></div>
-    <div class="title">智慧法院电子管理平台</div>
+    <div class="title">{{ someText.bigTitle }}</div>
     <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm">
       <!-- 标题 -->
       <div class="title-container">
@@ -12,16 +12,16 @@
         <span class="svg-container">
           <svg-icon icon-class="mobile" />
         </span>
-        <el-input ref="telephone" v-model="postForm.telephone" placeholder="手机号码" name="telephone" type="text" tabindex="1" autocomplete="off" maxlength="11" @keyup.enter.native="submitForm" />
+        <el-input ref="telephone" v-model="postForm.telephone" :placeholder="fields.telephone" name="telephone" type="text" tabindex="1" autocomplete="off" maxlength="11" @keyup.enter.native="submitForm" />
       </el-form-item>
       <!-- 密码 -->
-      <el-tooltip v-model="capsTooltip" content="您输入的是大写" placement="right" manual>
+      <el-tooltip v-model="capsTooltip" :content="someText.capsLock" placement="right" manual>
         <el-form-item prop="password" style="position: relative">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
           <!-- eslint-disable-next-line vue/max-attributes-per-line -->
-          <el-input ref="password" v-model="postForm.password" :type="passwordType" placeholder="登录密码" name="password" tabindex="2" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" @keyup.enter.native="submitForm" />
+          <el-input ref="password" v-model="postForm.password" :type="passwordType" :placeholder="fields.password" name="password" tabindex="2" autocomplete="off" maxlength="30" @keyup.native="checkCapsLock" @blur="capsTooltip = false" @keyup.enter.native="submitForm" />
           <span class="showPwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
@@ -32,15 +32,18 @@
         <span class="svg-container">
           <svg-icon icon-class="form" />
         </span>
-        <el-input ref="code" v-model="postForm.code" type="text" placeholder="验证码" name="code" tabindex="3" autocomplete="off" style="width: 200px" @keyup.enter.native="submitForm" />
+        <el-input ref="code" v-model="postForm.code" type="text" :placeholder="fields.authCode" name="code" tabindex="3" autocomplete="off" style="width: 200px" @keyup.enter.native="submitForm" />
         <div class="authCode">
-          <el-image :src="authCode" lazy />
+          <el-image :src="authCode" lazy @click="refreshCode" />
         </div>
       </el-form-item>
       <!-- 按钮 -->
-      <el-button :loading="submitLoading" type="primary" style="width: 100%; margin-bottom: 30px" @click="submitForm"> 登录 </el-button>
+      <el-button :loading="submitLoading" type="primary" class="submitBtn" @click="submitForm"> {{ someText.submitLogin }} </el-button>
       <!-- 链接 -->
-      <div class="routerGo"><i @click="routerGo('/register')">还没账号？去注册</i><b @click="routerGo('/find')">忘记密码？</b></div>
+      <div class="routerGo">
+        <i @click="routerGo('/register')">{{ someText.toRegister }}</i>
+        <b @click="routerGo('/find')">{{ someText.toFind }}</b>
+      </div>
     </el-form>
   </div>
 </template>
@@ -48,6 +51,8 @@
 // api
 // components
 // data
+import { fields, someText } from './modules/fields'
+import { loginRule } from './modules/rules'
 // filter
 // function
 // mixin
@@ -55,7 +60,6 @@ import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
 import { CryptoJsEncode } from '@/libs/cryptojs'
-import { validateMobile, validateRequire } from 'abbott-methods/import'
 import { v4 as uuidV4 } from 'uuid'
 // settings
 import { apiBaseUrl } from '@/settings'
@@ -65,10 +69,9 @@ export default {
   mixins: [DetailMixin, MethodsMixin],
   data() {
     return {
-      formRules: {
-        telephone: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }],
-        password: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '密码', '填写', 6, 30) }]
-      },
+      fields,
+      someText,
+      formRules: loginRule,
       postForm: { telephone: '' },
       passwordType: 'password',
       capsTooltip: false,
@@ -93,36 +96,37 @@ export default {
     this.refreshCode()
   },
   methods: {
+    // 大写提示
     checkCapsLock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && key >= 'A' && key <= 'Z'
     },
+    // 显示|加密密码
     showPwd() {
       this.passwordType = this.passwordType === 'password' ? '' : 'password'
       this.$nextTick(() => this.$refs.password.focus()) // 自动聚焦
     },
+    // 刷新验证码
     refreshCode() {
       this.uuid = uuidV4()
       this.authCode = `${apiBaseUrl}/user/getCode?codeId=${this.uuid}&timestamp=${Date.now()}`
     },
-    toRegister() {
-      this.$router.push({
-        path: 'register'
-      })
-    },
+    // 登录跳转
     loginSubmit() {
       this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
     },
+    // 获取其它参数
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
         if (cur !== 'redirect') acc[cur] = query[cur]
         return acc
       }, {})
     },
+    // 登录
     submitForm() {
-      this.$refs.postForm.validate((valid) => {
+      this.$refs.postForm.validate((valid, fields) => {
         if (valid) {
-          this.submitLoading = true
+          this.submitLoadingOpen()
           const newPostForm = {
             codeId: this.uuid,
             telephone: CryptoJsEncode(this.postForm.telephone),
@@ -132,14 +136,14 @@ export default {
           this.$store
             .dispatch('user/login', newPostForm)
             .then(() => {
-              this.submitLoading = false
+              this.submitLoadingClose()
               this.loginSubmit()
             })
             .catch(() => {
-              this.submitLoading = false
+              this.submitLoadingClose()
             })
         } else {
-          return false
+          this.validateErrHandle(fields)
         }
       })
     }
