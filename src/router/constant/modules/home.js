@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout'
 // 首页
-const homeRouter = {
+export const home = {
   path: '/', component: Layout, redirect: '/home', children: [
     {
       component: () => import('@/views/aConstant/home'),
@@ -9,5 +9,3 @@ const homeRouter = {
     }
   ]
 }
-
-export default homeRouter
