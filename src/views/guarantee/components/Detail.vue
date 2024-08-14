@@ -4,27 +4,24 @@
       <el-row>
         <el-col>
           <el-form-item class="is-required" prop="court" :label="fields.court" :label-width="labelWidth">
-            <el-select v-model="postForm.court" :placeholder="fields.court" :style="{ width: commonWidth }">
-              <el-option v-for="(item, key) in courtAry" :key="key" :value="String(item.value)" :label="item.label" />
-            </el-select>
+            <el-input v-model="postForm.court" :placeholder="fields.court" clearable :style="{ width: commonWidth }" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col>
           <el-form-item class="is-required" prop="category" :label="fields.category" :label-width="labelWidth">
-            <el-radio v-model="postForm.category" :label="1">诉前保全</el-radio>
-            <el-radio v-model="postForm.category" :label="2">诉讼保全</el-radio>
+            <el-radio v-for="(item, key) in courtCategoryAry" :key="key" v-model="postForm.category" :disabled="item.dictValue === '3'" :label="item.dictValue">{{ item.name }}</el-radio>
             <div class="selectTxt">{{ selectTxt }}</div>
           </el-form-item>
         </el-col>
       </el-row>
-      <template v-if="postForm.category === 1">
+      <template v-if="postForm.category === '1'">
         <el-row>
           <el-col>
             <el-form-item class="is-required" prop="period" :label="fields.period" :label-width="labelWidth">
               <el-select v-model="postForm.period" :placeholder="fields.period" :style="{ width: commonWidth }">
-                <el-option v-for="(item, key) in periodAry" :key="key" :value="item.value" :label="item.label" />
+                <el-option v-for="(item, key) in outLawsuitTimeAry" :key="key" :value="item.dictValue" :label="item.name" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -35,7 +32,7 @@
           <el-col>
             <el-form-item class="is-required" prop="caseType" :label="fields.caseType" :label-width="labelWidth">
               <el-select v-model="postForm.caseType" :placeholder="fields.caseType" :style="{ width: commonWidth }">
-                <el-option v-for="(item, key) in caseTypeAry" :key="key" :value="String(item.value)" :label="item.label" />
+                <el-option v-for="(item, key) in caseTypeAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -86,6 +83,22 @@
       </el-row>
       <el-row>
         <el-col>
+          <el-form-item class="is-required" prop="submitter" :label="fields.submitter" :label-width="labelWidth">
+            <el-select v-model="postForm.submitter" :placeholder="fields.submitter" :style="{ width: commonWidth }">
+              <el-option v-for="(item, key) in issueStatusAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
+          <el-form-item prop="remark" :label="fields.remark" :label-width="labelWidth">
+            <el-input v-model="postForm.remark" :placeholder="fields.remark" clearable :style="{ width: commonWidth }" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
           <el-form-item :label-width="labelWidth">
             <el-button type="primary" @click="submitForm">{{ submitTxt }}</el-button>
           </el-form-item>
@@ -96,7 +109,6 @@
 </template>
 <script>
 // api
-// components
 // data
 import { DetailFields } from '../modules/fields'
 // filter
@@ -104,13 +116,17 @@ import { DetailFields } from '../modules/fields'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import caseTypeAry from '../mixins/caseTypeAry'
+import courtCategoryAry from '../mixins/courtCategoryAry'
+import outLawsuitTimeAry from '../mixins/outLawsuitTimeAry'
+import issueStatusAry from '../mixins/issueStatusAry'
 // plugins
 import { controlInputPrice, numberPriceBigWrite } from 'abbott-methods/import'
 // settings
 export default {
   name: 'GuaranteeDetail',
   components: {},
-  mixins: [DetailMixin, MethodsMixin],
+  mixins: [DetailMixin, MethodsMixin, caseTypeAry, courtCategoryAry, outLawsuitTimeAry, issueStatusAry],
   props: {
     isUpdate: { type: Boolean, default: false }
   },
@@ -121,22 +137,8 @@ export default {
       submitTxt: '',
       bigWritePrice: '',
       postForm: {
-        period: 1,
-        category: 1
+        category: '1'
       },
-      courtAry: [
-        { value: 1, label: '鼓楼区人民法院' },
-        { value: 2, label: '鼓楼区人民法院' }
-      ],
-      periodAry: [
-        { value: 1, label: '未起诉或提起仲裁前' },
-        { value: 2, label: '起诉或提起仲裁后' }
-      ],
-      institutionAry: [
-        { value: 1, label: '中国平安' },
-        { value: 2, label: '中国人寿' }
-      ],
-      caseTypeAry: [],
       selectTxt: '如未在法院立案，请选择“诉前保全”，如已在法院立案，请选择“诉讼保全”，若选择错误，可能导致保全不成功！'
     }
   },

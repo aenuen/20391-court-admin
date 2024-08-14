@@ -19,7 +19,7 @@
         <el-col :span="12">
           <el-form-item prop="country" :label="fields.country" :label-width="labelWidth">
             <el-select v-model="postForm.country" :placeholder="fields.country" style="width: 100%">
-              <el-option v-for="(item, key) in countryAry" :key="key" :value="String(item.value)" :label="item.label" />
+              <el-option v-for="(item, key) in countryAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -28,7 +28,7 @@
         <el-col :span="12">
           <el-form-item prop="idType" :label="fields.idType" :label-width="labelWidth">
             <el-select v-model="postForm.idType" :placeholder="fields.idType" style="width: 100%">
-              <el-option v-for="(item, key) in idTypeAry" :key="key" :value="String(item.value)" :label="item.label" />
+              <el-option v-for="(item, key) in certTypeAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -43,7 +43,7 @@
           <el-col :span="8">
             <el-form-item prop="unitNature" :label="fields.unitNature" :label-width="labelWidth">
               <el-select v-model="postForm.unitNature" :placeholder="fields.unitNature" style="width: 100%">
-                <el-option v-for="(item, key) in unitNatureAry" :key="key" :value="String(item.value)" :label="item.label" />
+                <el-option v-for="(item, key) in unitPropertyAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -90,7 +90,7 @@
           <el-col :span="12">
             <el-form-item prop="nation" :label="fields.nation" :label-width="labelWidth">
               <el-select v-model="postForm.nation" :placeholder="fields.nation" style="width: 100%">
-                <el-option v-for="(item, key) in nationAry" :key="key" :value="String(item.value)" :label="item.label" />
+                <el-option v-for="(item, key) in nationAry" :key="key" :value="String(item.dickValue)" :label="item.name" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -143,6 +143,10 @@ import { ApplicantFields } from '../modules/fields'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import nationAry from '../mixins/nationAry'
+import countryAry from '../mixins/countryAry'
+import certTypeAry from '../mixins/certTypeAry'
+import unitPropertyAry from '../mixins/unitPropertyAry'
 // plugins
 import { regionData } from 'element-china-area-data'
 
@@ -150,7 +154,7 @@ import { regionData } from 'element-china-area-data'
 export default {
   name: 'GuaranteeApplicant',
   components: {},
-  mixins: [DetailMixin, MethodsMixin],
+  mixins: [DetailMixin, MethodsMixin, nationAry, countryAry, certTypeAry, unitPropertyAry],
   props: {
     applicant: { type: Boolean, default: true }, // true为申请人,false为被申请人
     isUpdate: { type: Boolean, default: false } // true为编辑模式，false为添加模式
@@ -163,11 +167,7 @@ export default {
       submitTxt: '',
       commonWidth: '300',
       regionData,
-      selectedOptions: [],
-      countryAry: [],
-      idTypeAry: [],
-      unitNatureAry: [],
-      nationAry: [{ label: '汉族', value: 1 }]
+      unitNatureAry: []
     }
   },
   watch: {

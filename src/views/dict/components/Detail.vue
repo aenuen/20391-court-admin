@@ -25,7 +25,14 @@
       <el-row>
         <el-col>
           <el-form-item prop="dictValue" :label="fields.dictValue" :label-width="labelWidth">
-            <el-input v-model="postForm.dictValue" :placeholder="fields.dictValue" :style="{ width: commonWidth }" />
+            <el-input v-model="postForm.dictValue" :disabled="isUpdate" :placeholder="fields.dictValue" :style="{ width: commonWidth }" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
+          <el-form-item prop="sort" :label="fields.sort" :label-width="labelWidth">
+            <el-input v-model="postForm.sort" :placeholder="fields.sort" :style="{ width: commonWidth }" />
           </el-form-item>
         </el-col>
       </el-row>

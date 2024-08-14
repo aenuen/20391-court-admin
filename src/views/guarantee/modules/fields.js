@@ -1,13 +1,3 @@
-export const idTypeAry = [
-  { label: '居民身份证', value: '' },
-  { label: '中国公民护照', value: '' },
-  { label: '台湾居民来往大陆通行证', value: '' },
-  { label: '港澳居民来往内地通行证', value: '' },
-  { label: '外国公民护照', value: '' },
-  { label: '户口薄', value: '' },
-  { label: '其他', value: '' }
-]
-
 export const DetailFields = {
   court: '申请法院',
   category: '保全类别',
@@ -20,7 +10,9 @@ export const DetailFields = {
   caseYear: '年份',
   caseCode: '法院代字',
   caseZips: '案件类型代字',
-  codeOrder: '案件序号'
+  codeOrder: '案件序号',
+  submitter: '提交人身份',
+  remark: '备注'
 }
 
 export const ApplicantFields = {
