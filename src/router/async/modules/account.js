@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout'
 
-const accountRouter = {
+export const account = {
   path: '/account',
   component: Layout,
   children: [
@@ -13,5 +13,3 @@ const accountRouter = {
     }
   ]
 }
-
-export default accountRouter

@@ -1,3 +1,13 @@
+export const idTypeAry = [
+  { label: '居民身份证', value: '' },
+  { label: '中国公民护照', value: '' },
+  { label: '台湾居民来往大陆通行证', value: '' },
+  { label: '港澳居民来往内地通行证', value: '' },
+  { label: '外国公民护照', value: '' },
+  { label: '户口薄', value: '' },
+  { label: '其他', value: '' }
+]
+
 export const DetailFields = {
   court: '申请法院',
   category: '保全类别',
@@ -34,5 +44,17 @@ export const ApplicantFields = {
 }
 
 export const AgentFields = {
-  accuser: '所属原告'
+  accuser: '所属原告',
+  agentType: '代理人类型',
+  agent: '代理人',
+  sex: '性别',
+  idType: '证件类型',
+  idNumber: '证件号码',
+  license: '执业证件号码'
+}
+
+export const PropertyFields = {
+  amount: '财产金额',
+  type: '财产类型',
+  clue: '财产线索'
 }

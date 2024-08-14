@@ -3,8 +3,8 @@
     <el-form ref="postForm" :model="postForm">
       <el-row>
         <el-col>
-          <el-form-item prop="court" :label="fields.court" :label-width="labelWidth">
-            <el-select v-model="postForm.court" :placeholder="fields.court" :style="{ width: commonWidth + 'px' }">
+          <el-form-item class="is-required" prop="court" :label="fields.court" :label-width="labelWidth">
+            <el-select v-model="postForm.court" :placeholder="fields.court" :style="{ width: commonWidth }">
               <el-option v-for="(item, key) in courtAry" :key="key" :value="String(item.value)" :label="item.label" />
             </el-select>
           </el-form-item>
@@ -12,7 +12,7 @@
       </el-row>
       <el-row>
         <el-col>
-          <el-form-item prop="category" :label="fields.category" :label-width="labelWidth">
+          <el-form-item class="is-required" prop="category" :label="fields.category" :label-width="labelWidth">
             <el-radio v-model="postForm.category" :label="1">诉前保全</el-radio>
             <el-radio v-model="postForm.category" :label="2">诉讼保全</el-radio>
             <div class="selectTxt">{{ selectTxt }}</div>
@@ -22,50 +22,53 @@
       <template v-if="postForm.category === 1">
         <el-row>
           <el-col>
-            <el-form-item prop="period" :label="fields.period" :label-width="labelWidth">
-              <el-select v-model="postForm.period" :placeholder="fields.period" :style="{ width: commonWidth + 'px' }">
+            <el-form-item class="is-required" prop="period" :label="fields.period" :label-width="labelWidth">
+              <el-select v-model="postForm.period" :placeholder="fields.period" :style="{ width: commonWidth }">
                 <el-option v-for="(item, key) in periodAry" :key="key" :value="item.value" :label="item.label" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- <el-row>
-          <el-col>
-            <el-form-item prop="institution" :label="fields.institution" :label-width="labelWidth">
-              <el-select v-model="postForm.institution" :placeholder="fields.institution" :style="{ width: commonWidth + 'px' }">
-                <el-option v-for="(item, key) in institutionAry" :key="key" :value="String(item.value)" :label="item.label" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row> -->
       </template>
       <template v-else>
         <el-row>
           <el-col>
-            <el-form-item prop="caseType" :label="fields.caseType" :label-width="labelWidth">
-              <el-select v-model="postForm.caseType" :placeholder="fields.caseType" :style="{ width: commonWidth + 'px' }">
+            <el-form-item class="is-required" prop="caseType" :label="fields.caseType" :label-width="labelWidth">
+              <el-select v-model="postForm.caseType" :placeholder="fields.caseType" :style="{ width: commonWidth }">
                 <el-option v-for="(item, key) in caseTypeAry" :key="key" :value="String(item.value)" :label="item.label" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col>
-            <el-form-item prop="caseNumber" :label="fields.caseNumber" :label-width="labelWidth">
+        <div style="display: flex; justify-content: flex-start">
+          <div>
+            <el-form-item class="is-required" prop="caseYear" :label="fields.caseNumber" :label-width="labelWidth">
               <el-date-picker v-model="postForm.caseYear" class="caseItem" type="year" placeholder="年份" :clearable="false" />
-              <el-input v-model="postForm.caseCode" class="caseItem" :placeholder="fields.caseCode" />
-              <el-input v-model="postForm.caseZips" class="caseItem" :placeholder="fields.caseZips" />
-              <el-input v-model="postForm.codeOrder" class="caseItem" :placeholder="fields.codeOrder" />
-              <span>号</span>
-              <span class="caseExps">例（2018）京01民初10号</span>
             </el-form-item>
-          </el-col>
-        </el-row>
+          </div>
+          <div>
+            <el-form-item prop="caseItem">
+              <el-input v-model="postForm.caseCode" class="caseItem" :placeholder="fields.caseCode" />
+            </el-form-item>
+          </div>
+          <div>
+            <el-form-item prop="caseItem">
+              <el-input v-model="postForm.caseZips" class="caseItem zip" :placeholder="fields.caseZips" />
+            </el-form-item>
+          </div>
+          <div>
+            <el-form-item prop="caseItem">
+              <el-input v-model="postForm.codeOrder" class="caseItem" :placeholder="fields.codeOrder" />
+            </el-form-item>
+          </div>
+          <div class="caseHao">号</div>
+          <div class="caseExps">例（2018）京01民初10号</div>
+        </div>
       </template>
       <el-row>
         <el-col>
-          <el-form-item prop="preserve" :label="fields.preserve" :label-width="labelWidth">
-            <el-input v-model="postForm.preserve" :placeholder="fields.preserve" maxlength="10" :style="{ width: commonWidth + 'px' }">
+          <el-form-item class="is-required" prop="preserve" :label="fields.preserve" :label-width="labelWidth">
+            <el-input v-model="postForm.preserve" :placeholder="fields.preserve" maxlength="10" :style="{ width: commonWidth }">
               <template slot="append">元</template>
             </el-input>
             <div class="bigPrice">{{ bigWritePrice }}</div>
@@ -74,8 +77,8 @@
       </el-row>
       <el-row>
         <el-col>
-          <el-form-item prop="assurance" :label="fields.assurance" :label-width="labelWidth">
-            <el-input v-model="postForm.assurance" :disabled="true" :placeholder="fields.assurance" clearable :style="{ width: commonWidth + 'px' }">
+          <el-form-item class="is-required" prop="assurance" :label="fields.assurance" :label-width="labelWidth">
+            <el-input v-model="postForm.assurance" :disabled="true" :placeholder="fields.assurance" clearable :style="{ width: commonWidth }">
               <template slot="append">元</template>
             </el-input>
           </el-form-item>
@@ -114,7 +117,7 @@ export default {
   data() {
     return {
       fields: DetailFields,
-      commonWidth: 500,
+      commonWidth: '500px',
       submitTxt: '',
       bigWritePrice: '',
       postForm: {
@@ -154,7 +157,7 @@ export default {
   methods: {
     submitForm() {
       this.$router.push({
-        path: `details/1`
+        path: `/guarantee/details/1`
       })
     }
   }
@@ -164,13 +167,19 @@ export default {
 .caseItem {
   margin-right: 10px;
   width: 115px;
-  &:nth-child(3) {
+  &.zip {
     width: 125px;
   }
+}
+.caseHao {
+  line-height: 36px;
+  font-size: 14px;
 }
 .caseExps {
   margin-left: 10px;
   color: #999;
+  line-height: 36px;
+  font-size: 14px;
 }
 .selectTxt,
 .bigPrice {

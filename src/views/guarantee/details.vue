@@ -58,6 +58,9 @@
         </div>
       </div>
     </div>
+    <div style="text-align: center; padding: 50px 0">
+      <el-button type="primary" @click="submitForm">保存，继续下一步</el-button>
+    </div>
     <el-dialog width="950px" :close-on-click-modal="false" title="基本资料" :visible.sync="DetailVisible">
       <Detail is-update />
     </el-dialog>
@@ -91,12 +94,14 @@ import TablePro from './components/TablePro'
 // filter
 // function
 // mixins
+import DetailMixin from '@/components/Mixins/DetailMixin'
+import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
 // settings
 export default {
   name: 'GuaranteeDetails',
   components: { Steps, Detail, Applicant, Agent, Property, TableApp, TableRes, TableAgent, TablePro },
-  mixins: [],
+  mixins: [DetailMixin, MethodsMixin],
   data() {
     return {
       DetailVisible: false, // 基本资料
@@ -148,6 +153,11 @@ export default {
   },
   created() {},
   methods: {
+    submitForm() {
+      this.$router.push({
+        path: `/guarantee/upload/1`
+      })
+    },
     // 申请人
     ApplicantCreate() {
       this.ApplicantVisible = true

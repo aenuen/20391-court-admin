@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout'
 
-const iconsRouter = {
+export const icons = {
   path: '/svgIcon',
   component: Layout,
   children: [
@@ -15,5 +15,3 @@ const iconsRouter = {
     }
   ]
 }
-
-export default iconsRouter

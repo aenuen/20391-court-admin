@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout'
 
-const guaranteeRouter = {
+export const guarantee = {
   path: '/guarantee', name: 'guarantee', component: Layout, redirect: '/guarantee/create',
   meta: {
     title: '担保管理',
@@ -29,11 +29,19 @@ const guaranteeRouter = {
       component: () => import('@/views/guarantee/details'),
       meta: {
         title: '担保资料',
-        activeMenu: '/guarantee/create' // 指定高亮位置
+        activeMenu: '/guarantee/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'upload/:id',
+      name: 'guaranteeUpload',
+      component: () => import('@/views/guarantee/upload'),
+      meta: {
+        title: '上传资料',
+        activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
     }
   ]
 }
-
-export default guaranteeRouter

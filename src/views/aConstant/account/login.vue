@@ -32,7 +32,7 @@
         <span class="svg-container">
           <svg-icon icon-class="form" />
         </span>
-        <el-input ref="code" v-model="postForm.code" type="text" :placeholder="fields.authCode" name="code" tabindex="3" autocomplete="off" style="width: 200px" @keyup.enter.native="submitForm" />
+        <el-input ref="code" v-model="postForm.code" type="text" :placeholder="fields.authCode" name="code" tabindex="3" autocomplete="off" style="width: 200px; ime-mode: disabled" @keyup.enter.native="submitForm" />
         <div class="authCode">
           <el-image :src="authCode" lazy @click="refreshCode" />
         </div>
@@ -61,6 +61,7 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
 import { CryptoJsEncode } from '@/libs/cryptojs'
 import { v4 as uuidV4 } from 'uuid'
+import {} from 'abbott-methods/import'
 // settings
 import { apiBaseUrl } from '@/settings'
 export default {
