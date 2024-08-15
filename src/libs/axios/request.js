@@ -1,7 +1,7 @@
 // noinspection JSUnresolvedFunction,JSCheckFunctionSignatures
 
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/libs/utils/token'
 import { apiBaseUrl, successCode, tokenCode } from './settings'
@@ -25,34 +25,32 @@ service.interceptors.request.use(
 )
 
 // 响应拦截器 response interceptor
-service.interceptors.response.use(response => {
-  const res = response.data
-  if (res.code !== successCode) {
-    const errMsg = res.msg || '请求失败！'
-    Message({ message: errMsg, type: 'error', duration: 5 * 1000 })
-    if (res.code === -2) {
-      MessageBox.confirm('您已注销，可以取消以停留在此页面，或重新登录', '确认登录', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        store.dispatch('user/removeToken').then(() => { location.reload() })
-      })
+service.interceptors.response.use(
+  response => {
+    const res = response.data
+    const { code, msg } = res
+    if (code !== successCode) {
+      const errMsg = msg || '请求失败！'
+      Message({ message: errMsg, type: 'error', duration: 5000 })
+      return Promise.reject(new Error(errMsg))
+    } else {
+      return res
     }
-    return Promise.reject(new Error(errMsg))
-  } else {
-    return res
-  }
-}, error => { // 状态非200才会到这里来
-  if (String(error) === 'Error: Network Error') {
-    Message({ message: '网络故障或服务器无响应', type: 'error', duration: 3 * 1000 })
-  }
-  const { code, msg } = error.response.data
-  Message({ message: msg || '', type: 'error', duration: 3 * 1000 })
-  if (code === tokenCode) {
-    setTimeout(() => { location.reload() }, 1000)
-  }
-  return Promise.reject(error)
-})
+  },
+  error => { // 状态非200才会到这里来
+    if (String(error) === 'Error: Network Error') {
+      Message({ message: '网络故障或服务器无响应', type: 'error', duration: 3 * 1000 })
+    } else {
+      const { status, data } = error.response
+      const { msg } = data
+      Message({ message: msg || '', type: 'error', duration: 3000 })
+      if (status === tokenCode) {
+        setTimeout(() => {
+          location.reload()
+        }, 1000)
+      }
+    }
+    return Promise.reject(error)
+  })
 
 export default service
