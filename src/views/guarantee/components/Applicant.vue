@@ -174,6 +174,7 @@
 </template>
 <script>
 // api
+import { applicantApi } from '@/api/applicant'
 // components
 // data
 import { ApplicantFields as fields } from '../modules/fields'
@@ -183,10 +184,7 @@ import { ApplicantCommon, ApplicantOne, ApplicantTwo } from '../modules/rules'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import nationAry from '../mixins/nationAry'
-import countryAry from '../mixins/countryAry'
-import certTypeAry from '../mixins/certTypeAry'
-import unitPropertyAry from '../mixins/unitPropertyAry'
+import gainDict from '../mixins/gainDict'
 // plugins
 import { regionData } from 'element-china-area-data'
 
@@ -194,7 +192,7 @@ import { regionData } from 'element-china-area-data'
 export default {
   name: 'GuaranteeApplicant',
   components: {},
-  mixins: [DetailMixin, MethodsMixin, nationAry, countryAry, certTypeAry, unitPropertyAry],
+  mixins: [DetailMixin, MethodsMixin, gainDict],
   props: {
     applicant: { type: Boolean, default: true }, // true为申请人,false为被申请人
     isUpdate: { type: Boolean, default: false } // true为编辑模式，false为添加模式
@@ -222,6 +220,10 @@ export default {
   },
   methods: {
     initialize() {
+      this.gainDict_nationAry()
+      this.gainDict_countryAry()
+      this.gainDict_certTypeAry()
+      this.gainDict_unitPropertyAry()
       this.identity = this.applicant ? '申请人' : '被申请人'
       const isUpdate = this.isUpdate ? '编辑' : '添加'
       this.submitTxt = this.identity + isUpdate
@@ -232,6 +234,13 @@ export default {
       this.$refs.postForm.validate((valid, fields) => {
         this.submitLoadingOpen()
         if (valid) {
+          applicantApi.create(this.postForm).then(({ code, data, msg }) => {
+            if (code === 200) {
+              //
+            } else {
+              //
+            }
+          })
           // this.$router.push({
           //   path: `/guarantee/details/1`
           // })

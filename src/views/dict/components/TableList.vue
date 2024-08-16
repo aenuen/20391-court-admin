@@ -5,6 +5,7 @@
     <el-table-column prop="name" label="名称" />
     <el-table-column prop="dictKey" label="字段名" />
     <el-table-column prop="dictValue" label="字段值" />
+    <el-table-column prop="sort" label="序号" />
     <el-table-column prop="description" label="描述" />
     <el-table-column label="添加" align="center" width="95">
       <template slot-scope="{ row: { dictId, parentId } }">

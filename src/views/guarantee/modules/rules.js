@@ -3,19 +3,19 @@ import { DetailFields, ApplicantFields } from './fields'
 
 // 基本资料
 export const DetailCommon = {
-  court: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, DetailFields.court, 2, 30) }],
-  preserve: [{ validator: (rule, value, callback) => validatePrice(rule, value, callback, DetailFields.preserve, '填写', 1, 11) }],
-  submitter: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.submitter, '选择') }]
+  gCourt: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, DetailFields.gCourt, 2, 30) }],
+  gMoney: [{ validator: (rule, value, callback) => validatePrice(rule, value, callback, DetailFields.gMoney, '填写', 1, 11) }],
+  gIssueStatus: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.gIssueStatus, '选择') }]
 }
 export const DetailOne = {
-  period: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.period, '选择') }]
+  outLawsuitTime: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.outLawsuitTime, '选择') }]
 }
 export const DetailTwo = {
-  caseType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.caseType, '选择') }],
-  caseYear: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.caseYear, '填写') }],
-  caseCode: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.caseCode, '填写') }],
-  caseZips: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.caseZips, '填写') }],
-  codeOrder: [{ validator: (rule, value, callback) => validateAllNumber(rule, value, callback, DetailFields.codeOrder, '填写') }]
+  gCaseNo: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.gCaseNo, '选择') }],
+  gCaseYear: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.gCaseYear, '填写') }],
+  gCaseCode: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.gCaseCode, '填写') }],
+  gCaseZips: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.gCaseZips, '填写') }],
+  gCodeOrder: [{ validator: (rule, value, callback) => validateAllNumber(rule, value, callback, DetailFields.gCodeOrder, '填写') }]
 }
 
 // 申请人、被申请人

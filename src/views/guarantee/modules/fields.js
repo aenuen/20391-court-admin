@@ -1,18 +1,21 @@
 export const DetailFields = {
-  court: '申请法院',
-  category: '保全类别',
-  period: '非诉期间',
-  institution: '担保机构',
-  preserve: '申请保全金额',
-  assurance: '申请担保金额',
-  caseType: '案件类型',
-  caseNumber: '案号',
-  caseYear: '年份',
-  caseCode: '法院代字',
-  caseZips: '案件类型代字',
-  codeOrder: '案件序号',
-  submitter: '提交人身份',
-  remark: '备注'
+  gId: '编号',
+  gCourt: '申请法院',
+  guaranteeType: '保全类型',
+  guaranteeCategory: '保全类别',
+  outLawsuitTime: '非诉期间',
+  orgId: '担保机构',
+  gMoney: '申请保全金额',
+  guaranteeMoney: '申请担保金额',
+  gCaseType: '案件类型',
+  gCaseNo: '案号',
+  gCaseYear: '年份',
+  gCaseCode: '法院代字',
+  gCaseZips: '案件类型代字',
+  gCodeOrder: '案件序号',
+  gIssueStatus: '提交人身份',
+  gDesc: '备注',
+  step: '状态'
 }
 
 export const ApplicantFields = {

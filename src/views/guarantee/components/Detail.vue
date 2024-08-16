@@ -4,26 +4,26 @@
       <!-- 法院 -->
       <el-row>
         <el-col>
-          <el-form-item class="is-required" prop="court" :label="fields.court" :label-width="labelWidth">
-            <el-input v-model="postForm.court" :placeholder="fields.court" clearable :style="{ width: commonWidth }" />
+          <el-form-item class="is-required" prop="gCourt" :label="fields.gCourt" :label-width="labelWidth">
+            <el-input v-model="postForm.gCourt" :placeholder="fields.gCourt" clearable :style="{ width: commonWidth }" />
           </el-form-item>
         </el-col>
       </el-row>
       <!-- 类别 -->
       <el-row>
         <el-col>
-          <el-form-item class="is-required" prop="category" :label="fields.category" :label-width="labelWidth">
-            <el-radio v-for="(item, key) in courtCategoryAry" :key="key" v-model="postForm.category" :disabled="item.dictValue === '3'" :label="item.dictValue">{{ item.name }}</el-radio>
+          <el-form-item class="is-required" prop="guaranteeCategory" :label="fields.guaranteeCategory" :label-width="labelWidth">
+            <el-radio v-for="(item, key) in courtCategoryAry" :key="key" v-model="postForm.guaranteeCategory" :disabled="item.dictValue === '3'" :label="item.dictValue">{{ item.name }}</el-radio>
             <div class="selectTxt">{{ selectTxt }}</div>
           </el-form-item>
         </el-col>
       </el-row>
-      <template v-if="postForm.category === '1'">
+      <template v-if="postForm.guaranteeCategory === '1'">
         <!-- 非诉期间 -->
         <el-row>
           <el-col>
-            <el-form-item class="is-required" prop="period" :label="fields.period" :label-width="labelWidth">
-              <el-select v-model="postForm.period" :placeholder="fields.period" :style="{ width: commonWidth }">
+            <el-form-item class="is-required" prop="outLawsuitTime" :label="fields.outLawsuitTime" :label-width="labelWidth">
+              <el-select v-model="postForm.outLawsuitTime" :placeholder="fields.outLawsuitTime" :style="{ width: commonWidth }">
                 <el-option v-for="(item, key) in outLawsuitTimeAry" :key="key" :value="item.dictValue" :label="item.name" />
               </el-select>
             </el-form-item>
@@ -34,8 +34,8 @@
         <!-- 案件类型 -->
         <el-row>
           <el-col>
-            <el-form-item class="is-required" prop="caseType" :label="fields.caseType" :label-width="labelWidth">
-              <el-select v-model="postForm.caseType" :placeholder="fields.caseType" :style="{ width: commonWidth }">
+            <el-form-item class="is-required" prop="gCaseType" :label="fields.gCaseType" :label-width="labelWidth">
+              <el-select v-model="postForm.gCaseType" :placeholder="fields.gCaseType" :style="{ width: commonWidth }">
                 <el-option v-for="(item, key) in caseTypeAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
               </el-select>
             </el-form-item>
@@ -44,23 +44,23 @@
         <!-- 案号 -->
         <div class="caseLine">
           <div>
-            <el-form-item class="is-required" prop="caseYear" :label="fields.caseNumber" :label-width="labelWidth">
-              <el-date-picker v-model="postForm.caseYear" class="caseItem" type="year" placeholder="年份" :clearable="false" />
+            <el-form-item class="is-required" prop="gCaseYear" :label="fields.gCaseNo" :label-width="labelWidth">
+              <el-date-picker v-model="postForm.gCaseYear" class="caseItem" type="year" :placeholder="fields.gCaseYear" :clearable="false" />
             </el-form-item>
           </div>
           <div>
-            <el-form-item prop="caseCode">
-              <el-input v-model="postForm.caseCode" class="caseItem" :placeholder="fields.caseCode" />
+            <el-form-item prop="gCaseCode">
+              <el-input v-model="postForm.gCaseCode" class="caseItem" :placeholder="fields.gCaseCode" />
             </el-form-item>
           </div>
           <div>
-            <el-form-item prop="caseZips">
-              <el-input v-model="postForm.caseZips" class="caseItem zip" :placeholder="fields.caseZips" />
+            <el-form-item prop="gCaseZips">
+              <el-input v-model="postForm.gCaseZips" class="caseItem zip" :placeholder="fields.gCaseZips" />
             </el-form-item>
           </div>
           <div>
-            <el-form-item prop="codeOrder">
-              <el-input v-model="postForm.codeOrder" class="caseItem" :placeholder="fields.codeOrder" />
+            <el-form-item prop="gCodeOrder">
+              <el-input v-model="postForm.gCodeOrder" class="caseItem" :placeholder="fields.gCodeOrder" />
             </el-form-item>
           </div>
           <div class="caseHao">号</div>
@@ -70,8 +70,8 @@
       <!-- 保全金额 -->
       <el-row>
         <el-col>
-          <el-form-item class="is-required" prop="preserve" :label="fields.preserve" :label-width="labelWidth">
-            <el-input v-model="postForm.preserve" :placeholder="fields.preserve" maxlength="11" :style="{ width: commonWidth }">
+          <el-form-item class="is-required" prop="gMoney" :label="fields.gMoney" :label-width="labelWidth">
+            <el-input v-model="postForm.gMoney" :placeholder="fields.gMoney" maxlength="11" :style="{ width: commonWidth }">
               <template slot="append">元</template>
             </el-input>
             <div class="bigPrice">{{ bigWritePrice }}</div>
@@ -81,8 +81,8 @@
       <!-- 担保金额 -->
       <el-row>
         <el-col>
-          <el-form-item class="is-required" prop="assurance" :label="fields.assurance" :label-width="labelWidth">
-            <el-input v-model="postForm.assurance" :disabled="true" :placeholder="fields.assurance" clearable :style="{ width: commonWidth }">
+          <el-form-item class="is-required" prop="guaranteeMoney" :label="fields.guaranteeMoney" :label-width="labelWidth">
+            <el-input v-model="postForm.guaranteeMoney" :disabled="true" :placeholder="fields.guaranteeMoney" clearable :style="{ width: commonWidth }">
               <template slot="append">元</template>
             </el-input>
           </el-form-item>
@@ -91,8 +91,8 @@
       <!-- 提交人身份 -->
       <el-row>
         <el-col>
-          <el-form-item class="is-required" prop="submitter" :label="fields.submitter" :label-width="labelWidth">
-            <el-select v-model="postForm.submitter" :placeholder="fields.submitter" :style="{ width: commonWidth }">
+          <el-form-item class="is-required" prop="gIssueStatus" :label="fields.gIssueStatus" :label-width="labelWidth">
+            <el-select v-model="postForm.gIssueStatus" :placeholder="fields.gIssueStatus" :style="{ width: commonWidth }">
               <el-option v-for="(item, key) in issueStatusAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
             </el-select>
           </el-form-item>
@@ -101,8 +101,8 @@
       <!-- 备注 -->
       <el-row>
         <el-col>
-          <el-form-item prop="remark" :label="fields.remark" :label-width="labelWidth">
-            <el-input v-model="postForm.remark" :placeholder="fields.remark" clearable :style="{ width: commonWidth }" />
+          <el-form-item prop="gDesc" :label="fields.gDesc" :label-width="labelWidth">
+            <el-input v-model="postForm.gDesc" :placeholder="fields.gDesc" clearable :style="{ width: commonWidth }" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -120,92 +120,92 @@
 // api
 import { guaranteeApi } from '@/api/guarantee'
 // data
-import { DetailFields } from '../modules/fields'
+import { DetailFields as fields } from '../modules/fields'
 import { DetailCommon, DetailOne, DetailTwo } from '../modules/rules'
 // filter
 // function
+// import { dictGetValueByName } from '@/libs/utils/dict'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import caseTypeAry from '../mixins/caseTypeAry'
-import courtCategoryAry from '../mixins/courtCategoryAry'
-import outLawsuitTimeAry from '../mixins/outLawsuitTimeAry'
-import issueStatusAry from '../mixins/issueStatusAry'
+import gainDict from '../mixins/gainDict'
 // plugins
 import { controlInputPrice, numberPriceBigWrite, timeGetYear } from 'abbott-methods/import'
 // settings
 export default {
   name: 'GuaranteeDetail',
   components: {},
-  mixins: [DetailMixin, MethodsMixin, caseTypeAry, courtCategoryAry, outLawsuitTimeAry, issueStatusAry],
+  mixins: [DetailMixin, MethodsMixin, gainDict],
   props: {
-    isUpdate: { type: Boolean, default: false }
+    isUpdate: { type: Boolean, default: false },
+    baseObj: { type: Object, default: () => {} }
   },
   data() {
     return {
-      fields: DetailFields,
-      submitTxt: '',
+      fields,
       bigWritePrice: '',
       selectTxt: '如未在法院立案，请选择“诉前保全”，如已在法院立案，请选择“诉讼保全”，若选择错误，可能导致保全不成功！'
     }
   },
   watch: {
-    'postForm.preserve': function (val) {
-      this.postForm.preserve = controlInputPrice(val)
-      this.bigWritePrice = this.postForm.preserve ? numberPriceBigWrite(this.postForm.preserve) : ''
-      this.postForm.assurance = this.postForm.preserve
+    'postForm.gMoney': function (val) {
+      this.postForm.gMoney = controlInputPrice(val)
+      this.bigWritePrice = this.postForm.gMoney ? numberPriceBigWrite(this.postForm.gMoney) : ''
+      this.postForm.guaranteeMoney = this.postForm.gMoney
     },
-    'postForm.category': function (val) {
-      if (val === '1') {
+    'postForm.guaranteeCategory': function (val) {
+      if (String(val) === '1') {
         this.rulesForm = { ...DetailCommon, ...DetailOne }
-      } else if (val === '2') {
+      } else if (String(val) === '2') {
         this.rulesForm = { ...DetailCommon, ...DetailTwo }
       }
     }
   },
-  created() {
-    this.initialize()
-  },
+  created() {},
   methods: {
-    initialize() {
+    startHandle() {
       this.labelWidth = (this.isUpdate ? 120 : 260) + 'px'
       this.submitTxt = this.isUpdate ? '编辑资料' : '提交资料'
-      const form = { category: '1' }
-      this.postForm = { ...this.postForm, ...form }
+      this.gainDict_caseTypeAry()
+      this.gainDict_courtCategoryAry()
+      this.gainDict_outLawsuitTimeAry()
+      this.gainDict_issueStatusAry()
+      const form = { guaranteeCategory: '1' }
+      // const temp = dictGetValueByName(this.courtCategoryAry, this.baseObj.category)
+      // console.log('this.courtCategoryAry: ', this.courtCategoryAry)
+      // console.log('temp: ', temp)
+      this.postForm = { ...this.postForm, ...form, ...this.baseObj }
     },
     submitForm() {
       this.$refs.postForm.validate((valid, fields) => {
         this.submitLoadingOpen()
         if (valid) {
-          const form = { ...this.postForm }
-          const common = {
-            gCourt: form.court, // 申请法院
-            guaranteeType: 1, // 保全类型（字典编号）
-            guaranteeCategory: form.category, // 保全类别（字典编号）
-            gMoney: form.preserve, // 保全金额
-            guaranteeMoney: form.assurance, // 担保金额
-            gIssueStatus: form.submitter, // 提交人身份（字典编号）
-            gDesc: form.remark // 备注
+          const newForm = {
+            ...{ guaranteeType: 1 },
+            ...this.postForm
           }
-          const branchOne = {
-            outLawsuitTime: form.period // 非诉期间（字典编号）
+          if (+this.postForm.guaranteeCategory === 1) {
+            newForm.gCaseType = ''
+            newForm.gCaseNo = ''
+          } else {
+            newForm.outLawsuitTime = ''
+            const year = timeGetYear(newForm.gCaseYear)
+            newForm.gCaseNo = `（${year}）${newForm.gCaseCode}${newForm.gCaseZips}${newForm.gCodeOrder}号`
           }
-          const year = timeGetYear(form.caseYear)
-          const caseNumber = `（${year}）${form.caseCode}${form.caseZips}${form.codeOrder}号`
-          const branchTwo = {
-            gCaseType: form.caseType, // 	案件类型-诉讼保全（字典编号）
-            gCaseNo: caseNumber // 案号
+          if (this.isUpdate) {
+            //
+          } else {
+            guaranteeApi.create(newForm).then(({ code, msg, data }) => {
+              if (code === 200) {
+                this.$message.success(msg)
+                this.routerGo(`/guarantee/details/${data}`)
+                this.submitLoadingClose()
+              } else {
+                this.$message.error(msg)
+                this.submitLoadingClose()
+              }
+            })
           }
-          const inModel = { ...common, ...(+common.guaranteeCategory === 1 ? branchOne : branchTwo) }
-          guaranteeApi.create(inModel).then(({ code, msg, data }) => {
-            if (code === 200) {
-              this.$message.success(msg)
-              this.routerGo(`/guarantee/details/${data}`)
-              this.submitLoadingClose()
-            } else {
-              //
-            }
-          })
         } else {
           this.validateErrHandle(fields)
         }

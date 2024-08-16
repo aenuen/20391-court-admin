@@ -8,12 +8,13 @@ export default {
       rulesForm: {},
       labelWidth: '120px',
       commonWidth: '500px',
+      submitTxt: '',
       submitLoading: false,
       updateId: 0
     }
   },
   created() {
-    const updateId = +this.$route.params.id
+    const updateId = this.$route.params.id
     if (this.isUpdate && updateId > 0) {
       this.updateId = updateId
       this.getDetail()

@@ -8,13 +8,7 @@
           <a class="titleIcon" @click="DetailUpdate"><i class="el-icon-edit" />编辑</a>
         </div>
         <div class="boxContent">
-          <ul class="details">
-            <li v-for="(item, index) in details" :key="index">
-              <b>{{ item.label }}</b>
-              <u>：</u>
-              <i>{{ item.value }}</i>
-            </li>
-          </ul>
+          <BaseData :data-ary="baseData" />
         </div>
       </div>
       <!-- 申请人 -->
@@ -62,7 +56,7 @@
       <el-button type="primary" @click="submitForm">保存，继续下一步</el-button>
     </div>
     <el-dialog v-if="DetailVisible" width="950px" :close-on-click-modal="false" title="基本资料" :visible.sync="DetailVisible" :before-close="DetailClosed">
-      <Detail is-update />
+      <Detail is-update :base-obj="baseObj" />
     </el-dialog>
     <el-dialog v-if="ApplicantVisible" width="950px" :close-on-click-modal="false" title="申请人" :visible.sync="ApplicantVisible">
       <Applicant :applicant="true" :is-update="ApplicantIsUpdate" />
@@ -80,9 +74,11 @@
 </template>
 <script>
 // api
+import { guaranteeApi } from '@/api/guarantee'
 // components
 import Steps from './components/Steps'
 import Detail from './components/Detail'
+import BaseData from './components/BaseData'
 import Applicant from './components/Applicant'
 import Agent from './components/Agent'
 import Property from './components/Property'
@@ -93,6 +89,7 @@ import TablePro from './components/TablePro'
 // data
 // filter
 // function
+import { baseData, fieldsReplace } from './utils'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
@@ -100,15 +97,18 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // settings
 export default {
   name: 'GuaranteeDetails',
-  components: { Steps, Detail, Applicant, Agent, Property, TableApp, TableRes, TableAgent, TablePro },
+  components: { Steps, Detail, BaseData, Applicant, Agent, Property, TableApp, TableRes, TableAgent, TablePro },
   mixins: [DetailMixin, MethodsMixin],
   data() {
     return {
-      DetailVisible: false, // 基本资料
+      isUpdate: true,
+      // 基本资料
+      DetailVisible: false,
       // 申请人
       ApplicantVisible: false,
       ApplicantIsUpdate: false,
       ApplicantId: 0,
+      applicantData: [],
       // 被申请人
       RespondentVisible: false,
       RespondentIsUpdate: false,
@@ -121,38 +121,26 @@ export default {
       PropertyVisible: false,
       PropertyIsUpdate: false,
       PropertyId: 0,
-      details: [
-        { label: '申请法院', value: '鼓楼区人民法院' },
-        { label: '保全类别', value: '诉前保全' },
-        { label: '非诉期间', value: '未起诉或提起仲裁前' },
-        { label: '申请保全额', value: '3000.00' },
-        { label: '建议保全费', value: '3000.00' },
-        { label: '提交人', value: '黄靖' },
-        { label: '提交人身份', value: '律师' },
-        { label: '提交时间', value: '2021-08-07' }
-      ],
-      tableData: [
-        {
-          class: '自然人',
-          name: '王小虎',
-          country: '中国',
-          type: '身份证',
-          number: '35010101010101',
-          mobile: '13055297758'
-        },
-        {
-          class: '非法人组织',
-          name: '华润万象科技有限公司',
-          country: '中国',
-          type: '营业执照',
-          number: '8955652354',
-          mobile: '15866998856'
-        }
-      ]
+      // 基本资料
+      baseData: [],
+      baseObj: {},
+      tableData: []
     }
   },
   created() {},
   methods: {
+    getDetail() {
+      guaranteeApi.details(this.updateId).then(({ code, data, msg }) => {
+        if (code === 200) {
+          const { guaranteeBaseInfo, applicant } = data
+          this.baseObj = fieldsReplace(guaranteeBaseInfo)
+          this.baseData = baseData(guaranteeBaseInfo)
+          this.applicantData = applicant
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
     submitForm() {
       this.$router.push({
         path: `/guarantee/upload/1`

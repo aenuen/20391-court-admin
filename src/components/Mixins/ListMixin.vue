@@ -39,10 +39,10 @@ export default {
       const query = Object.assign({}, this.$route.query)
       const sort = query && query.sort ? query.sort : this.defaultTableSort
       const pageSet = {
-        page: query && query.page ? ~~query.page : 1,
-        pageSize: query && query.pageSize ? ~~query.pageSize : 20
+        pageNum: query && query.pageNum ? ~~query.pageNum : 1,
+        pageSize: query && query.pageSize ? ~~query.pageSize : 10
       }
-      const queryList = { page: 1, pageSize: 10, sort }
+      const queryList = { pageNum: 1, pageSize: 10, sort }
       this.queryList = { ...queryList, ...this.setData(), ...query, ...pageSet }
       this.tableSort = { order: sort[0] === '+' ? 'ascending' : 'descending', prop: sort.slice(1, sort.length) }
     },
@@ -54,7 +54,7 @@ export default {
     startHandle() {},
     // 处理过滤
     handleFilter() {
-      this.queryList.page = 1
+      this.queryList.pageNum = 1
       this.refresh()
     },
     // 刷新
