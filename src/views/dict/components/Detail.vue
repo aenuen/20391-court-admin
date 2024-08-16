@@ -73,7 +73,7 @@ export default {
   mixins: [DetailMixin, MethodsMixin],
   props: {
     isUpdate: { type: Boolean, default: false },
-    updateNo: { type: Object, default: () => {} },
+    updateNo: { type: Object, default: () => ({}) },
     parentId: { type: Number, default: 0 }
   },
   data() {
@@ -96,6 +96,9 @@ export default {
     if (this.isUpdate) {
       this.postForm = { ...this.postForm, ...this.updateNo }
     }
+  },
+  beforeDestroy() {
+    this.postForm = {}
   },
   methods: {
     submitForm() {

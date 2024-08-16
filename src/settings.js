@@ -16,5 +16,6 @@ module.exports = {
   cryptoJsSecretKey: 'SecretKey', // CryptoJs加密Key
   isDevMode,
   serveUrl,
-  apiBaseUrl: isDevMode ? `${serveUrl}:${servePort}/wc/sys` : `${serveUrl}:${servePort}/wc/sys`
+  apiBaseUrl: isDevMode ? `${serveUrl}:${servePort}/wc/sys` : `${serveUrl}:${servePort}/wc/sys`,
+  apiCourtUrl: isDevMode ? `${serveUrl}:${servePort}/wc/court` : `${serveUrl}:${servePort}/wc/court`
 }

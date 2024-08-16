@@ -10,7 +10,6 @@ import { dictApi } from '@/api/dict'
 // function
 // mixin
 // plugins
-import Cookie from 'js-cookie'
 // settings
 export default {
   name: '',
@@ -26,19 +25,13 @@ export default {
   },
   methods: {
     gain_nationAry() {
-      const nationAry = Cookie.get('nationAry')
-      if (nationAry) {
-        this.nationAry = [...JSON.parse(nationAry)]
-      } else {
-        dictApi.nation().then(({ code, data, msg }) => {
-          if (code === 200) {
-            Cookie.set('nationAry', JSON.stringify(data))
-            this.nationAry = [...data]
-          } else {
-            this.$message.error(msg)
-          }
-        })
-      }
+      dictApi.nation().then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.nationAry = [...data]
+        } else {
+          this.$message.error(msg)
+        }
+      })
     }
   }
 }

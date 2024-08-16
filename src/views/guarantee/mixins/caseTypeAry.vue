@@ -10,7 +10,6 @@ import { dictApi } from '@/api/dict'
 // function
 // mixin
 // plugins
-import Cookie from 'js-cookie'
 // settings
 export default {
   name: '',
@@ -26,20 +25,13 @@ export default {
   },
   methods: {
     gain_caseTypeAry() {
-      const caseTypeAry = Cookie.get('caseTypeAry')
-      if (caseTypeAry) {
-        this.caseTypeAry = [...JSON.parse(caseTypeAry)]
-      } else {
-        dictApi.gain('caseType').then(({ code, data, msg }) => {
-          if (code === 200) {
-            const child = data.child
-            Cookie.set('caseTypeAry', JSON.stringify(child))
-            this.caseTypeAry = [...child]
-          } else {
-            this.$message.error(msg)
-          }
-        })
-      }
+      dictApi.gain('caseType').then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.caseTypeAry = data.child
+        } else {
+          this.$message.error(msg)
+        }
+      })
     }
   }
 }

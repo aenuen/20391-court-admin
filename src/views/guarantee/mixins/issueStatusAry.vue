@@ -10,7 +10,6 @@ import { dictApi } from '@/api/dict'
 // function
 // mixin
 // plugins
-import Cookie from 'js-cookie'
 // settings
 export default {
   name: '',
@@ -26,20 +25,14 @@ export default {
   },
   methods: {
     gain_issueStatusAry() {
-      const issueStatusAry = Cookie.get('issueStatusAry')
-      if (issueStatusAry) {
-        this.issueStatusAry = [...JSON.parse(issueStatusAry)]
-      } else {
-        dictApi.gain('issueStatus').then(({ code, data, msg }) => {
-          if (code === 200) {
-            const child = data.child
-            Cookie.set('issueStatusAry', JSON.stringify(child))
-            this.issueStatusAry = [...child]
-          } else {
-            this.$message.error(msg)
-          }
-        })
-      }
+      dictApi.gain('issueStatus').then(({ code, data, msg }) => {
+        if (code === 200) {
+          const child = data.child
+          this.issueStatusAry = [...child]
+        } else {
+          this.$message.error(msg)
+        }
+      })
     }
   }
 }

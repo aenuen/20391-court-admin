@@ -4,7 +4,7 @@
       <el-button type="primary" @click="rootAdd">根目录添加</el-button>
     </div>
     <TableList :list-data="tableData" @onRemove="onRemove" @onCreate="onCreate" @onUpdate="onUpdate" />
-    <el-dialog v-if="DetailVisible" width="950px" :close-on-click-modal="false" title="字典" :visible.sync="DetailVisible">
+    <el-dialog v-if="DetailVisible" width="950px" :close-on-click-modal="false" title="字典" :visible.sync="DetailVisible" :before-close="closed">
       <Detail :is-update="isUpdate" :update-no="updateNo" :parent-id="parentId" @onCreateSuccess="onCreateSuccess" @onUpdateSuccess="onUpdateSuccess" />
     </el-dialog>
   </div>
@@ -37,6 +37,12 @@ export default {
     this.startHandle()
   },
   methods: {
+    closed() {
+      this.parentId = 0
+      this.isUpdate = false
+      this.updateNo = {}
+      this.DetailVisible = false
+    },
     // 根目录添加
     rootAdd() {
       this.isUpdate = false

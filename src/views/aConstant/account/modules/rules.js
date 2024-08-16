@@ -10,8 +10,8 @@ export const BaseDataRule = {
 // 修改密码
 export const PasswordRule = {
   telCode: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.telCode, '填写', 6, 6) }],
-  newPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.newPwd, '填写', 6, 20) }],
-  conPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.conPwd, '填写', 6, 20) }]
+  newPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.newPwd, '填写', 6, 30) }],
+  conPwd: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.conPwd, '填写', 6, 30) }]
 }
 
 // 更换手机

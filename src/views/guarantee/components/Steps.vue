@@ -35,6 +35,7 @@ export default {
 </script>
 <style lang="scss">
 .steps {
+  min-width: 1015px;
   .is-process {
     font-weight: normal !important;
     color: #1890ff;

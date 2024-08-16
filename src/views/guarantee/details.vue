@@ -5,7 +5,7 @@
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">基本资料</div>
-          <a class="titleIcon" @click="DetailVisible = true"><i class="el-icon-edit" />编辑</a>
+          <a class="titleIcon" @click="DetailUpdate"><i class="el-icon-edit" />编辑</a>
         </div>
         <div class="boxContent">
           <ul class="details">
@@ -61,19 +61,19 @@
     <div style="text-align: center; padding: 50px 0">
       <el-button type="primary" @click="submitForm">保存，继续下一步</el-button>
     </div>
-    <el-dialog width="950px" :close-on-click-modal="false" title="基本资料" :visible.sync="DetailVisible">
+    <el-dialog v-if="DetailVisible" width="950px" :close-on-click-modal="false" title="基本资料" :visible.sync="DetailVisible" :before-close="DetailClosed">
       <Detail is-update />
     </el-dialog>
-    <el-dialog width="950px" :close-on-click-modal="false" title="申请人" :visible.sync="ApplicantVisible">
+    <el-dialog v-if="ApplicantVisible" width="950px" :close-on-click-modal="false" title="申请人" :visible.sync="ApplicantVisible">
       <Applicant :applicant="true" :is-update="ApplicantIsUpdate" />
     </el-dialog>
-    <el-dialog width="950px" :close-on-click-modal="false" title="被申请人" :visible.sync="RespondentVisible">
+    <el-dialog v-if="RespondentVisible" width="950px" :close-on-click-modal="false" title="被申请人" :visible.sync="RespondentVisible">
       <Applicant :applicant="false" :is-update="RespondentIsUpdate" />
     </el-dialog>
-    <el-dialog width="950px" :close-on-click-modal="false" title="原告代理人" :visible.sync="AgentVisible">
+    <el-dialog v-if="AgentVisible" width="950px" :close-on-click-modal="false" title="原告代理人" :visible.sync="AgentVisible">
       <Agent :is-update="AgentIsUpdate" />
     </el-dialog>
-    <el-dialog width="950px" :close-on-click-modal="false" title="财产线索" :visible.sync="PropertyVisible">
+    <el-dialog v-if="PropertyVisible" width="950px" :close-on-click-modal="false" title="财产线索" :visible.sync="PropertyVisible">
       <Property :is-update="PropertyIsUpdate" />
     </el-dialog>
   </div>
@@ -158,6 +158,13 @@ export default {
         path: `/guarantee/upload/1`
       })
     },
+    // 基本资料
+    DetailUpdate() {
+      this.DetailVisible = true
+    },
+    DetailClosed() {
+      this.DetailVisible = false
+    },
     // 申请人
     ApplicantCreate() {
       this.ApplicantVisible = true
@@ -168,10 +175,10 @@ export default {
       this.ApplicantVisible = true
       this.ApplicantIsUpdate = true
       this.ApplicantId = id
-      console.log('this.ApplicantId: ', this.ApplicantId)
     },
-    ApplicantDelete(data) {
-      console.log(data)
+    ApplicantDelete(data) {},
+    ApplicantClosed() {
+      this.ApplicantVisible = false
     },
     // 被申请人
     RespondentCreate() {

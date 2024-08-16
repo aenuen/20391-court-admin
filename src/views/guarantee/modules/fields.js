@@ -26,13 +26,18 @@ export const ApplicantFields = {
   sex: '性别',
   nation: '民族',
   mobile: '手机号码',
+  area: '省市区',
   address: '居住地址',
+  areaNumber: '区号',
   telephone: '固定电话',
+  runNumber: '分机号',
   unitNature: '单位性质',
   legalPerson: '单位法人',
-  legal_job: '法人职务',
-  unit_address: '单位地址',
-  sign_address: '注册地址'
+  legalJob: '法人职务',
+  unitArea: '省市区',
+  unitAddress: '单位地址',
+  signArea: '省市区',
+  signAddress: '注册地址'
 }
 
 export const AgentFields = {

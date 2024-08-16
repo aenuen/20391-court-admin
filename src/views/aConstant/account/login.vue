@@ -32,7 +32,7 @@
         <span class="svg-container">
           <svg-icon icon-class="form" />
         </span>
-        <el-input ref="code" v-model="postForm.code" type="text" :placeholder="fields.authCode" name="code" tabindex="3" autocomplete="off" style="width: 200px; ime-mode: disabled" @keyup.enter.native="submitForm" />
+        <el-input ref="code" v-model="postForm.code" type="text" :placeholder="fields.authCode" name="code" tabindex="3" autocomplete="off" style="width: 200px; ime-mode: disabled" maxlength="6" @keyup.enter.native="submitForm" />
         <div class="authCode">
           <el-image :src="authCode" lazy @click="refreshCode" />
         </div>
@@ -61,7 +61,7 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
 import { CryptoJsEncode } from '@/libs/cryptojs'
 import { v4 as uuidV4 } from 'uuid'
-import {} from 'abbott-methods/import'
+import { holdNumber, holdLetterNumber } from 'abbott-methods/import'
 // settings
 import { apiBaseUrl } from '@/settings'
 export default {
@@ -91,6 +91,12 @@ export default {
         }
       },
       immediate: true
+    },
+    'postForm.telephone': function (value) {
+      this.postForm.telephone = holdNumber(value)
+    },
+    'postForm.code': function (value) {
+      this.postForm.code = holdLetterNumber(value)
     }
   },
   created() {
@@ -126,8 +132,8 @@ export default {
     // 登录
     submitForm() {
       this.$refs.postForm.validate((valid, fields) => {
+        this.submitLoadingOpen()
         if (valid) {
-          this.submitLoadingOpen()
           const newPostForm = {
             codeId: this.uuid,
             telephone: CryptoJsEncode(this.postForm.telephone),
@@ -141,6 +147,7 @@ export default {
               this.loginSubmit()
             })
             .catch(() => {
+              this.refreshCode() // 刷新验证码
               this.submitLoadingClose()
             })
         } else {

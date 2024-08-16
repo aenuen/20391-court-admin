@@ -7,6 +7,7 @@ export default {
       postForm: {},
       rulesForm: {},
       labelWidth: '120px',
+      commonWidth: '500px',
       submitLoading: false,
       updateId: 0
     }
