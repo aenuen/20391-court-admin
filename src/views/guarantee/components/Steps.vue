@@ -20,7 +20,7 @@
 // plugins
 // settings
 export default {
-  name: '',
+  name: 'GuaranteeSteps',
   components: {},
   mixins: [],
   props: {

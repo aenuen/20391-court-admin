@@ -28,7 +28,7 @@
           <a class="titleIcon" @click="RespondentCreate()"><i class="el-icon-plus" />添加</a>
         </div>
         <div class="boxContent">
-          <TableRes :data="tableData" @RespondentDelete="RespondentDelete" @RespondentUpdate="RespondentUpdate" />
+          <TableRes :data="RespondentData" @RespondentDelete="RespondentDelete" @RespondentUpdate="RespondentUpdate" />
         </div>
       </div>
       <!-- 原告代理人 -->
@@ -38,7 +38,7 @@
           <a class="titleIcon" @click="AgentCreate()"><i class="el-icon-plus" />添加</a>
         </div>
         <div class="boxContent">
-          <TableAgent :data="tableData" @AgentDelete="AgentDelete" @AgentUpdate="AgentUpdate" />
+          <TableAgent :data="AgentData" @AgentDelete="AgentDelete" @AgentUpdate="AgentUpdate" />
         </div>
       </div>
       <!-- 财产线索 -->
@@ -48,7 +48,7 @@
           <a class="titleIcon" @click="PropertyCreate()"><i class="el-icon-plus" />添加</a>
         </div>
         <div class="boxContent">
-          <TablePro :data="tableData" @PropertyDelete="PropertyDelete" @PropertyUpdate="PropertyUpdate" />
+          <TablePro :data="PropertyData" @PropertyDelete="PropertyDelete" @PropertyUpdate="PropertyUpdate" />
         </div>
       </div>
     </div>
@@ -63,20 +63,27 @@
     <el-dialog v-if="ApplicantVisible" width="950px" :close-on-click-modal="false" title="申请人" :visible.sync="ApplicantVisible">
       <Applicant :id="updateId" :applicant-id="ApplicantId" :applicant="true" :is-update="ApplicantIsUpdate" @ApplicantCreateSuccess="ApplicantCreateSuccess" @ApplicantUpdateSuccess="ApplicantUpdateSuccess" />
     </el-dialog>
+    <!-- 被申请人 -->
     <el-dialog v-if="RespondentVisible" width="950px" :close-on-click-modal="false" title="被申请人" :visible.sync="RespondentVisible">
-      <Applicant :applicant="false" :is-update="RespondentIsUpdate" />
+      <Applicant :id="updateId" :respondent-id="RespondentId" :applicant="false" :is-update="RespondentIsUpdate" @RespondentCreateSuccess="RespondentCreateSuccess" @RespondentUpdateSuccess="RespondentUpdateSuccess" />
     </el-dialog>
+    <!-- 原告代理人 -->
     <el-dialog v-if="AgentVisible" width="950px" :close-on-click-modal="false" title="原告代理人" :visible.sync="AgentVisible">
-      <Agent :is-update="AgentIsUpdate" />
+      <Agent :id="updateId" :is-update="AgentIsUpdate" :agent-id="AgentId" @AgentCreateSuccess="AgentCreateSuccess" @AgentUpdateSuccess="AgentUpdateSuccess" />
     </el-dialog>
+    <!-- 财产线索 -->
     <el-dialog v-if="PropertyVisible" width="950px" :close-on-click-modal="false" title="财产线索" :visible.sync="PropertyVisible">
-      <Property :is-update="PropertyIsUpdate" />
+      <Property :id="updateId" :is-update="PropertyIsUpdate" :clue-id="PropertyId" @PropertyCreateSuccess="PropertyCreateSuccess" @PropertyUpdateSuccess="PropertyUpdateSuccess" />
     </el-dialog>
   </div>
 </template>
 <script>
 // api
 import { guaranteeApi } from '@/api/guarantee'
+import { applicantApi } from '@/api/applicant'
+import { respondentApi } from '@/api/respondent'
+import { agentApi } from '@/api/agent'
+import { propertyApi } from '@/api/property'
 // components
 import Steps from './components/Steps'
 import Detail from './components/Detail'
@@ -91,11 +98,10 @@ import TablePro from './components/TablePro'
 // data
 // filter
 // function
-import { baseData } from './utils'
+import { baseData } from './modules/utils'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import { applicantApi } from '../../api/applicant'
 // plugins
 // settings
 export default {
@@ -115,15 +121,18 @@ export default {
       // 被申请人
       RespondentVisible: false,
       RespondentIsUpdate: false,
-      RespondentId: 0,
+      RespondentId: '',
+      RespondentData: [],
       // 原告代理人
       AgentVisible: false,
       AgentIsUpdate: false,
-      AgentId: 0,
+      AgentId: '',
+      AgentData: [],
       // 财产线索
       PropertyVisible: false,
       PropertyIsUpdate: false,
-      PropertyId: 0,
+      PropertyId: '',
+      PropertyData: [],
       // 基本资料
       baseData: [],
       baseObj: {},
@@ -135,19 +144,69 @@ export default {
     getDetail() {
       guaranteeApi.details(this.updateId).then(({ code, data, msg }) => {
         if (code === 200) {
-          const { guaranteeBaseInfo, applicant } = data
+          const { guaranteeBaseInfo, applicant, respondent, agent, assetClue } = data
           this.baseObj = guaranteeBaseInfo
           this.baseData = baseData(guaranteeBaseInfo)
           this.ApplicantData = applicant
+          this.RespondentData = respondent
+          this.AgentData = agent
+          this.PropertyData = assetClue
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
+    applicantList() {
+      applicantApi.list(this.updateId).then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.ApplicantData = data
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
+    respondentList() {
+      respondentApi.list(this.updateId).then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.RespondentData = data
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
+    agentList() {
+      agentApi.list(this.updateId).then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.AgentData = data
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
+    propertyList() {
+      propertyApi.list(this.updateId).then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.PropertyData = data
         } else {
           this.$message.error(msg)
         }
       })
     },
     submitForm() {
-      this.$router.push({
-        path: `/guarantee/upload/1`
-      })
+      guaranteeApi
+        .step({
+          gId: this.updateId,
+          step: 2
+        })
+        .then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.$router.push({
+              path: `/guarantee/upload/${this.updateId}`
+            })
+          } else {
+            this.$message.error(msg)
+          }
+        })
     },
     // 基本资料
     DetailUpdate() {
@@ -168,7 +227,7 @@ export default {
     ApplicantCreateSuccess() {
       this.ApplicantVisible = false
       this.ApplicantIsUpdate = false
-      this.getDetail()
+      this.applicantList()
     },
     ApplicantUpdate(id) {
       this.ApplicantVisible = true
@@ -179,13 +238,13 @@ export default {
       this.ApplicantVisible = false
       this.ApplicantIsUpdate = false
       this.ApplicantId = ''
-      this.getDetail()
+      this.applicantList()
     },
     ApplicantDelete(applyId) {
       applicantApi.remove(applyId).then(({ code, msg }) => {
         if (code === 200) {
           this.$message.success(msg)
-          this.getDetail()
+          this.applicantList()
         } else {
           this.$message.error(msg)
         }
@@ -198,38 +257,95 @@ export default {
     RespondentCreate() {
       this.RespondentVisible = true
       this.RespondentIsUpdate = false
-      this.RespondentId = 0
+    },
+    RespondentCreateSuccess() {
+      this.RespondentVisible = false
+      this.RespondentIsUpdate = false
+      this.respondentList()
     },
     RespondentUpdate(id) {
       this.RespondentVisible = true
       this.RespondentIsUpdate = true
       this.RespondentId = id
     },
-    RespondentDelete(id) {},
+    RespondentUpdateSuccess() {
+      this.RespondentVisible = false
+      this.RespondentIsUpdate = false
+      this.RespondentId = ''
+      this.respondentList()
+    },
+    RespondentDelete(applyId) {
+      respondentApi.remove(applyId).then(({ code, msg }) => {
+        if (code === 200) {
+          this.$message.success(msg)
+          this.respondentList()
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
     // 原告代理人
     AgentCreate() {
       this.AgentVisible = true
       this.AgentIsUpdate = false
-      this.AgentId = 0
+    },
+    AgentCreateSuccess() {
+      this.AgentVisible = false
+      this.AgentIsUpdate = false
+      this.agentList()
     },
     AgentUpdate(id) {
       this.AgentVisible = true
       this.AgentIsUpdate = true
       this.AgentId = id
     },
-    AgentDelete(id) {},
+    AgentUpdateSuccess() {
+      this.AgentVisible = false
+      this.AgentIsUpdate = false
+      this.AgentId = ''
+      this.agentList()
+    },
+    AgentDelete(agentId) {
+      agentApi.remove(agentId).then(({ code, msg }) => {
+        if (code === 200) {
+          this.$message.success(msg)
+          this.agentList()
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
     // 财产线索
     PropertyCreate() {
       this.PropertyVisible = true
       this.PropertyIsUpdate = false
-      this.PropertyId = 0
+    },
+    PropertyCreateSuccess() {
+      this.PropertyVisible = false
+      this.PropertyIsUpdate = false
+      this.propertyList()
     },
     PropertyUpdate(id) {
       this.PropertyVisible = true
       this.PropertyIsUpdate = true
       this.PropertyId = id
     },
-    PropertyDelete(id) {}
+    PropertyUpdateSuccess() {
+      this.PropertyVisible = false
+      this.PropertyIsUpdate = false
+      this.PropertyId = ''
+      this.propertyList()
+    },
+    PropertyDelete(clueId) {
+      propertyApi.remove(clueId).then(({ code, msg }) => {
+        if (code === 200) {
+          this.$message.success(msg)
+          this.propertyList()
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    }
   }
 }
 </script>

@@ -44,17 +44,25 @@ export const ApplicantFields = {
 }
 
 export const AgentFields = {
-  accuser: '所属原告',
   agentType: '代理人类型',
-  agent: '代理人',
+  agentName: '代理人',
   sex: '性别',
-  idType: '证件类型',
-  idNumber: '证件号码',
-  license: '执业证件号码'
+  certType: '证件类型',
+  certNo: '证件号码',
+  practiceCertNo: '执业证件号码',
+  dwellArea: '省市区',
+  dwellAddress: '地址',
+  mobile: '手机号码',
+  areaNumber: '区号',
+  telephone: '固定电话',
+  runNumber: '分机号'
 }
 
 export const PropertyFields = {
-  amount: '财产金额',
-  type: '财产类型',
-  clue: '财产线索'
+  money: '财产金额',
+  assetType: '财产类型',
+  assetBelong: '财产所有人',
+  dwellArea: '省市区',
+  dwellAddress: '地址',
+  description: '财产线索'
 }

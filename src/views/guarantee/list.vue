@@ -56,8 +56,8 @@
         </template>
       </el-table-column>
       <el-table-column label="编辑" align="center" width="95">
-        <template slot-scope="{ row: { gId } }">
-          <el-button size="mini" type="primary" icon="el-icon-edit" @click="routerGo(`/guarantee/details/${gId}`)">编辑</el-button>
+        <template slot-scope="{ row: { step, gId } }">
+          <el-button size="mini" type="primary" icon="el-icon-edit" @click="toUpdate(step, gId)">编辑</el-button>
         </template>
       </el-table-column>
       <el-table-column label="删除" align="center" width="95">
@@ -101,6 +101,21 @@ export default {
   methods: {
     removeAlone() {
       // 删除
+    },
+    toUpdate(step, gId) {
+      let path = ''
+      switch (step) {
+        case 1:
+          path = 'details'
+          break
+        case 2:
+          path = 'upload'
+          break
+        default:
+          path = 'details'
+          break
+      }
+      this.routerGo(`/guarantee/${path}/${gId}`)
     },
     startHandle() {
       this.gainDict_courtCategoryAry() // 保全类别

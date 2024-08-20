@@ -7,5 +7,6 @@ export const guaranteeApi = {
   details: params => request({ url: '/guarantee/get/' + params, method: 'get' }), // 详情
   // post
   list: data => request({ url: '/guarantee/selectByPage', method: 'post', params: data }), // 列表
-  update: data => request({ url: '/guarantee/update', method: 'post', data }) // 编辑
+  update: data => request({ url: '/guarantee/update', method: 'post', data }), // 编辑
+  step: data => request({ url: '/guarantee/updateStep', method: 'post', params: data }) // 步骤
 }

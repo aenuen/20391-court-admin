@@ -125,8 +125,8 @@
           <!-- 性别 -->
           <el-col :span="12">
             <el-form-item class="is-required" prop="sex" :label="fields.sex" :label-width="labelWidth">
-              <el-radio v-model="postForm.sex" :label="1">男性</el-radio>
-              <el-radio v-model="postForm.sex" :label="2">女性</el-radio>
+              <el-radio v-model="postForm.sex" :label="0">男性</el-radio>
+              <el-radio v-model="postForm.sex" :label="1">女性</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
@@ -189,7 +189,7 @@
 <script>
 // api
 import { applicantApi } from '@/api/applicant'
-// import { respondentApi } from '@/api/respondent'
+import { respondentApi } from '@/api/respondent'
 // components
 // data
 import { ApplicantFields as fields } from '../modules/fields'
@@ -197,7 +197,7 @@ import { ApplicantCommon, ApplicantOne, ApplicantTwo } from '../modules/rules'
 // filter
 // function
 import { getAddressText, getAddressArea } from '@/libs/utils/area'
-import { dictGetValueByName } from '@/libs/utils/dict'
+import { dictGetValueByName, dictGetValueByNationName } from '@/libs/utils/dict'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
@@ -211,8 +211,9 @@ export default {
   components: {},
   mixins: [DetailMixin, MethodsMixin, gainDict],
   props: {
-    id: { type: String, default: '' }, // true为申请人,false为被申请人
-    applicantId: { type: String, default: '' }, // true为申请人,false为被申请人
+    id: { type: String, default: '' }, // 担保订单ID
+    applicantId: { type: String, default: '' }, // 申请人ID
+    respondentId: { type: String, default: '' }, // 被申请人ID
     applicant: { type: Boolean, default: true }, // true为申请人,false为被申请人
     isUpdate: { type: Boolean, default: false } // true为编辑模式，false为添加模式
   },
@@ -224,16 +225,20 @@ export default {
       regionData,
       dwellArea: '',
       unitArea: '',
-      signArea: ''
+      signArea: '',
+      saveCertOne: [],
+      saveCertTwo: []
     }
   },
   watch: {
     'postForm.applyType': function (val) {
       this.fields.name = +val === 1 ? '姓名' : '单位名称'
-      if (val === 1) {
+      if (+val === 1) {
         this.rulesForm = { ...ApplicantCommon, ...ApplicantOne }
+        this.certTypeAry = [...this.saveCertOne]
       } else {
         this.rulesForm = { ...ApplicantCommon, ...ApplicantTwo }
+        this.certTypeAry = [...this.saveCertTwo]
       }
     }
   },
@@ -252,56 +257,83 @@ export default {
       this.submitTxt = this.identity + isUpdate
       const form = { applyType: String(1) }
       this.postForm = { ...this.postForm, ...form }
-      if (this.isUpdate && this.applicantId) {
+      // 申请人
+      if (this.isUpdate && this.applicant && this.applicantId) {
         applicantApi.details(this.applicantId).then(({ code, msg, data }) => {
           if (code === 200) {
-            data.applyType = dictGetValueByName(this.applyTypeAry, data.applyType)
-            data.dwellArea = getAddressArea(data.dwellAddress)
-            data.dwellAddress = getAddressText(data.dwellAddress)
-            data.unitArea = getAddressArea(data.unitAddress)
-            data.unitAddress = getAddressText(data.unitAddress)
-            data.signArea = getAddressArea(data.signAddress)
-            data.signAddress = getAddressText(data.signAddress)
-            data.mobile = data.telephone
-            // 固定电话
-            const telephone = String(data.fixedTelephone).split('|')
-            data.areaNumber = telephone[0]
-            data.telephone = telephone[1]
-            data.runNumber = telephone[2]
-            this.postForm = { ...data }
+            this.handleData(data)
+          } else {
+            this.$message.error(msg)
+          }
+        })
+        // 被申请人
+      } else if (this.isUpdate && !this.applicant && this.respondentId) {
+        respondentApi.details(this.respondentId).then(({ code, msg, data }) => {
+          if (code === 200) {
+            this.handleData(data)
           } else {
             this.$message.error(msg)
           }
         })
       }
+      this.handleCertType()
+    },
+    handleCertType() {
+      const ary = JSON.parse(localStorage.getItem('certTypeAry'))
+      let index
+      ary.forEach((item, key) => {
+        if (item.name === '统一社会信用代码证') {
+          index = key
+        }
+      })
+      this.saveCertTwo.push(ary[index])
+      ary.splice(index, 1)
+      this.saveCertOne = ary
+    },
+    handleData(data) {
+      data.applyType = dictGetValueByName(this.applyTypeAry, data.applyType)
+      data.certType = dictGetValueByName(this.certTypeAry, data.certType)
+      data.dwellArea = getAddressArea(data.address)
+      data.dwellAddress = getAddressText(data.address)
+      data.unitArea = getAddressArea(data.unitAddress)
+      data.unitAddress = getAddressText(data.unitAddress)
+      data.signArea = getAddressArea(data.signAddress)
+      data.signAddress = getAddressText(data.signAddress)
+      data.mobile = data.telephone
+      // 固定电话
+      const telephone = String(data.fixedTelephone).split('|')
+      data.areaNumber = telephone[0] || ''
+      data.telephone = telephone[1] || ''
+      data.runNumber = telephone[2] || ''
+      this.postForm = { ...data }
     },
     submitForm() {
       this.$refs.postForm.validate((valid, fields) => {
         this.submitLoadingOpen()
         if (valid) {
           const comForm = {
-            gcId: this.id,
+            gcId: this.id, // 担保ID
             applyType: this.postForm.applyType,
             name: this.postForm.name,
             area: dictGetValueByName(this.countryAry, this.postForm.area),
             certType: dictGetValueByName(this.certTypeAry, this.postForm.certType),
             certNo: this.postForm.certNo,
             telephone: this.postForm.mobile,
-            fixedTelephone: `${this.postForm.areaNumber}|${this.postForm.telephone}|${this.postForm.runNumber}`
+            fixedTelephone: `${this.postForm.areaNumber || ''}|${this.postForm.telephone || ''}|${this.postForm.runNumber || ''}`
           }
           const oneForm = {
             birthday: timeGetDate(this.postForm.birthday),
             age: this.postForm.age,
-            nation: this.postForm.nation,
+            nation: dictGetValueByNationName(this.nationAry, this.postForm.nation),
             sex: this.postForm.sex,
-            address: this.postForm.dwellArea + '/' + this.postForm.dwellAddress
+            address: (this.postForm.dwellArea || '') + '/' + (this.postForm.dwellAddress || '')
           }
           const twoForm = {
             unitProperty: dictGetValueByName(this.unitPropertyAry, this.postForm.unitProperty),
             legalName: this.postForm.legalName,
             legalJob: this.postForm.legalJob,
-            unitAddress: this.postForm.unitArea + '/' + this.postForm.unitAddress,
-            signAddress: this.postForm.signArea + '/' + this.postForm.signAddress
+            unitAddress: (this.postForm.unitArea || '') + '/' + (this.postForm.unitAddress || ''),
+            signAddress: (this.postForm.signArea || '') + '/' + (this.postForm.signAddress || '')
           }
           let newForm = {}
           if (+this.postForm.applyType === 1) {
@@ -316,27 +348,48 @@ export default {
                 if (code === 200) {
                   this.$message.success(msg)
                   this.$emit('ApplicantUpdateSuccess')
+                  this.submitLoadingClose()
                 } else {
                   this.$message.error(msg)
+                  this.submitLoadingClose()
                 }
               })
-              this.submitLoadingClose()
             } else {
               applicantApi.create(newForm).then(({ code, msg }) => {
                 if (code === 200) {
                   this.$message.success(msg)
                   this.$emit('ApplicantCreateSuccess')
+                  this.submitLoadingClose()
                 } else {
                   this.$message.error(msg)
+                  this.submitLoadingClose()
                 }
               })
-              this.submitLoadingClose()
             }
           } else {
             if (this.isUpdate) {
-              //
+              newForm.applyId = this.respondentId
+              respondentApi.update(newForm).then(({ code, msg }) => {
+                if (code === 200) {
+                  this.$message.success(msg)
+                  this.$emit('RespondentUpdateSuccess')
+                  this.submitLoadingClose()
+                } else {
+                  this.$message.error(msg)
+                  this.submitLoadingClose()
+                }
+              })
             } else {
-              //
+              respondentApi.create(newForm).then(({ code, msg }) => {
+                if (code === 200) {
+                  this.$message.success(msg)
+                  this.$emit('RespondentCreateSuccess')
+                  this.submitLoadingClose()
+                } else {
+                  this.$message.error(msg)
+                  this.submitLoadingClose()
+                }
+              })
             }
           }
         } else {

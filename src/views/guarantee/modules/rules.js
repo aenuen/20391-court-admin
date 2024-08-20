@@ -1,5 +1,5 @@
 import { validateRequire, validateAllCn, validatePrice, validateAllNumber, validateMobile } from 'abbott-methods/import'
-import { DetailFields, ApplicantFields } from './fields'
+import { DetailFields, ApplicantFields, AgentFields, PropertyFields } from './fields'
 
 // 基本资料
 export const DetailCommon = {
@@ -44,4 +44,24 @@ export const ApplicantTwo = {
   unitAddress: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.unitAddress) }],
   signArea: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.signArea, '选择') }],
   signAddress: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.signAddress) }]
+}
+
+// 代理人
+export const AgentRules = {
+  agentType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, AgentFields.agentType, '选择') }],
+  agentName: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, AgentFields.agentName, 2, 20) }],
+  sex: [{ validator: (rule, value, callback) => validateAllNumber(rule, value, callback, AgentFields.sex, '填写') }],
+  practiceCertNo: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, AgentFields.practiceCertNo, '填写', 8, 18) }],
+  certType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, AgentFields.certType, '选择') }],
+  certNo: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, AgentFields.certNo, '填写', 8, 18) }],
+  dwellArea: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, AgentFields.dwellArea, '选择') }],
+  dwellAddress: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, AgentFields.dwellAddress) }],
+  mobile: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }]
+}
+
+export const PropertyRules = {
+  money: [{ validator: (rule, value, callback) => validatePrice(rule, value, callback, PropertyFields.money, '填写', 1, 11) }],
+  assetType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, PropertyFields.assetType, '选择') }],
+  asset_belong: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, PropertyFields.asset_belong, 2, 20) }],
+  description: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, PropertyFields.description) }]
 }
