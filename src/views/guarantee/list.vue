@@ -4,7 +4,7 @@
       <!-- 申请法院 -->
       <el-input v-model="queryList.gCourt" :placeholder="fields.gCourt" class="filter-ele" clearable @keyup.enter.native="handleFilter" @clear="handleFilter" @blur="handleFilter" />
       <!-- 保全类型 -->
-      <el-select v-model="queryList.category" :placeholder="fields.category" class="filter-ele" clearable @clear="handleFilter" @change="handleFilter">
+      <el-select v-model="queryList.guaranteeCategory" :placeholder="fields.guaranteeCategory" class="filter-ele" clearable @clear="handleFilter" @change="handleFilter">
         <el-option v-for="(item, index) in courtCategoryAry" :key="index" :value="item['dictValue']" :label="item['name']" />
       </el-select>
       <!-- 保全类型 -->
@@ -26,6 +26,7 @@
       <!-- 新增按纽 -->
       <el-button type="success" class="filter-btn el-icon-plus" @click="$router.push('create')"> 新增 </el-button>
     </div>
+    <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
       <el-table-column prop="gCourt" :label="fields.court" align="center" />
@@ -60,7 +61,9 @@
         </template>
       </el-table-column>
       <el-table-column label="删除" align="center" width="95">
-        <el-button size="mini" type="warning" icon="el-icon-delete">删除</el-button>
+        <template slot-scope="{ row: { gId } }">
+          <el-button size="mini" type="warning" icon="el-icon-delete" @click="onRemoveAlone(gId)">删除</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
@@ -71,8 +74,8 @@
 </template>
 <script>
 // api
-// import { guaranteeApi } from '@/api/guarantee'
-import axios from '@/libs/axios/courtReq'
+import { guaranteeApi } from '@/api/guarantee'
+// import axios from '@/libs/axios/courtReq'
 // components
 import Pagination from '@/components/Pagination'
 // data
@@ -96,55 +99,23 @@ export default {
   },
   created() {},
   methods: {
+    removeAlone() {
+      // 删除
+    },
     startHandle() {
-      this.gainDict_courtCategoryAry()
-      this.gainDict_outLawsuitTimeAry()
-      this.gainDict_caseTypeAry()
-      this.gainDict_issueStatusAry()
-      axios
-        .post('/guarantee/selectByPage', null, {
-          params: this.queryList
-        })
-        .then((response) => {
-          console.log(response.data)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-      // axios
-      //   .post('/guarantee/selectByPage', qs.stringify(this.queryList), {
-      //     headers: {
-      //       'Content-Type': 'application/x-www-form-urlencoded'
-      //     }
-      //   })
-      //   .then((response) => {
-      //     console.log(response)
-      //   })
-      //   .catch((error) => {
-      //     console.error(error)
-      //   })
-      // axios
-      //   .post('/guarantee/selectByPage ', {
-      //     params: this.queryList
-      //   })
-      //   .then(({ code, data, msg }) => {
-      //     if (code === 200) {
-      //       const { records, total } = data
-      //       this.tableData = records
-      //       this.tableDataLength = total
-      //     } else {
-      //       this.$message.error(msg)
-      //     }
-      //   })
-      // guaranteeApi.list(this.queryList).then(({ code, data, msg }) => {
-      //   if (code === 200) {
-      //     const { records, total } = data
-      //     this.tableData = records
-      //     this.tableDataLength = total
-      //   } else {
-      //     this.$message.error(msg)
-      //   }
-      // })
+      this.gainDict_courtCategoryAry() // 保全类别
+      this.gainDict_outLawsuitTimeAry() // 非诉期间
+      this.gainDict_caseTypeAry() // 案件类型
+      this.gainDict_issueStatusAry() // 提交人类型
+      guaranteeApi.list(this.queryList).then(({ code, data, msg }) => {
+        if (code === 200) {
+          const { records, total } = data
+          this.tableData = records
+          this.tableDataLength = total
+        } else {
+          this.$message.error(msg)
+        }
+      })
     }
   }
 }

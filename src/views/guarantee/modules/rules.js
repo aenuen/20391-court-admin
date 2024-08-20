@@ -21,27 +21,24 @@ export const DetailTwo = {
 // 申请人、被申请人
 export const ApplicantCommon = {
   name: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, ApplicantFields.name, 2, 20) }],
-  country: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.country, '选择') }],
-  idType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.idType, '选择') }],
-  idNumber: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.idNumber, '填写', 8, 18) }],
-  areaNumber: [{ validator: (rule, value, callback) => validateAllNumber(rule, value, callback, ApplicantFields.areaNumber, '填写', 3, 4) }],
-  mobile: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }],
-  telephone: [{ validator: (rule, value, callback) => validateAllNumber(rule, value, callback, ApplicantFields.telephone, '填写', 7, 8) }],
-  runNumber: [{ validator: (rule, value, callback) => validateAllNumber(rule, value, callback, ApplicantFields.runNumber, '填写', 1, 4) }]
+  area: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.area, '选择') }],
+  certType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.certType, '选择') }],
+  certNo: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.certNo, '填写', 8, 18) }],
+  mobile: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }]
 }
 
 export const ApplicantOne = {
   birthday: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.birthday, '填写') }],
-  old: [{ validator: (rule, value, callback) => validateAllNumber(rule, value, callback, ApplicantFields.old, '填写') }],
+  age: [{ validator: (rule, value, callback) => validateAllNumber(rule, value, callback, ApplicantFields.age, '填写') }],
   sex: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.sex, '选择') }],
   nation: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.nation, '选择') }],
-  area: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.area, '选择') }],
-  address: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.address) }]
+  dwellArea: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.dwellArea, '选择') }],
+  dwellAddress: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.dwellAddress) }]
 }
 
 export const ApplicantTwo = {
-  unitNature: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.unitNature, '选择') }],
-  legalPerson: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, ApplicantFields.legalPerson, 2, 20) }],
+  unitProperty: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.unitProperty, '选择') }],
+  legalName: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, ApplicantFields.legalName, 2, 20) }],
   legalJob: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, ApplicantFields.legalJob, 2, 20) }],
   unitArea: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.unitArea, '选择') }],
   unitAddress: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.unitAddress) }],

@@ -124,7 +124,7 @@ import { DetailFields as fields } from '../modules/fields'
 import { DetailCommon, DetailOne, DetailTwo } from '../modules/rules'
 // filter
 // function
-// import { dictGetValueByName } from '@/libs/utils/dict'
+import { dictGetValueByName } from '@/libs/utils/dict'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
@@ -163,37 +163,62 @@ export default {
   },
   created() {},
   methods: {
-    startHandle() {
+    async startHandle() {
       this.labelWidth = (this.isUpdate ? 120 : 260) + 'px'
       this.submitTxt = this.isUpdate ? '编辑资料' : '提交资料'
       this.gainDict_caseTypeAry()
-      this.gainDict_courtCategoryAry()
-      this.gainDict_outLawsuitTimeAry()
-      this.gainDict_issueStatusAry()
-      const form = { guaranteeCategory: '1' }
-      // const temp = dictGetValueByName(this.courtCategoryAry, this.baseObj.category)
-      // console.log('this.courtCategoryAry: ', this.courtCategoryAry)
-      // console.log('temp: ', temp)
-      this.postForm = { ...this.postForm, ...form, ...this.baseObj }
+      await this.gainDict_courtCategoryAry()
+      await this.gainDict_outLawsuitTimeAry()
+      await this.gainDict_issueStatusAry()
+      if (this.isUpdate && this.baseObj.guaranteeCategory) {
+        const caseNoAry = this.baseObj.gCaseNo.split('|') || ['', '', '', '', '']
+        const form = {
+          guaranteeCategory: dictGetValueByName(this.courtCategoryAry, this.baseObj.guaranteeCategory),
+          gCaseYear: String(caseNoAry[0]).replace(/^[（]+|[）+]$/g, ''),
+          gCaseCode: caseNoAry[1],
+          gCaseZips: caseNoAry[2],
+          gCodeOrder: caseNoAry[3]
+        }
+        this.postForm = { ...this.baseObj, ...form }
+      } else {
+        const form = { guaranteeCategory: '1' }
+        this.postForm = { ...this.postForm, ...form }
+      }
     },
     submitForm() {
       this.$refs.postForm.validate((valid, fields) => {
         this.submitLoadingOpen()
         if (valid) {
           const newForm = {
-            ...{ guaranteeType: 1 },
-            ...this.postForm
+            ...this.postForm,
+            ...{ guaranteeType: 1 }
           }
           if (+this.postForm.guaranteeCategory === 1) {
             newForm.gCaseType = ''
             newForm.gCaseNo = ''
           } else {
             newForm.outLawsuitTime = ''
-            const year = timeGetYear(newForm.gCaseYear)
-            newForm.gCaseNo = `（${year}）${newForm.gCaseCode}${newForm.gCaseZips}${newForm.gCodeOrder}号`
+            const year = newForm.gCaseYear.length === 4 ? newForm.gCaseYear : timeGetYear(newForm.gCaseYear)
+            newForm.gCaseNo = `（${year}）|${newForm.gCaseCode}|${newForm.gCaseZips}|${newForm.gCodeOrder}|号`
           }
           if (this.isUpdate) {
-            //
+            // 转为值部分
+            if (+newForm.guaranteeCategory === 1) {
+              newForm.outLawsuitTime = dictGetValueByName(this.outLawsuitTimeAry, newForm.outLawsuitTime) // 非诉期间
+            } else {
+              newForm.gCaseType = dictGetValueByName(this.caseTypeAry, newForm.gCaseType) // 案件类型
+            }
+            newForm.gIssueStatus = dictGetValueByName(this.issueStatusAry, newForm.gIssueStatus) // 提交人
+            guaranteeApi.update(newForm).then(({ code, msg }) => {
+              if (code === 200) {
+                this.$message.success(msg)
+                this.submitLoadingClose()
+                this.$emit('onDetailSuccess', newForm)
+              } else {
+                this.$message.error(msg)
+                this.submitLoadingClose()
+              }
+            })
           } else {
             guaranteeApi.create(newForm).then(({ code, msg, data }) => {
               if (code === 200) {

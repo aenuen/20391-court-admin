@@ -21,7 +21,7 @@ export default {
   components: {},
   mixins: [],
   props: {
-    dataAry: { type: Array, default: () => [] }
+    dataAry: { type: Array, default: () => {} }
   },
   data() {
     return {}

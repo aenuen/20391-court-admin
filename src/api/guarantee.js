@@ -6,6 +6,6 @@ export const guaranteeApi = {
   // get
   details: params => request({ url: '/guarantee/get/' + params, method: 'get' }), // 详情
   // post
-  // list: data => request({ url: '/guarantee/selectByPage', method: 'post' }) // 列表
-  list: data => request.post('/guarantee/selectByPage ', { params: this.data })
+  list: data => request({ url: '/guarantee/selectByPage', method: 'post', params: data }), // 列表
+  update: data => request({ url: '/guarantee/update', method: 'post', data }) // 编辑
 }

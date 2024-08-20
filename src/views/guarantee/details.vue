@@ -18,7 +18,7 @@
           <a class="titleIcon" @click="ApplicantCreate()"><i class="el-icon-plus" />添加</a>
         </div>
         <div class="boxContent">
-          <TableApp :data="tableData" @ApplicantDelete="ApplicantDelete" @ApplicantUpdate="ApplicantUpdate" />
+          <TableApp :data="ApplicantData" @ApplicantDelete="ApplicantDelete" @ApplicantUpdate="ApplicantUpdate" />
         </div>
       </div>
       <!-- 被申请人 -->
@@ -55,11 +55,13 @@
     <div style="text-align: center; padding: 50px 0">
       <el-button type="primary" @click="submitForm">保存，继续下一步</el-button>
     </div>
+    <!-- 基本资料 -->
     <el-dialog v-if="DetailVisible" width="950px" :close-on-click-modal="false" title="基本资料" :visible.sync="DetailVisible" :before-close="DetailClosed">
-      <Detail is-update :base-obj="baseObj" />
+      <Detail is-update :base-obj="baseObj" @onDetailSuccess="DetailSuccess" />
     </el-dialog>
+    <!-- 申请人 -->
     <el-dialog v-if="ApplicantVisible" width="950px" :close-on-click-modal="false" title="申请人" :visible.sync="ApplicantVisible">
-      <Applicant :applicant="true" :is-update="ApplicantIsUpdate" />
+      <Applicant :id="updateId" :applicant-id="ApplicantId" :applicant="true" :is-update="ApplicantIsUpdate" @ApplicantCreateSuccess="ApplicantCreateSuccess" @ApplicantUpdateSuccess="ApplicantUpdateSuccess" />
     </el-dialog>
     <el-dialog v-if="RespondentVisible" width="950px" :close-on-click-modal="false" title="被申请人" :visible.sync="RespondentVisible">
       <Applicant :applicant="false" :is-update="RespondentIsUpdate" />
@@ -89,10 +91,11 @@ import TablePro from './components/TablePro'
 // data
 // filter
 // function
-import { baseData, fieldsReplace } from './utils'
+import { baseData } from './utils'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import { applicantApi } from '../../api/applicant'
 // plugins
 // settings
 export default {
@@ -107,8 +110,8 @@ export default {
       // 申请人
       ApplicantVisible: false,
       ApplicantIsUpdate: false,
-      ApplicantId: 0,
-      applicantData: [],
+      ApplicantId: '',
+      ApplicantData: [],
       // 被申请人
       RespondentVisible: false,
       RespondentIsUpdate: false,
@@ -133,9 +136,9 @@ export default {
       guaranteeApi.details(this.updateId).then(({ code, data, msg }) => {
         if (code === 200) {
           const { guaranteeBaseInfo, applicant } = data
-          this.baseObj = fieldsReplace(guaranteeBaseInfo)
+          this.baseObj = guaranteeBaseInfo
           this.baseData = baseData(guaranteeBaseInfo)
-          this.applicantData = applicant
+          this.ApplicantData = applicant
         } else {
           this.$message.error(msg)
         }
@@ -153,18 +156,41 @@ export default {
     DetailClosed() {
       this.DetailVisible = false
     },
+    DetailSuccess() {
+      this.DetailVisible = false
+      this.getDetail()
+    },
     // 申请人
     ApplicantCreate() {
       this.ApplicantVisible = true
       this.ApplicantIsUpdate = false
-      this.Applicant = 0
+    },
+    ApplicantCreateSuccess() {
+      this.ApplicantVisible = false
+      this.ApplicantIsUpdate = false
+      this.getDetail()
     },
     ApplicantUpdate(id) {
       this.ApplicantVisible = true
       this.ApplicantIsUpdate = true
       this.ApplicantId = id
     },
-    ApplicantDelete(data) {},
+    ApplicantUpdateSuccess() {
+      this.ApplicantVisible = false
+      this.ApplicantIsUpdate = false
+      this.ApplicantId = ''
+      this.getDetail()
+    },
+    ApplicantDelete(applyId) {
+      applicantApi.remove(applyId).then(({ code, msg }) => {
+        if (code === 200) {
+          this.$message.success(msg)
+          this.getDetail()
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
     ApplicantClosed() {
       this.ApplicantVisible = false
     },

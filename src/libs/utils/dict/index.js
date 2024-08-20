@@ -13,7 +13,7 @@ export const dictGetNameByValue = (ary, value) => {
       break
     }
   }
-  return name
+  return name || value
 }
 /**
  * @description 根据字典的名称获取对应的值
@@ -22,14 +22,17 @@ export const dictGetNameByValue = (ary, value) => {
  * @returns {String}
  */
 export const dictGetValueByName = (ary, name) => {
-  console.log('ary: ', ary)
-  let value = ''
-  for (let i = 0; i < ary.length; i++) {
-    const item = ary[i]
-    if (String(item.name) === String(name)) {
-      value = item.dictValue
-      break
+  if (typeof name === 'number') {
+    return name
+  } else {
+    let value = ''
+    for (let i = 0; i < ary.length; i++) {
+      const item = ary[i]
+      if (String(item.name) === String(name)) {
+        value = item.dictValue
+        break
+      }
     }
+    return value || name
   }
-  return value
 }

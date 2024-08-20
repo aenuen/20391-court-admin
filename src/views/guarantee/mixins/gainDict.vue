@@ -17,6 +17,7 @@ export default {
   mixins: [],
   data() {
     return {
+      applyTypeAry: [], // 申请人类型
       caseTypeAry: [], // 案件类型
       certTypeAry: [], // 证件类型
       countryAry: [], // 国别
@@ -29,9 +30,19 @@ export default {
   },
   created() {},
   methods: {
+    // 申请人类型
+    async gainDict_applyTypeAry() {
+      await dictApi.gain('applyType').then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.applyTypeAry = data.child
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
     // 案件类型
     async gainDict_caseTypeAry() {
-      dictApi.gain('caseType').then(({ code, data, msg }) => {
+      await dictApi.gain('caseType').then(({ code, data, msg }) => {
         if (code === 200) {
           this.caseTypeAry = data.child
         } else {
@@ -41,7 +52,7 @@ export default {
     },
     // 证件类型
     async gainDict_certTypeAry() {
-      dictApi.gain('certType').then(({ code, data, msg }) => {
+      await dictApi.gain('certType').then(({ code, data, msg }) => {
         if (code === 200) {
           const child = data.child
           this.certTypeAry = [...child]
@@ -52,7 +63,7 @@ export default {
     },
     // 国别
     async gainDict_countryAry() {
-      dictApi.gain('country').then(({ code, data, msg }) => {
+      await dictApi.gain('country').then(({ code, data, msg }) => {
         if (code === 200) {
           const child = data.child
           this.countryAry = [...child]
@@ -63,7 +74,7 @@ export default {
     },
     // 保全类别
     async gainDict_courtCategoryAry() {
-      dictApi.gain('courtCategory').then(({ code, data, msg }) => {
+      await dictApi.gain('courtCategory').then(({ code, data, msg }) => {
         if (code === 200) {
           const child = data.child
           this.courtCategoryAry = [...child]
@@ -74,7 +85,7 @@ export default {
     },
     // 提交人身份
     async gainDict_issueStatusAry() {
-      dictApi.gain('issueStatus').then(({ code, data, msg }) => {
+      await dictApi.gain('issueStatus').then(({ code, data, msg }) => {
         if (code === 200) {
           const child = data.child
           this.issueStatusAry = [...child]
@@ -85,7 +96,7 @@ export default {
     },
     // 民族
     async gainDict_nationAry() {
-      dictApi.nation().then(({ code, data, msg }) => {
+      await dictApi.nation().then(({ code, data, msg }) => {
         if (code === 200) {
           this.nationAry = [...data]
         } else {
@@ -95,7 +106,7 @@ export default {
     },
     // 非诉期间
     async gainDict_outLawsuitTimeAry() {
-      dictApi.gain('outLawsuitTime').then(({ code, data, msg }) => {
+      await dictApi.gain('outLawsuitTime').then(({ code, data, msg }) => {
         if (code === 200) {
           const child = data.child
           this.outLawsuitTimeAry = [...child]
@@ -106,7 +117,7 @@ export default {
     },
     // 单位性质
     async gainDict_unitPropertyAry() {
-      dictApi.gain('unitProperty').then(({ code, data, msg }) => {
+      await dictApi.gain('unitProperty').then(({ code, data, msg }) => {
         if (code === 200) {
           const child = data.child
           this.unitPropertyAry = [...child]
