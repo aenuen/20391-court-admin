@@ -2,73 +2,185 @@
   <div class="app-container">
     <div class="filter-container">
       <!-- 申请法院 -->
-      <el-input v-model="queryList.gCourt" :placeholder="fields.gCourt" class="filter-ele" clearable @keyup.enter.native="handleFilter" @clear="handleFilter" @blur="handleFilter" />
+      <el-input
+        v-model="queryList.gCourt"
+        :placeholder="fields.gCourt"
+        class="filter-ele"
+        clearable
+        @keyup.enter.native="handleFilter"
+        @clear="handleFilter"
+        @blur="handleFilter"
+      />
       <!-- 保全类型 -->
-      <el-select v-model="queryList.guaranteeCategory" :placeholder="fields.guaranteeCategory" class="filter-ele" clearable @clear="handleFilter" @change="handleFilter">
-        <el-option v-for="(item, index) in courtCategoryAry" :key="index" :value="item['dictValue']" :label="item['name']" />
+      <el-select
+        v-model="queryList.guaranteeCategory"
+        :placeholder="fields.guaranteeCategory"
+        class="filter-ele"
+        clearable
+        @clear="handleFilter"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="(item, index) in courtCategoryAry"
+          :key="index"
+          :value="item['dictValue']"
+          :label="item['name']"
+        />
       </el-select>
       <!-- 保全类型 -->
-      <el-select v-model="queryList.outLawsuitTime" :placeholder="fields.outLawsuitTime" class="filter-ele" clearable @clear="handleFilter" @change="handleFilter">
-        <el-option v-for="(item, index) in outLawsuitTimeAry" :key="index" :value="item['dictValue']" :label="item['name']" />
+      <el-select
+        v-model="queryList.outLawsuitTime"
+        :placeholder="fields.outLawsuitTime"
+        class="filter-ele"
+        clearable
+        @clear="handleFilter"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="(item, index) in outLawsuitTimeAry"
+          :key="index"
+          :value="item['dictValue']"
+          :label="item['name']"
+        />
       </el-select>
       <!-- 保全类型 -->
-      <el-select v-model="queryList.gCaseType" :placeholder="fields.gCaseType" class="filter-ele" clearable @clear="handleFilter" @change="handleFilter">
-        <el-option v-for="(item, index) in caseTypeAry" :key="index" :value="item['dictValue']" :label="item['name']" />
+      <el-select
+        v-model="queryList.gCaseType"
+        :placeholder="fields.gCaseType"
+        class="filter-ele"
+        clearable
+        @clear="handleFilter"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="(item, index) in caseTypeAry"
+          :key="index"
+          :value="item['dictValue']"
+          :label="item['name']"
+        />
       </el-select>
       <!-- 案号 -->
-      <el-input v-model="queryList.gCaseNo" :placeholder="fields.gCaseNo" class="filter-ele" clearable @keyup.enter.native="handleFilter" @clear="handleFilter" @blur="handleFilter" />
+      <el-input
+        v-model="queryList.gCaseNo"
+        :placeholder="fields.gCaseNo"
+        class="filter-ele"
+        clearable
+        @keyup.enter.native="handleFilter"
+        @clear="handleFilter"
+        @blur="handleFilter"
+      />
       <!-- 提交人身份 -->
-      <el-select v-model="queryList.gIssueStatus" :placeholder="fields.gIssueStatus" class="filter-ele" clearable @clear="handleFilter" @change="handleFilter">
-        <el-option v-for="(item, index) in issueStatusAry" :key="index" :value="item['dictValue']" :label="item['name']" />
+      <el-select
+        v-model="queryList.gIssueStatus"
+        :placeholder="fields.gIssueStatus"
+        class="filter-ele"
+        clearable
+        @clear="handleFilter"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="(item, index) in issueStatusAry"
+          :key="index"
+          :value="item['dictValue']"
+          :label="item['name']"
+        />
       </el-select>
       <!-- 搜索 -->
-      <el-button class="filter-btn el-icon-search" @click="handleFilter"> 搜索 </el-button>
+      <el-button class="filter-btn el-icon-search" @click="handleFilter">
+        搜索
+      </el-button>
       <!-- 新增按纽 -->
-      <el-button type="success" class="filter-btn el-icon-plus" @click="$router.push('create')"> 新增 </el-button>
+      <el-button
+        type="success"
+        class="filter-btn el-icon-plus"
+        @click="$router.push('create')"
+      >
+        新增
+      </el-button>
     </div>
     <!-- 表格 -->
-    <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
+    <el-table
+      :data="tableData"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%"
+    >
       <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column prop="gCourt" :label="fields.court" align="center" />
-      <el-table-column prop="guaranteeCategory" :label="fields.category" align="center" />
-      <el-table-column :label="fields.period" align="center">
+      <el-table-column prop="gCourt" :label="fields.gCourt" align="center" />
+      <el-table-column
+        prop="guaranteeCategory"
+        :label="fields.guaranteeCategory"
+        align="center"
+      />
+      <el-table-column :label="fields.outLawsuitTime" align="center">
         <template slot-scope="{ row: { outLawsuitTime } }">
           <span>{{ outLawsuitTime || '--' }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="fields.caseType" align="center">
+      <el-table-column :label="fields.gCaseType" align="center">
         <template slot-scope="{ row: { gCaseType } }">
           <span>{{ gCaseType || '--' }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="fields.caseNumber" align="center">
+      <el-table-column :label="fields.gCaseNo" align="center" width="200">
         <template slot-scope="{ row: { gCaseNo } }">
-          <span>{{ gCaseNo || '--' }}</span>
+          <span>{{ gCaseNo | filterGCaseNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="gMoney" :label="fields.preserve" align="center" />
-      <el-table-column prop="guaranteeMoney" :label="fields.assurance" align="center" />
-      <el-table-column prop="gIssueStatus" :label="fields.submitter" align="center" />
+      <el-table-column prop="gMoney" :label="fields.gMoney" align="center" />
+      <el-table-column
+        prop="guaranteeMoney"
+        :label="fields.guaranteeMoney"
+        align="center"
+      />
+      <el-table-column
+        prop="gIssueStatus"
+        :label="fields.gIssueStatus"
+        align="center"
+      />
       <el-table-column :label="fields.step" align="center">
         <template slot-scope="{ row: { step } }">
-          <span v-if="step === '-1'" class="bull-dot"> <b class="dot-green"></b>完成 </span>
+          <span v-if="step === '-1'" class="bull-dot">
+            <b class="dot-green"></b>完成
+          </span>
           <span v-else class="bull-dot"> <b class="dot-red"></b>未完成 </span>
         </template>
       </el-table-column>
       <el-table-column label="编辑" align="center" width="95">
         <template slot-scope="{ row: { step, gId } }">
-          <el-button size="mini" type="primary" icon="el-icon-edit" @click="toUpdate(step, gId)">编辑</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            icon="el-icon-edit"
+            @click="toUpdate(step, gId)"
+          >
+            编辑
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column label="删除" align="center" width="95">
         <template slot-scope="{ row: { gId } }">
-          <el-button size="mini" type="warning" icon="el-icon-delete" @click="onRemoveAlone(gId)">删除</el-button>
+          <el-button
+            size="mini"
+            type="warning"
+            icon="el-icon-delete"
+            @click="onRemoveAlone(gId)"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
     <div style="text-align: center">
-      <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
+      <Pagination
+        :hidden="tableDataLength <= 0"
+        :total="tableDataLength"
+        :page.sync="queryList.pageNum"
+        :limit.sync="queryList.pageSize"
+        @pagination="refresh"
+      />
     </div>
   </div>
 </template>
@@ -91,6 +203,11 @@ import gainDict from './mixins/gainDict'
 export default {
   name: 'GuaranteeList',
   components: { Pagination },
+  filters: {
+    filterGCaseNo(str) {
+      return (str || '').replace(/\|/g, '')
+    }
+  },
   mixins: [ListMixin, MethodsMixin, gainDict],
   data() {
     return {
@@ -111,11 +228,17 @@ export default {
         case 2:
           path = 'upload'
           break
+        case 3:
+          path = 'select'
+          break
+        case 4:
+          path = 'preview'
+          break
         default:
           path = 'details'
           break
       }
-      this.routerGo(`/guarantee/${path}/${gId}`)
+      this.routerClose(`/guarantee/${path}/${gId}`)
     },
     startHandle() {
       this.gainDict_courtCategoryAry() // 保全类别

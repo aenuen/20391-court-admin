@@ -42,6 +42,26 @@ export const guarantee = {
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'select/:id',
+      name: 'guaranteeSelect',
+      component: () => import('@/views/guarantee/select'),
+      meta: {
+        title: '选择担保机构',
+        activeMenu: '/guarantee/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'preview/:id',
+      name: 'guaranteePreview',
+      component: () => import('@/views/guarantee/preview'),
+      meta: {
+        title: '预览订单',
+        activeMenu: '/guarantee/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
     }
   ]
 }

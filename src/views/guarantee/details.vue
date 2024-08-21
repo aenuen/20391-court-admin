@@ -5,7 +5,9 @@
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">基本资料</div>
-          <a class="titleIcon" @click="DetailUpdate"><i class="el-icon-edit" />编辑</a>
+          <a class="titleIcon" @click="DetailUpdate">
+            <i class="el-icon-edit" />编辑
+          </a>
         </div>
         <div class="boxContent">
           <BaseData :data-ary="baseData" />
@@ -15,40 +17,64 @@
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">申请人（必填）</div>
-          <a class="titleIcon" @click="ApplicantCreate()"><i class="el-icon-plus" />添加</a>
+          <a class="titleIcon" @click="ApplicantCreate()">
+            <i class="el-icon-plus" />添加
+          </a>
         </div>
         <div class="boxContent">
-          <TableApp :data="ApplicantData" @ApplicantDelete="ApplicantDelete" @ApplicantUpdate="ApplicantUpdate" />
+          <TableApp
+            :data="ApplicantData"
+            @ApplicantDelete="ApplicantDelete"
+            @ApplicantUpdate="ApplicantUpdate"
+          />
         </div>
       </div>
       <!-- 被申请人 -->
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">被申请人（必填）</div>
-          <a class="titleIcon" @click="RespondentCreate()"><i class="el-icon-plus" />添加</a>
+          <a class="titleIcon" @click="RespondentCreate()">
+            <i class="el-icon-plus" />添加
+          </a>
         </div>
         <div class="boxContent">
-          <TableRes :data="RespondentData" @RespondentDelete="RespondentDelete" @RespondentUpdate="RespondentUpdate" />
+          <TableRes
+            :data="RespondentData"
+            @RespondentDelete="RespondentDelete"
+            @RespondentUpdate="RespondentUpdate"
+          />
         </div>
       </div>
       <!-- 原告代理人 -->
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">原告代理人</div>
-          <a class="titleIcon" @click="AgentCreate()"><i class="el-icon-plus" />添加</a>
+          <a class="titleIcon" @click="AgentCreate()">
+            <i class="el-icon-plus" />添加
+          </a>
         </div>
         <div class="boxContent">
-          <TableAgent :data="AgentData" @AgentDelete="AgentDelete" @AgentUpdate="AgentUpdate" />
+          <TableAgent
+            :data="AgentData"
+            @AgentDelete="AgentDelete"
+            @AgentUpdate="AgentUpdate"
+          />
         </div>
       </div>
       <!-- 财产线索 -->
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">财产线索（必填）</div>
-          <a class="titleIcon" @click="PropertyCreate()"><i class="el-icon-plus" />添加</a>
+          <a class="titleIcon" @click="PropertyCreate()">
+            <i class="el-icon-plus" />添加
+          </a>
         </div>
         <div class="boxContent">
-          <TablePro :data="PropertyData" @PropertyDelete="PropertyDelete" @PropertyUpdate="PropertyUpdate" />
+          <TablePro
+            :data="PropertyData"
+            @PropertyDelete="PropertyDelete"
+            @PropertyUpdate="PropertyUpdate"
+          />
         </div>
       </div>
     </div>
@@ -56,24 +82,81 @@
       <el-button type="primary" @click="submitForm">保存，继续下一步</el-button>
     </div>
     <!-- 基本资料 -->
-    <el-dialog v-if="DetailVisible" width="950px" :close-on-click-modal="false" title="基本资料" :visible.sync="DetailVisible" :before-close="DetailClosed">
+    <el-dialog
+      v-if="DetailVisible"
+      width="950px"
+      :close-on-click-modal="false"
+      title="基本资料"
+      :visible.sync="DetailVisible"
+      :before-close="DetailClosed"
+    >
       <Detail is-update :base-obj="baseObj" @onDetailSuccess="DetailSuccess" />
     </el-dialog>
     <!-- 申请人 -->
-    <el-dialog v-if="ApplicantVisible" width="950px" :close-on-click-modal="false" title="申请人" :visible.sync="ApplicantVisible">
-      <Applicant :id="updateId" :applicant-id="ApplicantId" :applicant="true" :is-update="ApplicantIsUpdate" @ApplicantCreateSuccess="ApplicantCreateSuccess" @ApplicantUpdateSuccess="ApplicantUpdateSuccess" />
+    <el-dialog
+      v-if="ApplicantVisible"
+      width="950px"
+      :close-on-click-modal="false"
+      title="申请人"
+      :visible.sync="ApplicantVisible"
+    >
+      <Applicant
+        :id="updateId"
+        :applicant-id="ApplicantId"
+        :applicant="true"
+        :is-update="ApplicantIsUpdate"
+        @ApplicantCreateSuccess="ApplicantCreateSuccess"
+        @ApplicantUpdateSuccess="ApplicantUpdateSuccess"
+      />
     </el-dialog>
     <!-- 被申请人 -->
-    <el-dialog v-if="RespondentVisible" width="950px" :close-on-click-modal="false" title="被申请人" :visible.sync="RespondentVisible">
-      <Applicant :id="updateId" :respondent-id="RespondentId" :applicant="false" :is-update="RespondentIsUpdate" @RespondentCreateSuccess="RespondentCreateSuccess" @RespondentUpdateSuccess="RespondentUpdateSuccess" />
+    <el-dialog
+      v-if="RespondentVisible"
+      width="950px"
+      :close-on-click-modal="false"
+      title="被申请人"
+      :visible.sync="RespondentVisible"
+    >
+      <Applicant
+        :id="updateId"
+        :respondent-id="RespondentId"
+        :applicant="false"
+        :is-update="RespondentIsUpdate"
+        @RespondentCreateSuccess="RespondentCreateSuccess"
+        @RespondentUpdateSuccess="RespondentUpdateSuccess"
+      />
     </el-dialog>
     <!-- 原告代理人 -->
-    <el-dialog v-if="AgentVisible" width="950px" :close-on-click-modal="false" title="原告代理人" :visible.sync="AgentVisible">
-      <Agent :id="updateId" :is-update="AgentIsUpdate" :agent-id="AgentId" @AgentCreateSuccess="AgentCreateSuccess" @AgentUpdateSuccess="AgentUpdateSuccess" />
+    <el-dialog
+      v-if="AgentVisible"
+      width="950px"
+      :close-on-click-modal="false"
+      title="原告代理人"
+      :visible.sync="AgentVisible"
+    >
+      <Agent
+        :id="updateId"
+        :is-update="AgentIsUpdate"
+        :agent-id="AgentId"
+        @AgentCreateSuccess="AgentCreateSuccess"
+        @AgentUpdateSuccess="AgentUpdateSuccess"
+      />
     </el-dialog>
     <!-- 财产线索 -->
-    <el-dialog v-if="PropertyVisible" width="950px" :close-on-click-modal="false" title="财产线索" :visible.sync="PropertyVisible">
-      <Property :id="updateId" :is-update="PropertyIsUpdate" :clue-id="PropertyId" @PropertyCreateSuccess="PropertyCreateSuccess" @PropertyUpdateSuccess="PropertyUpdateSuccess" />
+    <el-dialog
+      v-if="PropertyVisible"
+      width="950px"
+      :close-on-click-modal="false"
+      title="财产线索"
+      :visible.sync="PropertyVisible"
+    >
+      <Property
+        :id="updateId"
+        :is-update="PropertyIsUpdate"
+        :clue-id="PropertyId"
+        @PropertyCreateSuccess="PropertyCreateSuccess"
+        @PropertyUpdateSuccess="PropertyUpdateSuccess"
+      />
     </el-dialog>
   </div>
 </template>
@@ -106,7 +189,18 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // settings
 export default {
   name: 'GuaranteeDetails',
-  components: { Steps, Detail, BaseData, Applicant, Agent, Property, TableApp, TableRes, TableAgent, TablePro },
+  components: {
+    Steps,
+    Detail,
+    BaseData,
+    Applicant,
+    Agent,
+    Property,
+    TableApp,
+    TableRes,
+    TableAgent,
+    TablePro
+  },
   mixins: [DetailMixin, MethodsMixin],
   data() {
     return {
@@ -136,7 +230,9 @@ export default {
       // 基本资料
       baseData: [],
       baseObj: {},
-      tableData: []
+      tableData: [],
+      // 步聚
+      step: 0
     }
   },
   created() {},
@@ -144,8 +240,10 @@ export default {
     getDetail() {
       guaranteeApi.details(this.updateId).then(({ code, data, msg }) => {
         if (code === 200) {
-          const { guaranteeBaseInfo, applicant, respondent, agent, assetClue } = data
+          const { guaranteeBaseInfo, applicant, respondent, agent, assetClue } =
+            data
           this.baseObj = guaranteeBaseInfo
+          this.step = guaranteeBaseInfo.step || 0
           this.baseData = baseData(guaranteeBaseInfo)
           this.ApplicantData = applicant
           this.RespondentData = respondent
@@ -193,20 +291,22 @@ export default {
       })
     },
     submitForm() {
-      guaranteeApi
-        .step({
-          gId: this.updateId,
-          step: 2
-        })
-        .then(({ code, data, msg }) => {
-          if (code === 200) {
-            this.$router.push({
-              path: `/guarantee/upload/${this.updateId}`
-            })
-          } else {
-            this.$message.error(msg)
-          }
-        })
+      if (+this.step === -1) {
+        this.routerClose(`/guarantee/upload/${this.updateId}`)
+      } else {
+        guaranteeApi
+          .step({
+            gId: this.updateId,
+            step: 2
+          })
+          .then(({ code, data, msg }) => {
+            if (code === 200) {
+              this.routerClose(`/guarantee/upload/${this.updateId}`)
+            } else {
+              this.$message.error(msg)
+            }
+          })
+      }
     },
     // 基本资料
     DetailUpdate() {
