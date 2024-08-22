@@ -62,6 +62,16 @@ export const guarantee = {
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'audit/:id',
+      name: 'guaranteeAudit',
+      component: () => import('@/views/guarantee/audit'),
+      meta: {
+        title: '提交审核',
+        activeMenu: '/guarantee/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
     }
   ]
 }

@@ -31,39 +31,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-ul,
-li {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-.showTable {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  li {
-    width: 25%;
-    display: flex;
-    b,
-    i,
-    u {
-      display: block;
-      text-decoration: none;
-      font-weight: normal;
-      font-style: normal;
-      height: 35px;
-      line-height: 35px;
-      color: #666;
-    }
-    b {
-      width: 100px;
-      text-align: right;
-    }
-    &:last-child {
-      i {
-        width: 500px;
-      }
-    }
-  }
-}
+@import url('../styles/preview.scss');
 </style>

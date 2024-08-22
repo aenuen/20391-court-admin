@@ -1,55 +1,81 @@
 <template>
-  <div style="display: inline-block">
-    <div :style="{ width: width + 'px', height: height + 'px' }">
-      <el-image v-if="classify === 'pic'" :style="{ width: width + 'px', height: height + 'px' }" :src="fileUrl" fit="fit" />
-      <el-image v-else-if="classify === 'doc'" :style="{ width: width + 'px', height: height + 'px' }" :src="doc" fit="fit" />
-      <el-image v-else-if="classify === 'xls'" :style="{ width: width + 'px', height: height + 'px' }" :src="xls" fit="fit" />
-      <el-image v-else-if="classify === 'pdf'" :style="{ width: width + 'px', height: height + 'px' }" :src="pdf" fit="fit" />
+  <div class="fileShow">
+    <div v-for="(item, key) in fileList" :key="key" class="item" @click="download(getFullUrl(item.url))">
+      <div class="file">
+        <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" />
+        <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="fit" />
+        <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="fit" />
+        <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="fit" />
+      </div>
+      <div class="name">{{ item.fileName }}</div>
     </div>
-    <div v-if="desc" class="desc" :style="{ width: width + 'px', height: '40px' }">{{ fileAlt || desc }}</div>
   </div>
 </template>
 <script>
 // api
 // components
 // data
-import { apiBaseUrl } from '@/libs/axios/settings'
 // filter
 // function
-// mixins
+// mixin
 // plugins
 import { fileClassify } from 'abbott-methods/import'
 // settings
+import { serveUrl } from '@/settings'
 export default {
+  name: 'ComponentsFileShow',
   components: {},
+  mixins: [],
   props: {
-    fileUrl: { type: String, default: '' },
-    width: { type: Number, default: 100 },
-    height: { type: Number, default: 100 },
-    desc: { type: String, default: '' }
+    fileList: { type: Array, default: () => [] }
   },
   data() {
     return {
-      doc: `${apiBaseUrl}/constant/typeImage/word.png`,
-      xls: `${apiBaseUrl}/constant/typeImage/excel.png`,
-      pdf: `${apiBaseUrl}/constant/typeImage/pdf.png`
+      fileClassify,
+      doc: require(`@/assets/image/fileType/word.png`),
+      xls: require(`@/assets/image/fileType/excel.png`),
+      pdf: require(`@/assets/image/fileType/PDF.png`)
     }
   },
-  computed: {
-    classify() {
-      const classify = fileClassify(this.fileUrl)
-      return classify
+  created() {},
+  methods: {
+    // 获取网址
+    getFullUrl(url) {
+      const arr = url.split('/')
+      return `${serveUrl}/file/images/${arr[arr.length - 1]}`
+    },
+    // 下载
+    download(url) {
+      window.open(url)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.desc {
-  padding: 10px 0;
-  text-align: center;
-  line-height: 20px;
-  font-size: 14px;
-  color: #666;
-  overflow: hidden;
+.fileShow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  .item {
+    height: 80px;
+    width: 300px;
+    display: flex;
+    border: 1px solid #ddd;
+    padding: 14px;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+    .file {
+      margin-right: 10px;
+      .el-image {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    .name {
+      display: flex;
+      align-items: center; /* 垂直居中 */
+    }
+  }
 }
 </style>

@@ -20,7 +20,7 @@ export const DetailTwo = {
 
 // 申请人、被申请人
 export const ApplicantCommon = {
-  name: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.name, 2, 20) }],
+  name: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.name, '填写', 2, 20) }],
   area: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.area, '选择') }],
   certType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.certType, '选择') }],
   certNo: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.certNo, '填写', 8, 18) }],

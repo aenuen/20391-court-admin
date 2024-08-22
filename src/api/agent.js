@@ -1,5 +1,6 @@
 import request from '@/libs/axios/courtReq'
 
+// 申请原告代理人api
 export const agentApi = {
   // put
   create: data => request({ url: '/agent/create', method: 'put', data }), // 创建担保

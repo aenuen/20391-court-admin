@@ -1,10 +1,12 @@
 // 异步加载
 import { guarantee } from './modules/guarantee'
 import { account } from './modules/account'
+import { user } from './modules/user'
 import { dict } from './modules/dict'
 import { icons } from './modules/icons'
 const asyncRoutes = [
   guarantee,
+  user,
   dict,
   account,
   icons,

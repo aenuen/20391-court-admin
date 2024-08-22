@@ -1,6 +1,7 @@
 
 import request from '@/libs/axios/request'
 
+// 字典api
 export const dictApi = {
   // get
   gain: params => request({ url: '/dict/get/' + params, method: 'get' }), // 详情
