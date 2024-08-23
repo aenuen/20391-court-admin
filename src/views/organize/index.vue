@@ -47,12 +47,12 @@
       <el-row>
         <el-col :span="12">
           <el-form-item class="is-required" :label="fields.logoImage" :label-width="labelWidth">
-            <Multi :auto="false" />
+            <Multi :auto="false" :accept="accept" :action="action" :width="200" :height="126" :data="{ type: 2, orgId: theId }" :limit="1" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item class="is-required" :label="fields.licenseImage" :label-width="labelWidth">
-            <Multi :auto="false" />
+            <Multi :auto="false" :accept="accept" :action="action" :width="200" :height="126" :data="{ type: 1, orgId: theId }" :limit="1" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -124,8 +124,9 @@
 </template>
 <script>
 // api
+import { organizeApi } from '@/api/organize'
 // components
-import Multi from '@/components/Upload/Multi'
+import Multi from '@/components/Upload/MultiOrganize'
 // data
 import { fields } from './modules/fields'
 // filter
@@ -137,6 +138,7 @@ import GainDict from '@/components/Mixins/GainDict'
 // plugins
 import { regionData } from 'element-china-area-data'
 // settings
+import { apiCourtUrl } from '@/settings'
 export default {
   name: 'OrganizeIndex',
   components: { Multi },
@@ -145,7 +147,14 @@ export default {
     return {
       fields,
       labelWidth: '200px',
-      regionData
+      regionData,
+      theId: '',
+      accept: ['.jpg', '.jpeg', '.png', '.gif'].join(',')
+    }
+  },
+  computed: {
+    action() {
+      return apiCourtUrl + '/organization/upload'
     }
   },
   created() {},
@@ -153,6 +162,26 @@ export default {
     startHandle() {
       this.submitTxt = '信息' + (this.isUpdate ? '编辑' : '提交')
       this.gainDict_orgTypeAry()
+      this.getId()
+      this.getDetail()
+    },
+    getId() {
+      organizeApi.getId().then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.theId = data
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
+    getDetail() {
+      organizeApi.detail().then(({ code, data, msg }) => {
+        if (code === 200) {
+          console.log('🚀 ~ ', data)
+        } else {
+          this.$message.error(msg)
+        }
+      })
     },
     submitForm() {}
   }

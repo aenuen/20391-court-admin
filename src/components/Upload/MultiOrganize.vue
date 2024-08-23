@@ -1,15 +1,15 @@
 <template>
   <div class="uploadMulti">
     <div class="uploadList">
-      <div v-for="(item, key) in fileList" :key="key" class="item" :style="{width:width + 'px',height:height + 50 + 'px'}">
+      <div v-for="(item, key) in fileList" :key="key" class="item" :style="{ width: width + 'px', height: height + 50 + 'px' }">
         <div class="line">
-          <div class="file" :style="{width:width + 'px',height:height + 'px'}">
-            <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" :style="{width:width + 'px',height:height + 'px'}" />
-            <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="fit" :style="{width:width + 'px',height:height + 'px'}" />
-            <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="fit" :style="{width:width + 'px',height:height + 'px'}" />
-            <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="fit" :style="{width:width + 'px',height:height + 'px'}" />
+          <div class="file" :style="{ width: width + 'px', height: height + 'px' }">
+            <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
           </div>
-          <div class="mask" :style="{width:width + 'px',height:height + 'px'}" />
+          <div class="mask" :style="{ width: width + 'px', height: height + 'px' }" />
           <div class="icon">
             <span v-if="fileClassify(item.url) === 'pic'" @click="onUploadPreview(getFullUrl(item.url))">
               <i class="el-icon-zoom-in" />
@@ -22,15 +22,15 @@
             </span>
           </div>
         </div>
-        <div class="name" :style="{width:width + 'px',height:50 + 'px'}">{{ item.fileName }}</div>
+        <div class="name" :style="{ width: width + 'px', height: 50 + 'px' }">{{ item.fileName }}</div>
       </div>
       <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
     </div>
-    <div class="load" :style="{width:width + 'px',height:height + 50 + 'px'}">
-      <el-upload v-if="limit > fileList.length" class="uploaderItem" :multiple="false" :action="action" :headers="headers" :accept="accept" :data="data" :show-file-list="false" :on-success="onSuccess" :before-upload="onBeforeUpload" :on-error="onUploadError" :style="{width:width + 'px',height:height + 'px'}">
-        <i class="el-icon-plus uploaderIcon" :style="{width:width + 'px',height:height + 'px'}" />
+    <div class="load" :style="{ width: width + 'px', height: height + 50 + 'px' }">
+      <el-upload v-if="limit > fileList.length" class="uploaderItem" :multiple="false" :action="action" :headers="headers" :accept="accept" :data="data" :show-file-list="false" :on-success="onSuccess" :before-upload="onBeforeUpload" :on-error="onUploadError" :style="{ width: width + 'px', height: height + 'px' }">
+        <i class="el-icon-plus uploaderIcon" :style="{ width: width + 'px', height: height + 'px' }" />
         <div v-if="progress" class="progress">
           <el-progress type="circle" :percentage="percentage" :width="width" />
         </div>
@@ -55,9 +55,8 @@ export default {
   components: {},
   mixins: [],
   props: {
-    fileList: { type: Array, default: () => [] },
     action: { type: String, default: '' },
-    accept: { type: String, default: '' },
+    accept: { type: String, default: ['.xlsx', '.xls', '.doc', '.docx', '.pdf', '.jpg', '.jpeg', '.png', '.gif'].join(',') },
     data: { type: Object, default: () => {} },
     fileExceed: { type: Number, default: 2 },
     limit: { type: Number, default: 5 },
@@ -71,6 +70,7 @@ export default {
       dialogImageUrl: '',
       percentage: 0,
       progress: false,
+      fileList: [],
       doc: require(`@/assets/image/fileType/word.png`),
       xls: require(`@/assets/image/fileType/excel.png`),
       pdf: require(`@/assets/image/fileType/PDF.png`)
@@ -88,11 +88,10 @@ export default {
     // 获取网址
     getFullUrl(url) {
       const arr = url.split('/')
-      return `${serveUrl}/file/images/${arr[arr.length - 1]}`
+      return `${serveUrl}/file/org/${arr[arr.length - 2]}/${arr[arr.length - 1]}`
     },
     // 上传成功
     onSuccess({ code, data }, file) {
-      console.log('🚀 ~ onSuccess ~ data:', data)
       if (code === 200) {
         this.isUpdate = false
         if (typeof data === 'string') {
@@ -143,7 +142,7 @@ export default {
     },
     // 删除
     onUploadRemove(fileId) {
-      this.$emit('onUploadRemove', fileId)
+      this.fileList = [...[]]
     }
   }
 }
