@@ -100,7 +100,6 @@ const actions = {
               roles.push(item.value)
             }
           })
-          console.log(rolesAry)
           const newData = { roles, aid: userId, cardNo, realName: name, mobile: telephone, avatar: img === null ? serveUrl + '/images/default.png' : serveUrl + img }
           commit('SET_Roles', newData.roles)
           commit('SET_Aid', newData.aid)

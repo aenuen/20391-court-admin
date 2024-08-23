@@ -3,34 +3,15 @@
     <div class="uploadList">
       <div v-for="(item, key) in fileList" :key="key" class="item">
         <div class="file">
-          <el-image
-            v-if="fileClassify(item.url) === 'pic'"
-            :src="getFullUrl(item.url)"
-            fit="cover"
-          />
-          <el-image
-            v-else-if="fileClassify(item.url) === 'doc'"
-            :src="doc"
-            fit="fit"
-          />
-          <el-image
-            v-else-if="fileClassify(item.url) === 'xls'"
-            :src="xls"
-            fit="fit"
-          />
-          <el-image
-            v-else-if="fileClassify(item.url) === 'pdf'"
-            :src="pdf"
-            fit="fit"
-          />
+          <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" />
+          <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="fit" />
+          <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="fit" />
+          <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="fit" />
         </div>
         <div class="name">{{ item.fileName }}</div>
         <div class="mask" />
         <div class="icon">
-          <span
-            v-if="fileClassify(item.url) === 'pic'"
-            @click="onUploadPreview(getFullUrl(item.url))"
-          >
+          <span v-if="fileClassify(item.url) === 'pic'" @click="onUploadPreview(getFullUrl(item.url))">
             <i class="el-icon-zoom-in" />
           </span>
           <span v-else @click="onUploadDownload(getFullUrl(item.url))">
@@ -45,19 +26,7 @@
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
     </div>
-    <el-upload
-      v-if="limit > fileList.length"
-      class="uploaderItem"
-      :multiple="false"
-      :action="action"
-      :headers="headers"
-      :accept="accept"
-      :data="data"
-      :show-file-list="false"
-      :on-success="onSuccess"
-      :before-upload="onBeforeUpload"
-      :on-error="onUploadError"
-    >
+    <el-upload v-if="limit > fileList.length" class="uploaderItem" :multiple="false" :action="action" :headers="headers" :accept="accept" :data="data" :show-file-list="false" :on-success="onSuccess" :before-upload="onBeforeUpload" :auto-upload="auto" :on-error="onUploadError">
       <i class="el-icon-plus uploaderIcon" />
       <div v-if="progress" class="progress">
         <el-progress type="circle" :percentage="percentage" :width="100" />
@@ -87,7 +56,8 @@ export default {
     accept: { type: String, default: '' },
     data: { type: Object, default: () => {} },
     fileExceed: { type: Number, default: 2 },
-    limit: { type: Number, default: 5 }
+    limit: { type: Number, default: 5 },
+    auto: { type: Boolean, default: true }
   },
   data() {
     return {
@@ -118,6 +88,11 @@ export default {
     },
     // 上传成功
     onSuccess({ code, data }, file) {
+      if (this.auto) {
+        //
+      } else {
+        //
+      }
       if (code === 200) {
         this.isUpdate = false
         // const { url, fileName, fileId, type, gcId } = data
@@ -148,9 +123,7 @@ export default {
       } else {
         const isSmall = file.size / 1024 / 1024 < this.fileExceed
         if (!isSmall) {
-          this.$message.error(
-            `上传失败，文件大小不能超过 ${this.fileExceed}MB!`
-          )
+          this.$message.error(`上传失败，文件大小不能超过 ${this.fileExceed}MB!`)
           this.percentage = 0
           this.progress = false
         }

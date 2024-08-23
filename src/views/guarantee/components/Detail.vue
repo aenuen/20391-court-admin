@@ -128,14 +128,14 @@ import { dictGetValueByName } from '@/libs/utils/dict'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import gainDict from '@/components/Mixins/gainDict'
+import GainDict from '@/components/Mixins/GainDict'
 // plugins
 import { controlInputPrice, numberPriceBigWrite, timeGetYear } from 'abbott-methods/import'
 // settings
 export default {
   name: 'GuaranteeDetail',
   components: {},
-  mixins: [DetailMixin, MethodsMixin, gainDict],
+  mixins: [DetailMixin, MethodsMixin, GainDict],
   props: {
     isUpdate: { type: Boolean, default: false },
     baseObj: { type: Object, default: () => {} }

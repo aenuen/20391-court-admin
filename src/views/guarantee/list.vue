@@ -86,7 +86,7 @@ import { toUpdate, toPages } from './modules/tPage'
 // mixins
 import ListMixin from '@/components/Mixins/ListMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import gainDict from '@/components/Mixins/gainDict'
+import GainDict from '@/components/Mixins/GainDict'
 // plugins
 // settings
 export default {
@@ -102,7 +102,7 @@ export default {
       return (str || '').replace(/\|/g, '')
     }
   },
-  mixins: [ListMixin, MethodsMixin, gainDict],
+  mixins: [ListMixin, MethodsMixin, GainDict],
   data() {
     return {
       fields

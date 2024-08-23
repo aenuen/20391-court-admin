@@ -203,7 +203,7 @@ import { dictGetValueByName, dictGetValueByNationName } from '@/libs/utils/dict'
 // mixins
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import gainDict from '@/components/Mixins/gainDict'
+import GainDict from '@/components/Mixins/GainDict'
 // plugins
 import { timeGetDate } from 'abbott-methods/import'
 import { regionData } from 'element-china-area-data'
@@ -211,7 +211,7 @@ import { regionData } from 'element-china-area-data'
 export default {
   name: 'GuaranteeApplicant',
   components: {},
-  mixins: [DetailMixin, MethodsMixin, gainDict],
+  mixins: [DetailMixin, MethodsMixin, GainDict],
   props: {
     id: { type: String, default: '' }, // 担保订单ID
     applicantId: { type: String, default: '' }, // 申请人ID

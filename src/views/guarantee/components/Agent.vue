@@ -118,14 +118,14 @@ import { dictGetValueByName } from '@/libs/utils/dict'
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import gainDict from '@/components/Mixins/gainDict'
+import GainDict from '@/components/Mixins/GainDict'
 // plugins
 import { regionData } from 'element-china-area-data'
 // settings
 export default {
   name: 'GuaranteeAgent',
   components: {},
-  mixins: [DetailMixin, MethodsMixin, gainDict],
+  mixins: [DetailMixin, MethodsMixin, GainDict],
   props: {
     id: { type: String, default: '' }, // 担保订单ID
     agentId: { type: String, default: '' }, // 代理人ID

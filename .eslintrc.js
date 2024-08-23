@@ -14,7 +14,7 @@ module.exports = {
   // 在此处添加自定义规则
   rules: {
     'vue/max-attributes-per-line': [2, {
-      'singleline': 10,
+      'singleline': 20,
       'multiline': {
         'max': 1,
         'allowFirstLine': false
