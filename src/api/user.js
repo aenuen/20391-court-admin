@@ -18,5 +18,8 @@ export const userApi = {
   baseData: data => request({ url: '/user/modify', method: 'post', data }), // 基本资料
   password: data => request({ url: '/user/password', method: 'post', data }), // 修改密码
   upload: data => request({ url: '/user/upload', method: 'post', data }), // 上传头像
-  list: data => request({ url: '/user/selectByPage', method: 'post', params: data }) // 列表
+  list: data => request({ url: '/user/selectByPage', method: 'post', params: data }), // 列表
+  status: data => request({ url: '/user/change', method: 'post', params: data }), // 列表
+  // delete
+  remove: params => request({ url: '/user/del/' + params, method: 'delete' }) // 注册短信验证码
 }

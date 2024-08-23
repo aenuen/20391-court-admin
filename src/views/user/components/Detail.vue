@@ -75,7 +75,7 @@ export default {
           const newForm = {
             telephone: CryptoJsEncode(this.postForm.telephone),
             password: CryptoJsEncode(this.postForm.password),
-            roleId: 1
+            roleId: 2
           }
           userApi
             .create(newForm)

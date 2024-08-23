@@ -4,7 +4,8 @@ export const dict = {
   path: '/dict', name: 'dict', component: Layout, redirect: '/dict/create',
   meta: {
     title: '字典管理',
-    icon: 'peoples'
+    icon: 'dict',
+    roles: ['admin']
   },
   children: [
     {
@@ -12,7 +13,8 @@ export const dict = {
       name: 'dictList',
       component: () => import('@/views/dict/list'),
       meta: {
-        title: '字典管理'
+        title: '字典管理',
+        roles: ['admin']
       }
     }
   ]

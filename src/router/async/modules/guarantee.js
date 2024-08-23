@@ -4,7 +4,7 @@ export const guarantee = {
   path: '/guarantee', name: 'guarantee', component: Layout, redirect: '/guarantee/create',
   meta: {
     title: '担保管理',
-    icon: 'peoples'
+    icon: 'guarantee'
   },
   children: [
     {
@@ -12,7 +12,8 @@ export const guarantee = {
       name: 'guaranteeList',
       component: () => import('@/views/guarantee/list'),
       meta: {
-        title: '担保列表'
+        title: '担保列表',
+        roles: ['user']
       }
     },
     {
@@ -20,7 +21,8 @@ export const guarantee = {
       name: 'guaranteeCreate',
       component: () => import('@/views/guarantee/create'),
       meta: {
-        title: '担保申请'
+        title: '担保申请',
+        roles: ['user']
       }
     },
     {
@@ -29,6 +31,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/details'),
       meta: {
         title: '担保资料',
+        roles: ['user'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -39,6 +42,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/upload'),
       meta: {
         title: '上传资料',
+        roles: ['user'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -49,6 +53,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/select'),
       meta: {
         title: '选择担保机构',
+        roles: ['user'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -59,6 +64,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/preview'),
       meta: {
         title: '预览订单',
+        roles: ['user'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -69,6 +75,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/audit'),
       meta: {
         title: '提交审核',
+        roles: ['user'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中

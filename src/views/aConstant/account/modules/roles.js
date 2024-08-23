@@ -5,6 +5,7 @@
 export const rolesAry = [
   { value: 'user', code: '0', label: '普通用户' },
   { value: 'judge', code: '1', label: '法官用户' },
+  { value: 'shops', code: '2', label: '商家用户' },
   { value: 'admin', code: '9', label: '管理员' }
 ]
 
