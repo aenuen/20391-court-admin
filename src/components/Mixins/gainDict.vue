@@ -17,6 +17,7 @@ export default {
   mixins: [],
   data() {
     return {
+      orgTypeAry: [], // 机构类型
       assetType: [], // 财产类型
       agentTypeAry: [], // 代理人类型
       applyTypeAry: [], // 申请人类型
@@ -32,6 +33,22 @@ export default {
   },
   created() {},
   methods: {
+    // 机构类型
+    async gainDict_orgTypeAry() {
+      const data = localStorage.getItem('orgTypeAry')
+      if (data) {
+        this.orgTypeAry = JSON.parse(data)
+      } else {
+        await dictApi.gain('orgType').then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.orgTypeAry = data.child
+            localStorage.setItem('orgTypeAry', JSON.stringify(data.child))
+          } else {
+            this.$message.error(msg)
+          }
+        })
+      }
+    },
     // 代理人类型
     async gainDict_assetTypeAry() {
       const data = localStorage.getItem('assetTypeAry')

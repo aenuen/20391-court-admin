@@ -76,7 +76,6 @@
 <script>
 // api
 import { guaranteeApi } from '@/api/guarantee'
-// import axios from '@/libs/axios/courtReq'
 // components
 import Pagination from '@/components/Pagination'
 // data
@@ -87,7 +86,7 @@ import { toUpdate, toPages } from './modules/tPage'
 // mixins
 import ListMixin from '@/components/Mixins/ListMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import gainDict from './mixins/gainDict'
+import gainDict from '@/components/Mixins/gainDict'
 // plugins
 // settings
 export default {

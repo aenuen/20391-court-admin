@@ -4,110 +4,47 @@
       <el-row>
         <!-- 代理人类型 -->
         <el-col :span="12">
-          <el-form-item
-            class="is-required"
-            prop="agentType"
-            :label="fields.agentType"
-            :label-width="labelWidth"
-          >
-            <el-select
-              v-model="postForm.agentType"
-              :placeholder="fields.agentType"
-              :style="{ width: '100%' }"
-            >
-              <el-option
-                v-for="(item, key) in agentTypeAry"
-                :key="key"
-                :value="String(item.dictValue)"
-                :label="item.name"
-              />
+          <el-form-item class="is-required" prop="agentType" :label="fields.agentType" :label-width="labelWidth">
+            <el-select v-model="postForm.agentType" :placeholder="fields.agentType" :style="{ width: '100%' }">
+              <el-option v-for="(item, key) in agentTypeAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
             </el-select>
           </el-form-item>
         </el-col>
         <!-- 代理人 -->
         <el-col :span="12">
-          <el-form-item
-            class="is-required"
-            prop="agentName"
-            :label="fields.agentName"
-            :label-width="labelWidth"
-          >
-            <el-input
-              v-model="postForm.agentName"
-              :placeholder="fields.agentName"
-              maxlength="10"
-              :style="{ width: '100%' }"
-            />
+          <el-form-item class="is-required" prop="agentName" :label="fields.agentName" :label-width="labelWidth">
+            <el-input v-model="postForm.agentName" :placeholder="fields.agentName" maxlength="10" :style="{ width: '100%' }" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <!-- 性别 -->
         <el-col :span="12">
-          <el-form-item
-            class="is-required"
-            prop="sex"
-            :label="fields.sex"
-            :label-width="labelWidth"
-          >
+          <el-form-item class="is-required" prop="sex" :label="fields.sex" :label-width="labelWidth">
             <el-radio v-model="postForm.sex" :label="0">男性</el-radio>
             <el-radio v-model="postForm.sex" :label="1">女性</el-radio>
           </el-form-item>
         </el-col>
         <!-- 执业号 -->
         <el-col :span="12">
-          <el-form-item
-            class="is-required"
-            prop="practiceCertNo"
-            :label="fields.practiceCertNo"
-            :label-width="labelWidth"
-          >
-            <el-input
-              v-model="postForm.practiceCertNo"
-              :placeholder="fields.practiceCertNo"
-              maxlength="18"
-              :style="{ width: '100%' }"
-            />
+          <el-form-item class="is-required" prop="practiceCertNo" :label="fields.practiceCertNo" :label-width="labelWidth">
+            <el-input v-model="postForm.practiceCertNo" :placeholder="fields.practiceCertNo" maxlength="18" :style="{ width: '100%' }" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <!-- 证件类型 -->
         <el-col :span="12">
-          <el-form-item
-            class="is-required"
-            prop="certType"
-            :label="fields.certType"
-            :label-width="labelWidth"
-          >
-            <el-select
-              v-model="postForm.certType"
-              :placeholder="fields.certType"
-              :style="{ width: '100%' }"
-            >
-              <el-option
-                v-for="(item, key) in certTypeAry"
-                :key="key"
-                :value="String(item.dictValue)"
-                :label="item.name"
-              />
+          <el-form-item class="is-required" prop="certType" :label="fields.certType" :label-width="labelWidth">
+            <el-select v-model="postForm.certType" :placeholder="fields.certType" :style="{ width: '100%' }">
+              <el-option v-for="(item, key) in certTypeAry" :key="key" :value="String(item.dictValue)" :label="item.name" />
             </el-select>
           </el-form-item>
         </el-col>
         <!-- 证件号 -->
         <el-col :span="12">
-          <el-form-item
-            class="is-required"
-            prop="certNo"
-            :label="fields.certNo"
-            :label-width="labelWidth"
-          >
-            <el-input
-              v-model="postForm.certNo"
-              :placeholder="fields.certNo"
-              maxlength="18"
-              :style="{ width: '100%' }"
-            />
+          <el-form-item class="is-required" prop="certNo" :label="fields.certNo" :label-width="labelWidth">
+            <el-input v-model="postForm.certNo" :placeholder="fields.certNo" maxlength="18" :style="{ width: '100%' }" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -116,28 +53,14 @@
           <div class="addressArea">
             <!-- 省市区 -->
             <div class="area">
-              <el-form-item
-                class="is-required"
-                prop="dwellArea"
-                :label="fields.dwellAddress"
-                :label-width="labelWidth"
-              >
-                <el-cascader
-                  v-model="postForm.dwellArea"
-                  :options="regionData"
-                  :placeholder="fields.dwellArea"
-                  style="width: 100%"
-                />
+              <el-form-item class="is-required" prop="dwellArea" :label="fields.dwellAddress" :label-width="labelWidth">
+                <el-cascader v-model="postForm.dwellArea" :options="regionData" :placeholder="fields.dwellArea" style="width: 100%" />
               </el-form-item>
             </div>
             <!-- 地址 -->
             <div class="address">
               <el-form-item class="is-required" prop="dwellAddress">
-                <el-input
-                  v-model="postForm.dwellAddress"
-                  :placeholder="fields.dwellAddress"
-                  style="width: 100%"
-                />
+                <el-input v-model="postForm.dwellAddress" :placeholder="fields.dwellAddress" style="width: 100%" />
               </el-form-item>
             </div>
           </div>
@@ -146,49 +69,26 @@
       <el-row>
         <!-- 手机号码 -->
         <el-col :span="12">
-          <el-form-item
-            class="is-required"
-            prop="mobile"
-            :label="fields.mobile"
-            :label-width="labelWidth"
-          >
-            <el-input
-              v-model="postForm.mobile"
-              :placeholder="fields.mobile"
-              maxlength="11"
-              style="width: 100%"
-            />
+          <el-form-item class="is-required" prop="mobile" :label="fields.mobile" :label-width="labelWidth">
+            <el-input v-model="postForm.mobile" :placeholder="fields.mobile" maxlength="11" style="width: 100%" />
           </el-form-item>
         </el-col>
         <!-- 固定电话 -->
         <el-col :span="12">
           <div class="telArea">
             <div>
-              <el-form-item
-                prop="areaNumber"
-                :label="fields.telephone"
-                :label-width="labelWidth"
-              >
-                <el-input
-                  v-model="postForm.areaNumber"
-                  :placeholder="fields.areaNumber"
-                />
+              <el-form-item prop="areaNumber" :label="fields.telephone" :label-width="labelWidth">
+                <el-input v-model="postForm.areaNumber" :placeholder="fields.areaNumber" />
               </el-form-item>
             </div>
             <div class="telephone">
               <el-form-item prop="telephone">
-                <el-input
-                  v-model="postForm.telephone"
-                  :placeholder="fields.telephone"
-                />
+                <el-input v-model="postForm.telephone" :placeholder="fields.telephone" />
               </el-form-item>
             </div>
             <div>
               <el-form-item prop="runNumber">
-                <el-input
-                  v-model="postForm.runNumber"
-                  :placeholder="fields.runNumber"
-                />
+                <el-input v-model="postForm.runNumber" :placeholder="fields.runNumber" />
               </el-form-item>
             </div>
           </div>
@@ -197,9 +97,7 @@
       <el-row>
         <el-col>
           <el-form-item :label-width="labelWidth">
-            <el-button type="primary" @click="submitForm">{{
-              submitTxt
-            }}</el-button>
+            <el-button type="primary" @click="submitForm">{{ submitTxt }}</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -220,7 +118,7 @@ import { dictGetValueByName } from '@/libs/utils/dict'
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import gainDict from '../mixins/gainDict'
+import gainDict from '@/components/Mixins/gainDict'
 // plugins
 import { regionData } from 'element-china-area-data'
 // settings
@@ -278,26 +176,15 @@ export default {
         if (valid) {
           const newForm = {
             gcId: this.id, // 担保ID
-            agentType: dictGetValueByName(
-              this.agentTypeAry,
-              this.postForm.agentType
-            ),
+            agentType: dictGetValueByName(this.agentTypeAry, this.postForm.agentType),
             agentName: this.postForm.agentName,
             sex: this.postForm.sex,
             practiceCertNo: this.postForm.practiceCertNo,
-            certType: dictGetValueByName(
-              this.certTypeAry,
-              this.postForm.certType
-            ),
+            certType: dictGetValueByName(this.certTypeAry, this.postForm.certType),
             certNo: this.postForm.certNo,
-            address:
-              (this.postForm.dwellArea || '') +
-              '/' +
-              (this.postForm.dwellAddress || ''),
+            address: (this.postForm.dwellArea || '') + '/' + (this.postForm.dwellAddress || ''),
             telephone: this.postForm.mobile,
-            fixedTelephone: `${this.postForm.areaNumber || ''}|${
-              this.postForm.telephone || ''
-            }|${this.postForm.runNumber || ''}`
+            fixedTelephone: `${this.postForm.areaNumber || ''}|${this.postForm.telephone || ''}|${this.postForm.runNumber || ''}`
           }
           if (this.isUpdate) {
             newForm.agentId = this.agentId

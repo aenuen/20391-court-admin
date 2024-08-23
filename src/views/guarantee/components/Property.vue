@@ -69,7 +69,7 @@ import { dictGetValueByName } from '@/libs/utils/dict'
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
-import gainDict from '../mixins/gainDict.vue'
+import gainDict from '@/components/Mixins/gainDict'
 // plugins
 import { regionData } from 'element-china-area-data'
 // settings
