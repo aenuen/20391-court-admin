@@ -15,7 +15,8 @@
     "clean": "git config --global core.autocrlf true",
     "plus": "git add .",
     "commit": "git commit -m upgrade",
-    "push": "git push -u origin main"
+    "push": "git push -u origin main",
+    "strong": "git push -f origin main"
   },
   "dependencies": {
     "abbott-methods": "^1.0.9",
