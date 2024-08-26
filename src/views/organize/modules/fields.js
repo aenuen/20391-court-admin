@@ -7,6 +7,7 @@ export const fields = {
   orgEmail: '公司邮箱',
   orgTelephone: '公司电话',
   logoImage: '公司Logo',
+  license: '营业执照',
   licenseImage: '营业执照图片',
   bank: '开户银行',
   orgAccount: '收款账户',

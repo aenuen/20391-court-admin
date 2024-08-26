@@ -1,4 +1,32 @@
 .app-container {
+  min-width: 1015px;
+  .example {
+    display: flex;
+    padding: 20px 0 20px 200px;
+    > div {
+      margin-right: 10px;
+      span {
+        display: block;
+        font-size: 14px;
+        line-height: 25px;
+        color: #333;
+        text-align: center;
+        padding-bottom: 15px;
+      }
+      &.text {
+        display: flex;
+        align-items: center; /* 垂直居中 */
+        justify-content: center; /* 水平居中 */
+        ul {
+          li {
+            font-size: 14px;
+            line-height: 25px;
+            color: #666;
+          }
+        }
+      }
+    }
+  }
   .h1Title {
     height: 30px;
     line-height: 30px;

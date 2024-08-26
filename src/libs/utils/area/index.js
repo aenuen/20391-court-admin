@@ -1,12 +1,12 @@
-export const getAreaName = (ary, value) => {
+export const getAreaName = (codeToText, value) => {
   let area = ''
   if (value[1] != null && value[2] != null) {
-    area = ary[value[0]] + '/' + ary[value[1]] + '/' + ary[value[2]]
+    area = codeToText[value[0]] + '/' + codeToText[value[1]] + '/' + codeToText[value[2]]
   } else {
     if (value[1] != null) {
-      area = ary[value[0]] + '/' + ary[value[1]]
+      area = codeToText[value[0]] + '/' + codeToText[value[1]]
     } else {
-      area = ary[value[0]]
+      area = codeToText[value[0]]
     }
   }
   return area

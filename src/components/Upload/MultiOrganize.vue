@@ -4,10 +4,10 @@
       <div v-for="(item, key) in fileList" :key="key" class="item" :style="{ width: width + 'px', height: height + 50 + 'px' }">
         <div class="line">
           <div class="file" :style="{ width: width + 'px', height: height + 'px' }">
-            <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
-            <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
-            <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
-            <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="contain" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="contain" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="contain" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="contain" :style="{ width: width + 'px', height: height + 'px' }" />
           </div>
           <div class="mask" :style="{ width: width + 'px', height: height + 'px' }" />
           <div class="icon">
@@ -17,7 +17,7 @@
             <span v-else @click="onUploadDownload(getFullUrl(item.url))">
               <i class="el-icon-download" />
             </span>
-            <span @click="onUploadRemove(item.fileId)">
+            <span @click="onUploadRemove()">
               <i class="el-icon-delete" />
             </span>
           </div>
@@ -55,6 +55,7 @@ export default {
   components: {},
   mixins: [],
   props: {
+    fileList: { type: Array, default: () => [] },
     action: { type: String, default: '' },
     accept: { type: String, default: ['.xlsx', '.xls', '.doc', '.docx', '.pdf', '.jpg', '.jpeg', '.png', '.gif'].join(',') },
     data: { type: Object, default: () => {} },
@@ -70,7 +71,6 @@ export default {
       dialogImageUrl: '',
       percentage: 0,
       progress: false,
-      fileList: [],
       doc: require(`@/assets/image/fileType/word.png`),
       xls: require(`@/assets/image/fileType/excel.png`),
       pdf: require(`@/assets/image/fileType/PDF.png`)
@@ -99,6 +99,7 @@ export default {
         }
         this.fileList.push(data)
         this.$message.success('上传成功')
+        this.$emit('onUploadSuccess', this.data.type, this.getFullUrl({ url: data }))
       }
       this.percentage = 100
       setTimeout(() => {
@@ -141,8 +142,8 @@ export default {
       window.open(url)
     },
     // 删除
-    onUploadRemove(fileId) {
-      this.fileList = [...[]]
+    onUploadRemove() {
+      this.$emit('onUploadRemove', this.data.type)
     }
   }
 }

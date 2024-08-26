@@ -1,0 +1,81 @@
+.mt20 {
+  margin-top: 20px;
+}
+.header {
+  display: flex;
+  .info {
+    margin-left: 30px;
+  }
+  .icon {
+    margin-left: 60px;
+    display: flex;
+    .dot {
+      font-size: 40px;
+      line-height: 60px;
+      color: #1890ff;
+    }
+    .txt {
+      margin-left: 10px;
+      color: #1890ff;
+      line-height: 60px;
+    }
+  }
+}
+
+.item {
+  .title {
+    border-left: 5px solid #1890ff;
+    padding-left: 15px;
+    font-size: 14px;
+  }
+  .l {
+    width: 100%;
+    height: 1px;
+    background-color: #eee;
+  }
+  .lines {
+    width: 100%;
+    height: 100%;
+    .el-row {
+      width: 100%;
+    }
+  }
+  .line {
+    margin: 20px 0;
+    font-size: 14px;
+    padding: 0 19px 0 50px;
+    border-right: 1px solid #eee;
+    &.head {
+      padding-left: 20px;
+    }
+    &.foot {
+      border-right: 0;
+    }
+    .key {
+      color: #666;
+      line-height: 30px;
+    }
+    .value {
+      line-height: 20px;
+      color: #333;
+      height: 60px;
+    }
+  }
+  .cert {
+    display: flex;
+    margin-top: 20px;
+    .list {
+      width: 200px;
+      margin-right: 20px;
+      div {
+        line-height: 30px;
+        text-align: center;
+      }
+      .el-image {
+        width: 200px;
+        height: 150px;
+        cursor: pointer;
+      }
+    }
+  }
+}
