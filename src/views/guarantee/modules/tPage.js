@@ -4,6 +4,24 @@ export const toPages = (gId, status) => {
     case 0:
       path = 'audit'
       break
+    case 1:
+      path = 'preview'
+      break
+    case 2:
+      path = 'details'
+      break
+    case 3:
+      path = 'details'
+      break
+    case 4:
+      path = 'pay'
+      break
+    case 5:
+      path = 'fees'
+      break
+    case 6:
+      path = 'audit'
+      break
     default:
       path = 'audit'
       break

@@ -1,24 +1,50 @@
 <template>
   <div class="upload-container">
-    <el-upload :action="action" :headers="headers" :multiple="false" :data="data" :limit="fileLimit" :file-list="fileList" :accept="fileAccept" :disabled="fileDisabled" :on-preview="onPreview" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :on-remove="onRemove" :on-exceed="onExceed" drag show-file-list class="image-upload">
+    <el-upload
+      v-if="fileList.length === 0"
+      :action="action"
+      :headers="headers"
+      :multiple="false"
+      :data="fileData"
+      :limit="fileLimit"
+      :file-list="fileList"
+      :accept="fileAccept"
+      :disabled="fileDisabled"
+      :on-preview="onPreview"
+      :before-upload="beforeUpload"
+      :on-success="onSuccess"
+      :on-error="onError"
+      :on-remove="onRemove"
+      :on-exceed="onExceed"
+      drag
+      :show-file-list="false"
+      class="image-upload"
+    >
       <i class="el-icon-upload" />
-      <div v-if="fileList.length === 0" class="el-upload__text">
+      <div class="el-upload__text">
         请将 <em>{{ fileText }} 拖入</em> 或 <em>点击上传</em>
       </div>
-      <div v-else class="el-upload__text">{{ fileText }}已上传</div>
     </el-upload>
+    <div v-else style="width: 300px; margin: auto">
+      <el-image v-for="(item, key) in fileList" :key="key" :src="getFullUrl(item)" style="cursor: pointer" @click="View(getFullUrl(item))" />
+    </div>
+    <!-- 弹窗 -->
+    <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="凭证预览" :before-close="dialogClose">
+      <img :src="dialogImage" style="max-width: 800px; margin: auto" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getToken } from '@/libs/utils/token'
-
+import { serveUrl } from '@/settings'
 export default {
   name: 'UploadDefault',
   props: {
     fileList: { type: Array, default: () => [] },
     fileDisabled: { type: Boolean, default: false },
     fileAccept: { type: String, default: '' },
+    action: { type: String, default: '' },
     fileText: { type: String, default: '' },
     fileAction: { type: String, default: '' },
     fileLimit: { type: Number, default: 1 },
@@ -26,27 +52,32 @@ export default {
   },
   data() {
     return {
-      baseUrl: `${process.env.VUE_APP_BASE_API}`,
-      action: '',
-      data: {}
+      dialogVisible: false,
+      dialogImage: ''
     }
   },
   computed: {
     headers() {
       return {
-        Authorization: `Bearer ${getToken()}`
+        Authorization: `${getToken()}`
       }
     }
   },
-  watch: {
-    fileData(value) {
-      this.data = value
-    }
-  },
-  mounted() {
-    this.action = `${this.baseUrl}${this.fileAction}`
-  },
   methods: {
+    // 获取网址
+    getFullUrl(url) {
+      const arr = url.split('/')
+      return `${serveUrl}/file/pay/${arr[arr.length - 2]}/${arr[arr.length - 1]}`
+    },
+    // 弹窗关闭
+    View(url) {
+      this.dialogVisible = true
+      this.dialogImage = url
+    },
+    dialogClose() {
+      this.dialogVisible = false
+      this.dialogImage = ''
+    },
     // 上传前事件
     beforeUpload(file) {
       this.$emit('onBeforeUpload', file)
@@ -54,7 +85,7 @@ export default {
     // 成功事件
     onSuccess(response, file, fileList) {
       const { msg, code, data } = response
-      if (code === 0) {
+      if (code === 200) {
         this.$message.success(msg)
         this.$emit('onSuccess', data)
       } else {
@@ -85,4 +116,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.upload-container {
+  width: 100%;
+}
+</style>

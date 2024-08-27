@@ -50,9 +50,17 @@
       <el-table-column prop="guaranteeMoney" :label="fields.guaranteeMoney" align="center" />
       <el-table-column prop="gIssueStatus" :label="fields.gIssueStatus" align="center" />
       <el-table-column :label="fields.step" align="center">
-        <template slot-scope="{ row: { status } }">
-          <span v-if="status || +status === 0" class="bull-dot"><b class="dot-green"></b>{{ status | filterStatus }}</span>
-          <span v-else class="bull-dot"> <b class="dot-red"></b>未提交 </span>
+        <template slot-scope="{ row: { status, description } }">
+          <div :title="+status === 2 || +status === 3 ? '点击查看详情' : ''" :style="{ cursor: +status === 2 || +status === 3 ? 'pointer' : 'default' }" @click="explain(status, description)">
+            <span v-if="status || +status === 0" class="bull-dot">
+              <b v-if="+status === 0 || +status === 4 || +status === 5" class="dot-blue" />
+              <b v-else-if="+status === 2 || +status === 3" class="dot-red" />
+              <b v-else-if="+status === 1" class="dot-green" />
+              {{ status | filterStatus }}
+              <i v-if="+status === 2 || +status === 3" class="el-icon-warning" />
+            </span>
+            <span v-else class="bull-dot"> <b class="dot-gray"></b>未提交 </span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="编辑" align="center" width="95">
@@ -71,6 +79,19 @@
     <div style="text-align: center">
       <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
     </div>
+    <!-- 弹窗 -->
+    <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="详情" :before-close="dialogClose">
+      <table>
+        <tr>
+          <th>审核结果</th>
+          <td>{{ +expStatus === 3 ? '未通过' : '不接单' }}</td>
+        </tr>
+        <tr>
+          <th>原因说明</th>
+          <td>{{ expDesc }}</td>
+        </tr>
+      </table>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -96,6 +117,16 @@ export default {
     filterStatus(status) {
       if (+status === 0) {
         return '审核中'
+      } else if (+status === 1) {
+        return '通过'
+      } else if (+status === 2) {
+        return '不接单'
+      } else if (+status === 3) {
+        return '不通过'
+      } else if (+status === 4) {
+        return '待付款'
+      } else if (+status === 5) {
+        return '费用审批'
       }
     },
     filterGCaseNo(str) {
@@ -105,11 +136,28 @@ export default {
   mixins: [ListMixin, MethodsMixin, GainDict],
   data() {
     return {
-      fields
+      fields,
+      dialogVisible: false,
+      expStatus: '-1',
+      expDesc: ''
     }
   },
   created() {},
   methods: {
+    // 详情
+    explain(status, description) {
+      if (+status === 2 || +status === 3) {
+        this.dialogVisible = true
+        this.expStatus = status
+        this.expDesc = description
+      }
+    },
+    dialogClose() {
+      this.dialogVisible = false
+      this.expStatus = '-1'
+      this.expDesc = ''
+    },
+    // 删除
     removeAlone() {
       guaranteeApi.remove(this.removeId).then(({ code, data, msg }) => {
         if (code === 200) {
@@ -119,16 +167,17 @@ export default {
           this.message.error(msg)
         }
       })
-      // 删除
     },
     toPages(gId, status) {
       const path = toPages(gId, status)
-      this.routerClose(path)
+      this.routerGo(path)
     },
+    // 编辑
     toUpdate(step, gId) {
       const path = toUpdate(step, gId)
-      this.routerClose(path)
+      this.routerGo(path)
     },
+    // 预处理
     startHandle() {
       this.gainDict_courtCategoryAry() // 保全类别
       this.gainDict_outLawsuitTimeAry() // 非诉期间
@@ -136,6 +185,7 @@ export default {
       this.gainDict_issueStatusAry() // 提交人类型
       this.getList()
     },
+    // 获取列表
     getList() {
       guaranteeApi.list(this.queryList).then(({ code, data, msg }) => {
         if (code === 200) {
@@ -151,6 +201,26 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+table,
+th,
+td {
+  border: 1px solid #eee;
+  border-collapse: collapse;
+}
+table {
+  width: 100%;
+  th,
+  td {
+    padding: 5px 15px;
+    line-height: 30px;
+  }
+  th {
+    width: 150px;
+    text-align: right;
+    font-weight: bold;
+  }
+}
+
 .bull-dot {
   position: relative;
 
@@ -167,6 +237,12 @@ export default {
     }
     &.dot-green {
       background: green;
+    }
+    &.dot-blue {
+      background: blue;
+    }
+    &.dot-gray {
+      background: gray;
     }
   }
 }

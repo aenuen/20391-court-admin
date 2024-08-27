@@ -1,15 +1,14 @@
 <template>
   <div class="steps">
     <el-steps :active="step" simple>
-      <el-step title="填写基本资料" icon="el-icon-edit"></el-step>
+      <el-step title="基本资料" icon="el-icon-edit"></el-step>
       <el-step title="上传材料" icon="el-icon-upload"></el-step>
-      <el-step
-        title="选择担保机构"
-        icon="el-icon-picture-outline-round"
-      ></el-step>
+      <el-step title="选择机构" icon="el-icon-picture-outline-round"></el-step>
       <el-step title="预览提交" icon="el-icon-view"></el-step>
       <el-step title="等候审核" icon="el-icon-document"></el-step>
-      <el-step title="支付担保费用" icon="el-icon-money"></el-step>
+      <el-step title="支付费用" icon="el-icon-money"></el-step>
+      <el-step title="缴费确认" icon="el-icon-brush"></el-step>
+      <el-step title="等待出函" icon="el-icon-brush"></el-step>
     </el-steps>
   </div>
 </template>

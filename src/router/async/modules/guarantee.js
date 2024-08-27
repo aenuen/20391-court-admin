@@ -1,10 +1,14 @@
 import Layout from '@/components/Layout'
 
 export const guarantee = {
-  path: '/guarantee', name: 'guarantee', component: Layout, redirect: '/guarantee/create',
+  path: '/guarantee',
+  name: 'guarantee',
+  component: Layout,
+  redirect: '/guarantee/create',
   meta: {
     title: '担保管理',
-    icon: 'guarantee'
+    icon: 'guarantee',
+    roles: ['user']
   },
   children: [
     {
@@ -70,11 +74,55 @@ export const guarantee = {
       hidden: true // 不显示在侧边栏中
     },
     {
+      path: 'look/:id',
+      name: 'guaranteeLook',
+      component: () => import('@/views/guarantee/look'),
+      meta: {
+        title: '预览订单',
+        roles: ['user'],
+        activeMenu: '/audit/guarantee' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
       path: 'audit/:id',
       name: 'guaranteeAudit',
       component: () => import('@/views/guarantee/audit'),
       meta: {
         title: '提交审核',
+        roles: ['user'],
+        activeMenu: '/guarantee/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'pay/:id',
+      name: 'guaranteePay',
+      component: () => import('@/views/guarantee/pay'),
+      meta: {
+        title: '支付订单',
+        roles: ['user'],
+        activeMenu: '/guarantee/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'fees/:id',
+      name: 'guaranteeFees',
+      component: () => import('@/views/guarantee/fees'),
+      meta: {
+        title: '缴费确认',
+        roles: ['user'],
+        activeMenu: '/guarantee/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'sweat/:id',
+      name: 'guaranteeSweat',
+      component: () => import('@/views/guarantee/sweat'),
+      meta: {
+        title: '等待出函',
         roles: ['user'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },

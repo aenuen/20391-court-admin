@@ -1,6 +1,10 @@
 <template>
   <div class="app-container">
     <el-form ref="postForm" :model="postForm" :rules="rulesForm" :validate-on-rule-change="false">
+      <template v-if="+postForm.orgStatus === 3">
+        <div class="h1Title">审批结果</div>
+        <div style="text-indent: 2em; color: red">{{ postForm.description }}</div>
+      </template>
       <div class="h1Title">机构信息</div>
       <div class="example">
         <div>
@@ -286,38 +290,42 @@ export default {
     getDetail() {
       organizeApi.detail().then(({ code, data, msg }) => {
         if (code === 200) {
-          if (+data.orgStatus === 0) {
-            this.routerClose('/organize/step')
-          } else if (+data.orgStatus === 1) {
-            this.routerClose('/organize/success')
-          } else {
-            this.license = [{ url: data.license }]
-            this.logo = [{ url: data.logo }]
-            this.legalOne = data.legalCertImage1 ? [{ url: data.legalCertImage1 }] : []
-            this.legalTwo = data.legalCertImage2 ? [{ url: data.legalCertImage2 }] : []
-            this.agentOne = data.agentCertImage1 ? [{ url: data.agentCertImage1 }] : []
-            this.agentTwo = data.agentCertImage2 ? [{ url: data.agentCertImage2 }] : []
-            const newForm = {}
-            if (data.orgId) newForm.orgId = data.orgId
-            newForm.type = 72
-            if (data.name) newForm.name = data.name
-            if (data.orgCode) newForm.orgCode = data.orgCode
-            if (data.orgEmail) newForm.orgEmail = data.orgEmail
-            if (data.orgTelephone) newForm.orgTelephone = data.orgTelephone
-            if (data.orgAddress) {
-              newForm.dwellArea = getAddressArea(data.orgAddress)
-              newForm.dwellAddress = getAddressText(data.orgAddress)
+          if (data) {
+            if (+data.orgStatus === 0) {
+              this.routerClose('/organize/step')
+            } else if (+data.orgStatus === 1) {
+              this.routerClose('/organize/success')
+            } else {
+              this.license = [{ url: data.license }]
+              this.logo = [{ url: data.logo }]
+              this.legalOne = data.legalCertImage1 ? [{ url: data.legalCertImage1 }] : []
+              this.legalTwo = data.legalCertImage2 ? [{ url: data.legalCertImage2 }] : []
+              this.agentOne = data.agentCertImage1 ? [{ url: data.agentCertImage1 }] : []
+              this.agentTwo = data.agentCertImage2 ? [{ url: data.agentCertImage2 }] : []
+              const newForm = {}
+              if (data.orgId) newForm.orgId = data.orgId
+              newForm.type = 72
+              if (data.name) newForm.name = data.name
+              if (data.orgCode) newForm.orgCode = data.orgCode
+              if (data.orgEmail) newForm.orgEmail = data.orgEmail
+              if (data.orgTelephone) newForm.orgTelephone = data.orgTelephone
+              if (data.orgAddress) {
+                newForm.dwellArea = getAddressArea(data.orgAddress)
+                newForm.dwellAddress = getAddressText(data.orgAddress)
+              }
+              if (data.orgLegal) newForm.orgLegal = data.orgLegal
+              if (data.legalCertNo) newForm.legalCertNo = data.legalCertNo
+              if (data.legalTelephone) newForm.legalTelephone = data.legalTelephone
+              if (data.orgAgent) newForm.orgAgent = data.orgAgent
+              if (data.agentCertNo) newForm.agentCertNo = data.agentCertNo
+              if (data.agentTelephone) newForm.agentTelephone = data.agentTelephone
+              if (data.bank) newForm.bank = data.bank
+              if (data.accountName) newForm.accountName = data.accountName
+              if (data.orgAccount) newForm.orgAccount = data.orgAccount
+              if (data.description) newForm.description = data.description
+              newForm.orgStatus = data.orgStatus
+              this.postForm = { ...this.postForm, ...newForm }
             }
-            if (data.orgLegal) newForm.orgLegal = data.orgLegal
-            if (data.legalCertNo) newForm.legalCertNo = data.legalCertNo
-            if (data.legalTelephone) newForm.legalTelephone = data.legalTelephone
-            if (data.orgAgent) newForm.orgAgent = data.orgAgent
-            if (data.agentCertNo) newForm.agentCertNo = data.agentCertNo
-            if (data.agentTelephone) newForm.agentTelephone = data.agentTelephone
-            if (data.bank) newForm.bank = data.bank
-            if (data.accountName) newForm.accountName = data.accountName
-            if (data.orgAccount) newForm.orgAccount = data.orgAccount
-            this.postForm = { ...this.postForm, ...newForm }
           }
         } else {
           this.$message.error(msg)
@@ -359,7 +367,6 @@ export default {
         this.submitLoadingOpen()
         if (valid) {
           this.postForm.orgAddress = (this.postForm.dwellArea.join(',') || '') + '/' + (this.postForm.dwellAddress || '')
-          // console.log('🚀 ~ this.$refs.postForm.validate ~ this.postForm', this.postForm)
           organizeApi.complete(this.postForm).then(({ code, data, msg }) => {
             if (code === 200) {
               this.routerClose('/organize/step')

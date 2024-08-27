@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <Steps :step="4" />
+    <Steps :step="6" />
     <div class="icon"><el-image :src="image" /></div>
-    <div class="text">我们将在二个工作日内进行审批，请稍后……</div>
+    <div class="text">我们将在二个工作日内进行费用确认，请稍后……</div>
     <div class="href">
       <el-button @click="backList">返回列表</el-button>
     </div>

@@ -83,12 +83,8 @@ export default {
       commonWidth: '500px'
     }
   },
-  computed: {
-    submitTxt() {
-      return this.isUpdate ? '编辑' : '添加'
-    }
-  },
   created() {
+    this.submitTxt = this.isUpdate ? '编辑' : '添加'
     this.postForm = {
       ...this.postForm,
       ...{ parentId: this.parentId }

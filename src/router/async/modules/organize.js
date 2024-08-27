@@ -60,6 +60,17 @@ export const organize = {
         activeMenu: '/organize/index' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'look/:id',
+      name: 'organizeLook',
+      component: () => import('@/views/organize/look'),
+      meta: {
+        title: '认证信息',
+        roles: ['admin'],
+        activeMenu: '/audit/organize' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
     }
   ]
 }

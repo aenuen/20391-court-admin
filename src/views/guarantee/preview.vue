@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <Steps :step="3" />
+    <Steps v-if="isPreview === false" :step="3" />
     <div class="details">
       <!-- 基本资料 -->
       <div class="itemBox">
@@ -142,7 +142,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center; padding: 50px 0">
+    <div v-if="isPreview === false" style="text-align: center; padding: 50px 0">
       <el-button @click="routerClose(`/guarantee/select/${updateId}`)"> 上一步 </el-button>
       <el-button type="primary" @click="submitForm">提交审核</el-button>
     </div>
@@ -170,6 +170,9 @@ export default {
   name: 'GuaranteePreview',
   components: { Steps, BaseData, FileShow },
   mixins: [DetailMixin, MethodsMixin],
+  props: {
+    isPreview: { type: Boolean, default: false }
+  },
   data() {
     return {
       isUpdate: true,
