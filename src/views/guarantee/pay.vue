@@ -37,7 +37,6 @@
         </div>
       </div>
     </div>
-    <div>{{ fileList }}</div>
     <div style="text-align: center">
       <el-button @click="resetUpload"> 重新上传 </el-button>
       <el-button type="primary" @click="submitForm">提交审核</el-button>

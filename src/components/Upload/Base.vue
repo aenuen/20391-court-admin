@@ -26,7 +26,12 @@
       </div>
     </el-upload>
     <div v-else style="width: 300px; margin: auto">
-      <el-image v-for="(item, key) in fileList" :key="key" :src="getFullUrl(item)" style="cursor: pointer" @click="View(getFullUrl(item))" />
+      <div v-for="(item, key) in fileList" :key="key">
+        <el-image v-if="fileClassify(item) === 'pic'" :src="getFullUrl(item)" fit="cover" @click="View(getFullUrl(item))" />
+        <el-image v-else-if="fileClassify(item) === 'doc'" :src="doc" fit="fit" />
+        <el-image v-else-if="fileClassify(item) === 'xls'" :src="xls" fit="fit" />
+        <el-image v-else-if="fileClassify(item) === 'pdf'" :src="pdf" fit="fit" />
+      </div>
     </div>
     <!-- 弹窗 -->
     <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="凭证预览" :before-close="dialogClose">
@@ -36,6 +41,7 @@
 </template>
 
 <script>
+import { fileClassify } from 'abbott-methods/import'
 import { getToken } from '@/libs/utils/token'
 import { serveUrl } from '@/settings'
 export default {
@@ -52,6 +58,10 @@ export default {
   },
   data() {
     return {
+      fileClassify,
+      doc: require(`@/assets/image/fileType/word.png`),
+      xls: require(`@/assets/image/fileType/excel.png`),
+      pdf: require(`@/assets/image/fileType/PDF.png`),
       dialogVisible: false,
       dialogImage: ''
     }

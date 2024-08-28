@@ -20,10 +20,7 @@ export const toPages = (gId, status) => {
       path = 'fees'
       break
     case 6:
-      path = 'audit'
-      break
-    default:
-      path = 'audit'
+      path = 'sweat'
       break
   }
   return `/guarantee/${path}/${gId}`

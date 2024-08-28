@@ -51,13 +51,13 @@
       <el-table-column prop="gIssueStatus" :label="fields.gIssueStatus" align="center" />
       <el-table-column :label="fields.step" align="center">
         <template slot-scope="{ row: { status, description } }">
-          <div :title="+status === 2 || +status === 3 ? '点击查看详情' : ''" :style="{ cursor: +status === 2 || +status === 3 ? 'pointer' : 'default' }" @click="explain(status, description)">
+          <div :title="statusHandle(status, description) ? '点击查看详情' : ''" :style="{ cursor: statusHandle(status, description) ? 'pointer' : 'default' }" @click="explain(status, description)">
             <span v-if="status || +status === 0" class="bull-dot">
               <b v-if="+status === 0 || +status === 4 || +status === 5" class="dot-blue" />
               <b v-else-if="+status === 2 || +status === 3" class="dot-red" />
-              <b v-else-if="+status === 1" class="dot-green" />
+              <b v-else-if="+status === 1 || +status === 6" class="dot-green" />
               {{ status | filterStatus }}
-              <i v-if="+status === 2 || +status === 3" class="el-icon-warning" />
+              <i v-if="statusHandle(status, description)" class="el-icon-warning" />
             </span>
             <span v-else class="bull-dot"> <b class="dot-gray"></b>未提交 </span>
           </div>
@@ -80,15 +80,19 @@
       <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
     </div>
     <!-- 弹窗 -->
-    <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="详情" :before-close="dialogClose">
+    <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="原因详情" :before-close="dialogClose">
       <table>
         <tr>
           <th>审核结果</th>
-          <td>{{ +expStatus === 3 ? '未通过' : '不接单' }}</td>
+          <td>{{ +expStatus === 3 || +expStatus === 4 ? '不通过' : '不接单' }}</td>
         </tr>
         <tr>
           <th>原因说明</th>
           <td>{{ expDesc }}</td>
+        </tr>
+        <tr>
+          <th></th>
+          <td>(请根据原因进行调整后再次提交)</td>
         </tr>
       </table>
     </el-dialog>
@@ -127,6 +131,8 @@ export default {
         return '待付款'
       } else if (+status === 5) {
         return '费用审批'
+      } else if (+status === 6) {
+        return '待出函'
       }
     },
     filterGCaseNo(str) {
@@ -144,9 +150,12 @@ export default {
   },
   created() {},
   methods: {
+    statusHandle(status, description) {
+      return +status === 2 || +status === 3 || (+status === 4 && description)
+    },
     // 详情
     explain(status, description) {
-      if (+status === 2 || +status === 3) {
+      if (this.statusHandle(status, description)) {
         this.dialogVisible = true
         this.expStatus = status
         this.expDesc = description

@@ -20,7 +20,7 @@
       <el-row>
         <el-col>
           <el-form-item :label-width="labelWidth">
-            <el-button :type="+postForm.status === 4 ? 'success' : +postForm.status === 3 ? 'danger' : 'warning'" @click="submitForm">{{ submitTxt }}</el-button>
+            <el-button :type="+postForm.status === 4 || +postForm.status === 6 ? 'success' : +postForm.status === 3 ? 'danger' : 'warning'" @click="submitForm">{{ submitTxt }}</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -46,6 +46,7 @@ export default {
   mixins: [DetailMixin, MethodsMixin],
   props: {
     approvalId: { type: String, default: '' },
+    theStatus: { type: Number, default: -1 },
     gId: { type: String, default: '' }
   },
   data() {
@@ -54,19 +55,24 @@ export default {
         status: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '审批') }],
         description: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '原因') }]
       },
-      postForm: {
-        status: 4
-      },
-      // TODO: 审批状态
-      statusAry: [
-        { label: '不接单', value: 2 },
-        { label: '不通过', value: 3 },
-        { label: '通过', value: 4 }
-      ]
+      postForm: {},
+      statusAry: []
     }
   },
   created() {
     this.submitTxt = '审批'
+    if (+this.theStatus === 0) {
+      this.statusAry = [
+        { label: '不接单', value: 2 },
+        { label: '不通过', value: 3 },
+        { label: '通过', value: 4 }
+      ]
+    } else if (+this.theStatus === 5) {
+      this.statusAry = [
+        { label: '不通过', value: 4 },
+        { label: '通过', value: 6 }
+      ]
+    }
   },
   methods: {
     submitForm() {

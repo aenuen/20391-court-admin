@@ -5,7 +5,7 @@
         <div class="info">
           <div>{{ data.name }}</div>
           <div>
-            <el-button type="primary" style="margin-top: 20px">重新认证</el-button>
+            <el-button type="primary" style="margin-top: 20px" @click="resetUpdate">重新认证</el-button>
           </div>
         </div>
         <div class="icon">
@@ -155,10 +155,10 @@
 
 // components
 // data
+import { organizeApi } from '@/api/organize.js'
 import { fields } from '../modules/fields.js'
 // filter
 // function
-
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
@@ -190,6 +190,15 @@ export default {
     view(url) {
       this.dialogImageUrl = url
       this.dialogVisible = true
+    },
+    resetUpdate() {
+      organizeApi.Update({ orgId: this.data.orgId }).then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.routerClose('/organize/index')
+        } else {
+          this.$message.error(msg)
+        }
+      })
     }
   }
 }

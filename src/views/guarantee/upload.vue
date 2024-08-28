@@ -6,40 +6,20 @@
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">保全申请书（必填）</div>
-          <a class="titleIcon" @click="getTemplate(1)">
-            <i class="el-icon-download" />下载模版
-          </a>
+          <a class="titleIcon" @click="getTemplate(1)"> <i class="el-icon-download" />下载模版 </a>
         </div>
         <div class="boxContent">
-          <UploadMulti
-            ref="uploadOne"
-            :action="action"
-            :accept="accept"
-            :data="{ type: 1, gcId: updateId }"
-            :file-list="fileListOne"
-            :limit="1"
-            @onUploadRemove="onUploadRemove"
-          />
+          <UploadMulti ref="uploadOne" :action="action" :accept="accept" :data="{ type: 1, gcId: updateId }" :file-list="fileListOne" :limit="1" @onUploadRemove="onUploadRemove" />
         </div>
       </div>
       <!-- 起诉状（非必填） -->
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">起诉状（非必填）</div>
-          <a class="titleIcon" @click="getTemplate(2)">
-            <i class="el-icon-download" />下载模版
-          </a>
+          <a class="titleIcon" @click="getTemplate(2)"> <i class="el-icon-download" />下载模版 </a>
         </div>
         <div class="boxContent">
-          <UploadMulti
-            ref="uploadOne"
-            :action="action"
-            :accept="accept"
-            :data="{ type: 2, gcId: updateId }"
-            :file-list="fileListTwo"
-            :limit="1"
-            @onUploadRemove="onUploadRemove"
-          />
+          <UploadMulti ref="uploadOne" :action="action" :accept="accept" :data="{ type: 2, gcId: updateId }" :file-list="fileListTwo" :limit="1" @onUploadRemove="onUploadRemove" />
         </div>
       </div>
       <!-- 立案受理通知书 -->
@@ -48,56 +28,22 @@
           <div class="titleName">立案受理通知书（非必填）</div>
         </div>
         <div class="boxContent">
-          <UploadMulti
-            ref="uploadOne"
-            :action="action"
-            :accept="accept"
-            :data="{ type: 3, gcId: updateId }"
-            :file-list="fileListThree"
-            :limit="1"
-            @onUploadRemove="onUploadRemove"
-          />
+          <UploadMulti ref="uploadOne" :action="action" :accept="accept" :data="{ type: 3, gcId: updateId }" :file-list="fileListThree" :limit="1" @onUploadRemove="onUploadRemove" />
         </div>
       </div>
       <!-- 身份证明材料 -->
       <div class="itemBox">
         <div class="boxTitle">
           <div class="titleName">身份证明材料（必填）</div>
-          <a class="titleIcon" @click="getTemplate(4)">
-            <i class="el-icon-download" />下载模版
-          </a>
+          <a class="titleIcon" @click="getTemplate(4)"> <i class="el-icon-download" />下载模版 </a>
         </div>
         <div class="boxContent">
           <div class="liTitle">申请人（必填）</div>
-          <UploadMulti
-            ref="uploadOne"
-            :action="action"
-            :accept="accept"
-            :data="{ type: 4, gcId: updateId }"
-            :file-list="fileListFour"
-            :limit="limit"
-            @onUploadRemove="onUploadRemove"
-          />
+          <UploadMulti ref="uploadOne" :action="action" :accept="accept" :data="{ type: 4, gcId: updateId }" :file-list="fileListFour" :limit="limit" @onUploadRemove="onUploadRemove" />
           <div class="liTitle">被申请人（必填）</div>
-          <UploadMulti
-            ref="uploadOne"
-            :action="action"
-            :accept="accept"
-            :data="{ type: 5, gcId: updateId }"
-            :file-list="fileListFive"
-            :limit="limit"
-            @onUploadRemove="onUploadRemove"
-          />
+          <UploadMulti ref="uploadOne" :action="action" :accept="accept" :data="{ type: 5, gcId: updateId }" :file-list="fileListFive" :limit="limit" @onUploadRemove="onUploadRemove" />
           <div class="liTitle">原告代理人（非必填）</div>
-          <UploadMulti
-            ref="uploadOne"
-            :action="action"
-            :accept="accept"
-            :data="{ type: 6, gcId: updateId }"
-            :file-list="fileListSix"
-            :limit="limit"
-            @onUploadRemove="onUploadRemove"
-          />
+          <UploadMulti ref="uploadOne" :action="action" :accept="accept" :data="{ type: 6, gcId: updateId }" :file-list="fileListSix" :limit="limit" @onUploadRemove="onUploadRemove" />
         </div>
       </div>
       <!-- 证据材料 -->
@@ -106,15 +52,7 @@
           <div class="titleName">证据材料（必填）</div>
         </div>
         <div class="boxContent">
-          <UploadMulti
-            ref="uploadOne"
-            :action="action"
-            :accept="accept"
-            :data="{ type: 7, gcId: updateId }"
-            :file-list="fileListSeven"
-            :limit="limit"
-            @onUploadRemove="onUploadRemove"
-          />
+          <UploadMulti ref="uploadOne" :action="action" :accept="accept" :data="{ type: 7, gcId: updateId }" :file-list="fileListSeven" :limit="limit" @onUploadRemove="onUploadRemove" />
         </div>
       </div>
       <!-- 其它材料 -->
@@ -123,22 +61,12 @@
           <div class="titleName">其它材料（非必填）</div>
         </div>
         <div class="boxContent">
-          <UploadMulti
-            ref="uploadOne"
-            :action="action"
-            :accept="accept"
-            :data="{ type: 8, gcId: updateId }"
-            :file-list="fileListEight"
-            :limit="limit"
-            @onUploadRemove="onUploadRemove"
-          />
+          <UploadMulti ref="uploadOne" :action="action" :accept="accept" :data="{ type: 8, gcId: updateId }" :file-list="fileListEight" :limit="limit" @onUploadRemove="onUploadRemove" />
         </div>
       </div>
     </div>
     <div style="text-align: center; padding: 50px 0">
-      <el-button @click="routerClose(`/guarantee/details/${updateId}`)">
-        上一步
-      </el-button>
+      <el-button @click="routerClose(`/guarantee/details/${updateId}`)"> 上一步 </el-button>
       <el-button type="primary" @click="submitForm">保存，继续下一步</el-button>
     </div>
   </div>
@@ -168,17 +96,7 @@ export default {
     return {
       step: 0,
       isUpdate: true,
-      accept: [
-        '.xlsx',
-        '.xls',
-        '.doc',
-        '.docx',
-        '.pdf',
-        '.jpg',
-        '.jpeg',
-        '.png',
-        '.gif'
-      ].join(','),
+      accept: ['.xlsx', '.xls', '.doc', '.docx', '.pdf', '.jpg', '.jpeg', '.png', '.gif'].join(','),
       limit: 5,
       fileListOne: [],
       fileListTwo: [],

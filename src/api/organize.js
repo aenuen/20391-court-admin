@@ -10,5 +10,6 @@ export const organizeApi = {
   complete: (data) => request({ url: '/organization/completeInfo', method: 'put', data }), // 提交资料
   // post
   list: (data) => request({ url: '/organization/selectByPage', method: 'post', data }), // 列表
-  approve: (data) => request({ url: '/organization/approve', method: 'post', params: data }) // 审核
+  approve: (data) => request({ url: '/organization/approve', method: 'post', params: data }), // 审核
+  Update: (data) => request({ url: '/organization/recertification', method: 'post', params: data }) // 重新认证
 }

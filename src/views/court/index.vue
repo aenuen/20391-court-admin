@@ -1,21 +1,25 @@
 <template>
-  <Detail></Detail>
+  <Detail />
 </template>
 <script>
 // api
 // components
-import Detail from './components/detail'
+import Detail from './components/Detail'
 // data
 // filter
 // function
-// mixins
+// mixin
 // plugins
 // settings
 export default {
+  name: 'CourtIndex',
   components: { Detail },
+  mixins: [],
   data() {
     return {}
-  }
+  },
+  created() {},
+  methods: {}
 }
 </script>
 <style lang="scss" scoped></style>
