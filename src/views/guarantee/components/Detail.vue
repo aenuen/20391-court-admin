@@ -5,7 +5,9 @@
       <el-row>
         <el-col>
           <el-form-item class="is-required" prop="gCourt" :label="fields.gCourt" :label-width="labelWidth">
-            <el-input v-model="postForm.gCourt" :placeholder="fields.gCourt" clearable :style="{ width: commonWidth }" />
+            <el-select v-model="postForm.gCourt" :placeholder="fields.gCourt" :style="{ width: commonWidth }">
+              <el-option v-for="(item, key) in courtAry" :key="key" :value="String(item.courtId)" :label="item.courtName" />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -118,6 +120,7 @@
 </template>
 <script>
 // api
+import { courtApi } from '@/api/court'
 import { guaranteeApi } from '@/api/guarantee'
 // data
 import { DetailFields as fields } from '../modules/fields'
@@ -144,6 +147,7 @@ export default {
     return {
       fields,
       bigWritePrice: '',
+      courtAry: [],
       selectTxt: '如未在法院立案，请选择“诉前保全”，如已在法院立案，请选择“诉讼保全”，若选择错误，可能导致保全不成功！'
     }
   },
@@ -170,6 +174,7 @@ export default {
       await this.gainDict_courtCategoryAry()
       await this.gainDict_outLawsuitTimeAry()
       await this.gainDict_issueStatusAry()
+      this.gainList()
       if (this.isUpdate && this.baseObj.guaranteeCategory) {
         const caseNoAry = this.baseObj.gCaseNo.split('|') || ['', '', '', '', '']
         const form = {
@@ -184,6 +189,15 @@ export default {
         const form = { guaranteeCategory: '1' }
         this.postForm = { ...this.postForm, ...form }
       }
+    },
+    gainList() {
+      courtApi.all().then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.courtAry = data
+        } else {
+          this.$message.error(msg)
+        }
+      })
     },
     submitForm() {
       this.$refs.postForm.validate((valid, fields) => {

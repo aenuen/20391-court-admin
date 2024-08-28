@@ -12,7 +12,7 @@
           <span class="dot">
             <svg-icon icon-class="attestation" style="color: #1890ff" />
           </span>
-          <span class="txt">已认证</span>
+          <span class="txt">{{ +data.courtStatus === 1 ? '已认证' : '未认证' }}</span>
         </div>
       </div>
     </el-card>

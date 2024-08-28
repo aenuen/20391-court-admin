@@ -1,5 +1,6 @@
 // 异步加载
 import { guarantee } from './modules/guarantee'
+import { preserve } from './modules/preserve'
 import { organize } from './modules/organize'
 import { court } from './modules/court'
 import { audit } from './modules/audit'
@@ -9,6 +10,7 @@ import { dict } from './modules/dict'
 import { icons } from './modules/icons'
 const asyncRoutes = [
   guarantee,
+  preserve,
   organize,
   court,
   audit,

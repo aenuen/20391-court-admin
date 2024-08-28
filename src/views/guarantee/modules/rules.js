@@ -3,7 +3,7 @@ import { DetailFields, ApplicantFields, AgentFields, PropertyFields } from './fi
 
 // 基本资料
 export const DetailCommon = {
-  gCourt: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, DetailFields.gCourt, 2, 30) }],
+  cCourt: [{ validator: (rule, value, callback) => validateAllCn(rule, value, callback, DetailFields.gCourt, 2, 30) }],
   gMoney: [{ validator: (rule, value, callback) => validatePrice(rule, value, callback, DetailFields.gMoney, '填写', 1, 11) }],
   gIssueStatus: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, DetailFields.gIssueStatus, '选择') }]
 }

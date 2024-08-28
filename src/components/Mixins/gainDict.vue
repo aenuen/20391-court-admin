@@ -17,6 +17,7 @@ export default {
   mixins: [],
   data() {
     return {
+      noGuaranteeReasonAry: [], // 无需担保原因
       orgTypeAry: [], // 机构类型
       assetType: [], // 财产类型
       agentTypeAry: [], // 代理人类型
@@ -24,6 +25,7 @@ export default {
       caseTypeAry: [], // 案件类型
       certTypeAry: [], // 证件类型
       countryAry: [], // 国别
+      courtTypeAry: [], // 保全类型
       courtCategoryAry: [], // 保全类别
       issueStatusAry: [], // 提交人身份
       nationAry: [], // 民族
@@ -33,6 +35,22 @@ export default {
   },
   created() {},
   methods: {
+    // 机构类型
+    async gainDict_noGuaranteeReasonAry() {
+      const data = localStorage.getItem('noGuaranteeReasonAry')
+      if (data) {
+        this.noGuaranteeReasonAry = JSON.parse(data)
+      } else {
+        await dictApi.gain('noGuaranteeReason').then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.noGuaranteeReasonAry = data.child
+            localStorage.setItem('noGuaranteeReasonAry', JSON.stringify(data.child))
+          } else {
+            this.$message.error(msg)
+          }
+        })
+      }
+    },
     // 机构类型
     async gainDict_orgTypeAry() {
       const data = localStorage.getItem('orgTypeAry')
@@ -139,6 +157,22 @@ export default {
           if (code === 200) {
             this.countryAry = [...data.child]
             localStorage.setItem('countryAry', JSON.stringify(data.child))
+          } else {
+            this.$message.error(msg)
+          }
+        })
+      }
+    },
+    // 保全类型
+    async gainDict_courtTypeAry() {
+      const data = localStorage.getItem('courtTypeAry')
+      if (data) {
+        this.courtTypeAry = JSON.parse(data)
+      } else {
+        await dictApi.gain('courtType').then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.courtTypeAry = [...data.child]
+            localStorage.setItem('courtTypeAry', JSON.stringify(data.child))
           } else {
             this.$message.error(msg)
           }

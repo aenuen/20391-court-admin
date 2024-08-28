@@ -20,7 +20,17 @@
             </el-tooltip>
           </el-col>
         </el-row>
-        <!-- 密码 -->
+        <!-- 角色 -->
+        <el-row>
+          <el-col>
+            <el-form-item class="is-required" prop="roleId" :label="fields.roleId" :label-width="labelWidth">
+              <el-select v-model="postForm.roleId" :placeholder="fields.roleId">
+                <el-option v-for="(item, key) in rolesAry" :key="key" :value="item.code" :label="item.label" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!-- 提交 -->
         <el-row>
           <el-col>
             <el-form-item :label-width="labelWidth">
@@ -39,6 +49,7 @@ import { userApi } from '@/api/user'
 // data
 import { fields } from '../modules/fields'
 import { DetailRules as rulesForm } from '../modules/rules'
+import { rolesAry } from '@/views/aConstant/account/modules/roles.js'
 // filter
 // function
 // mixin
@@ -57,7 +68,8 @@ export default {
       rulesForm,
       capsTooltip: false,
       submitTxt: '创建用户',
-      capsLock: '您输入的是大写'
+      capsLock: '您输入的是大写',
+      rolesAry
     }
   },
   created() {},
@@ -75,7 +87,7 @@ export default {
           const newForm = {
             telephone: CryptoJsEncode(this.postForm.telephone),
             password: CryptoJsEncode(this.postForm.password),
-            roleId: 2
+            roleId: this.postForm.roleId
           }
           userApi
             .create(newForm)

@@ -3,7 +3,7 @@
 </template>
 <script>
 // api
-import { organizeApi } from '@/api/organize'
+import { courtApi } from '@/api/court.js'
 // components
 import See from './components/See'
 // data
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     gainDetail(ParamsId) {
-      organizeApi.get(ParamsId).then(({ code, data, msg }) => {
+      courtApi.get(ParamsId).then(({ code, data, msg }) => {
         if (code === 200) {
           const newForm = {}
           if (data.orgAddress) {

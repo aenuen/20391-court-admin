@@ -366,6 +366,8 @@ export default {
       this.$refs.postForm.validate((valid, fields) => {
         this.submitLoadingOpen()
         if (valid) {
+          this.postForm.orgId = this.theId
+          this.postForm.type = 72
           this.postForm.orgAddress = (this.postForm.dwellArea.join(',') || '') + '/' + (this.postForm.dwellAddress || '')
           organizeApi.complete(this.postForm).then(({ code, data, msg }) => {
             if (code === 200) {

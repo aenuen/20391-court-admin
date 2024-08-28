@@ -29,6 +29,16 @@ export const audit = {
         icon: 'audit',
         roles: ['shops']
       }
+    },
+    {
+      path: 'court',
+      name: 'auditCourt',
+      component: () => import('@/views/audit/court'),
+      meta: {
+        title: '法院审核',
+        icon: 'audit',
+        roles: ['admin']
+      }
     }
   ]
 }
