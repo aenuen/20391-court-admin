@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
-    <Steps v-if="isPreview === false" :step="3" />
+    <template v-if="isPreview === false">
+      <StepPre v-if="isPreserve" :step="2" />
+      <Steps v-else :step="3" />
+    </template>
     <div class="details">
       <!-- 基本资料 -->
       <div class="itemBox">
@@ -153,14 +156,16 @@
 import { guaranteeApi } from '@/api/guarantee'
 import { fileApi } from '@/api/file'
 import { approveApi } from '@/api/approve'
+import { preserveApi } from '@/api/preserve.js'
 // components
 import Steps from './components/Steps'
+import StepPre from './components/StepPre'
 import BaseData from './components/BaseData'
 import FileShow from '@/components/FileShow'
 // data
 // filter
 // function
-import { baseData, applicantData, agentData, propertyData } from './modules/utils'
+import { baseData, baseGain, applicantData, agentData, propertyData } from './modules/utils'
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
@@ -168,10 +173,11 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // settings
 export default {
   name: 'GuaranteePreview',
-  components: { Steps, BaseData, FileShow },
+  components: { Steps, StepPre, BaseData, FileShow },
   mixins: [DetailMixin, MethodsMixin],
   props: {
-    isPreview: { type: Boolean, default: false }
+    isPreview: { type: Boolean, default: false },
+    isPreserve: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -197,8 +203,12 @@ export default {
       guaranteeApi.details(this.updateId).then(({ code, data, msg }) => {
         if (code === 200) {
           const { guaranteeBaseInfo, applicant, respondent, agent, assetClue } = data
-          this.step = guaranteeBaseInfo.step || 0
-          this.baseData = baseData(guaranteeBaseInfo)
+          if (!this.isPreserve && guaranteeBaseInfo) {
+            this.step = guaranteeBaseInfo.step ? guaranteeBaseInfo.step : 0
+            this.baseData = baseData(guaranteeBaseInfo)
+          } else {
+            this.getPreserveDetails()
+          }
           this.ApplicantData = applicantData(applicant)
           this.RespondentData = applicantData(respondent)
           this.AgentData = agentData(agent)
@@ -208,6 +218,18 @@ export default {
         }
       })
       this.getUpload()
+    },
+    getPreserveDetails() {
+      preserveApi.details(this.updateId).then(({ code, data, msg }) => {
+        if (code === 200) {
+          const { baseInfo } = data
+          this.baseObj = baseInfo
+          this.step = baseInfo.step ? baseInfo.step : 0
+          this.baseData = baseGain(baseInfo)
+        } else {
+          this.$message.error(msg)
+        }
+      })
     },
     // 获取列表
     getUpload() {
@@ -241,7 +263,11 @@ export default {
       approveApi.approve({ gId: this.updateId }).then(({ code, data, msg }) => {
         if (code === 200) {
           this.$message.success(msg)
-          this.routerClose(`/guarantee/audit/${this.updateId}`)
+          if (this.isPreserve) {
+            this.routerClose(`/preserve/audit/${this.updateId}`)
+          } else {
+            this.routerClose(`/guarantee/audit/${this.updateId}`)
+          }
         } else {
           this.message.error(msg)
         }

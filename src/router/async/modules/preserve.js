@@ -39,6 +39,50 @@ export const preserve = {
         activeMenu: '/preserve/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'upload/:id',
+      name: 'preserveUpload',
+      component: () => import('@/views/preserve/upload'),
+      meta: {
+        title: '上传资料',
+        roles: ['user'],
+        activeMenu: '/preserve/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'preview/:id',
+      name: 'preservePreview',
+      component: () => import('@/views/preserve/preview'),
+      meta: {
+        title: '预览订单',
+        roles: ['user'],
+        activeMenu: '/preserve/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'look/:id',
+      name: 'preserveLook',
+      component: () => import('@/views/preserve/look'),
+      meta: {
+        title: '预览订单',
+        roles: ['user'],
+        activeMenu: '/audit/preserve' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'audit/:id',
+      name: 'preserveAudit',
+      component: () => import('@/views/preserve/audit'),
+      meta: {
+        title: '提交审核',
+        roles: ['user'],
+        activeMenu: '/preserve/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
     }
   ]
 }

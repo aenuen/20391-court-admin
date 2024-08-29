@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <Steps :step="1" />
+    <StepPre v-if="isPreserve" :step="1" />
+    <Steps v-else :step="1" />
     <div class="details">
       <!-- 保全申请书 -->
       <div class="itemBox">
@@ -77,6 +78,7 @@ import { fileApi } from '@/api/file'
 import { guaranteeApi } from '@/api/guarantee'
 // components
 import Steps from './components/Steps'
+import StepPre from './components/StepPre'
 import UploadMulti from '@/components/Upload/Multi'
 // data
 // filter
@@ -90,8 +92,11 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 import { apiCourtUrl } from '@/settings'
 export default {
   name: 'GuaranteeUpload',
-  components: { Steps, UploadMulti },
+  components: { Steps, StepPre, UploadMulti },
   mixins: [DetailMixin, MethodsMixin],
+  props: {
+    isPreserve: { type: Boolean, default: false }
+  },
   data() {
     return {
       step: 0,
@@ -173,20 +178,23 @@ export default {
       } else if (this.fileListSeven.length === 0) {
         this.$message.error('请上传证据材料')
       } else if (+this.step === -1) {
-        this.routerClose(`/guarantee/select/${this.updateId}`)
+        if (this.isPreserve) {
+          this.routerClose(`/preserve/preview/${this.updateId}`)
+        } else {
+          this.routerClose(`/guarantee/select/${this.updateId}`)
+        }
       } else {
-        guaranteeApi
-          .step({
-            gId: this.updateId,
-            step: 3
-          })
-          .then(({ code, data, msg }) => {
-            if (code === 200) {
-              this.routerClose(`/guarantee/select/${this.updateId}`)
+        guaranteeApi.step({ gId: this.updateId, step: 3 }).then(({ code, data, msg }) => {
+          if (code === 200) {
+            if (this.isPreserve) {
+              this.routerClose(`/preserve/preview/${this.updateId}`)
             } else {
-              this.$message.error(msg)
+              this.routerClose(`/guarantee/select/${this.updateId}`)
             }
-          })
+          } else {
+            this.$message.error(msg)
+          }
+        })
       }
     },
     // 下载模板

@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <Steps :step="4" />
+    <StepPre v-if="isPreserve" :step="3" />
+    <Steps v-else :step="4" />
     <div class="icon"><el-image :src="image" /></div>
     <div class="text">我们将在二个工作日内进行审批，请稍后……</div>
     <div class="href">
@@ -12,6 +13,7 @@
 // api
 // components
 import Steps from './components/Steps'
+import StepPre from './components/StepPre'
 // data
 // filter
 // function
@@ -21,8 +23,11 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // settings
 export default {
   name: 'GuaranteeAudit',
-  components: { Steps },
+  components: { Steps, StepPre },
   mixins: [MethodsMixin],
+  props: {
+    isPreserve: { type: Boolean, default: false }
+  },
   data() {
     return {
       image: require('@/assets/image/status/review.png')
@@ -31,7 +36,11 @@ export default {
   created() {},
   methods: {
     backList() {
-      this.routerClose('/guarantee/list')
+      if (this.isPreserve) {
+        this.routerClose('/preserve/list')
+      } else {
+        this.routerClose('/guarantee/list')
+      }
     }
   }
 }

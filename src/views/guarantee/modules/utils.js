@@ -4,7 +4,7 @@ import { getAddressArea, getAddressText, getAreaName } from '@/libs/utils/area'
 
 export const baseData = (obj) => {
   return [
-    { label: '申请法院', value: obj.gCourt },
+    { label: '申请法院', value: obj.courtName },
     { label: '保全类别', value: obj.guaranteeCategory },
     { label: '非诉期间', value: obj.outLawsuitTime || '--' },
     { label: '案件类型', value: obj.gCaseType || '--' },

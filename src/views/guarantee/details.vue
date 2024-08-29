@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <Steps :step="0" />
+    <StepPre v-if="isPreserve" :step="0" />
+    <Steps v-else :step="0" />
     <div class="details">
       <div class="itemBox">
         <div class="boxTitle">
@@ -87,6 +88,7 @@ import { propertyApi } from '@/api/property'
 import { preserveApi } from '@/api/preserve.js'
 // components
 import Steps from './components/Steps'
+import StepPre from './components/StepPre'
 import Detail from './components/Detail'
 import BaseData from './components/BaseData'
 import Applicant from './components/Applicant'
@@ -109,6 +111,7 @@ export default {
   name: 'GuaranteeDetails',
   components: {
     Steps,
+    StepPre,
     Detail,
     BaseData,
     Applicant,
@@ -228,11 +231,19 @@ export default {
     },
     submitForm() {
       if (+this.step === -1) {
-        this.routerClose(`/guarantee/upload/${this.updateId}`)
+        if (this.isPreserve) {
+          this.routerClose(`/preserve/upload/${this.updateId}`)
+        } else {
+          this.routerClose(`/guarantee/upload/${this.updateId}`)
+        }
       } else {
         guaranteeApi.step({ gId: this.updateId, step: 2 }).then(({ code, data, msg }) => {
           if (code === 200) {
-            this.routerClose(`/guarantee/upload/${this.updateId}`)
+            if (this.isPreserve) {
+              this.routerClose(`/preserve/upload/${this.updateId}`)
+            } else {
+              this.routerClose(`/guarantee/upload/${this.updateId}`)
+            }
           } else {
             this.$message.error(msg)
           }
