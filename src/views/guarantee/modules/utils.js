@@ -12,9 +12,44 @@ export const baseData = (obj) => {
     { label: '申请保全额', value: obj.gMoney },
     { label: '建议保全费', value: obj.guaranteeMoney },
     { label: '提交人身份', value: obj.gIssueStatus },
-    { label: '提交时间', value: (obj.createTime.split(' ')[0]) || '--' },
+    { label: '提交时间', value: obj.createTime.split(' ')[0] || '--' },
     { label: '备注', value: obj.gDesc || '--' }
   ]
+}
+
+export const baseGain = (obj) => {
+  const arr = []
+  arr.push({ label: '申请法院', value: obj.courtName || '--' })
+  arr.push({ label: '保全类别', value: obj.courtCategory })
+  arr.push({ label: '案件类型', value: obj.cCaseType || '--' })
+  arr.push({ label: '案号', value: (obj.cCaseNo || '').split('|').join('') || '--' })
+  if (obj.cCaseType && +obj.cCaseType === 13) {
+    arr.push({ label: '主体案由', value: obj.cCaseReason || '--' })
+    arr.push({ label: '行为案由', value: obj.cCaseReason2 || '--' })
+  } else {
+    arr.push({ label: '案由', value: obj.cCaseReason || '--' })
+  }
+  arr.push({ label: '保全金额', value: obj.cMoney || '--' })
+  arr.push({ label: '担保情况', value: obj.guaranteeCase || '--' })
+  if (obj.cCaseType && +obj.guaranteeCase === 2) {
+    arr.push({ label: '无需担保原因', value: obj.noGuaranteeReason || '--' })
+  }
+  arr.push({ label: '提交人身份', value: obj.cIssueStatus || '--' })
+  arr.push({ label: '提交时间', value: (obj.createTime || '').split(' ')[0] || '--' })
+  arr.push({ label: '备注', value: obj.cDesc || '--' })
+  return arr
+
+  // return [
+  //   { label: '申请法院', value: obj.courtName },
+  //   { label: '保全类别', value: obj.courtCategory },
+  //   { label: '案件类型', value: obj.cCaseType || '--' },
+  //   { label: '案号', value: obj.cCaseNo.split('|').join('') || '--' },
+  //   { label: '申请保全额', value: obj.gMoney },
+  //   { label: '建议保全费', value: obj.guaranteeMoney },
+  //   { label: '提交人身份', value: obj.gIssueStatus },
+  //   { label: '提交时间', value: obj.createTime.split(' ')[0] || '--' },
+  //   { label: '备注', value: obj.gDesc || '--' }
+  // ]
 }
 
 export const applicantData = (ary) => {

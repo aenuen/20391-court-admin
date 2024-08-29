@@ -28,6 +28,17 @@ export const preserve = {
         title: '保全申请',
         roles: ['user']
       }
+    },
+    {
+      path: 'details/:id',
+      name: 'preserveDetails',
+      component: () => import('@/views/preserve/details'),
+      meta: {
+        title: '担保资料',
+        roles: ['user'],
+        activeMenu: '/preserve/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
     }
   ]
 }

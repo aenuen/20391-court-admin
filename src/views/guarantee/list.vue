@@ -29,7 +29,7 @@
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column prop="gCourt" :label="fields.gCourt" align="center" />
+      <el-table-column prop="courtName" :label="fields.gCourt" align="center" />
       <el-table-column prop="guaranteeCategory" :label="fields.guaranteeCategory" align="center" />
       <el-table-column :label="fields.outLawsuitTime" align="center">
         <template slot-scope="{ row: { outLawsuitTime } }">

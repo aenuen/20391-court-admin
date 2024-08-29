@@ -1,12 +1,16 @@
 {
+  // 编译器选项
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     }
   },
+  // 排除的文件和目录
   "exclude": ["node_modules", "dist"],
   "vueCompilerOptions": {
-    "experimentalDisableTemplateSupport": true // 去掉volar下el标签红色波浪线问题
+    // "experimentalDisableTemplateSupport": true // 去掉volar下el标签红色波浪线问题
   }
+  // 包含的文件和目录
+  // "include": []
 }

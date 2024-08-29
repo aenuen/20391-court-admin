@@ -282,7 +282,7 @@ export default {
   width: 700px;
 }
 
-.case .selectTxt,
+.selectTxt,
 .bigPrice {
   color: #999;
 }
