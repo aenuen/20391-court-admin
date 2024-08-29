@@ -262,7 +262,7 @@ export default {
                 if (+data.guaranteeCase === 2) {
                   this.routerClose('/preserve/details/' + cId)
                 } else {
-                  //
+                  this.routerClose('/preserve/select/' + cId)
                 }
               } else {
                 this.$message.error(msg)

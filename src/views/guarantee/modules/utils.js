@@ -38,18 +38,6 @@ export const baseGain = (obj) => {
   arr.push({ label: '提交时间', value: (obj.createTime || '').split(' ')[0] || '--' })
   arr.push({ label: '备注', value: obj.cDesc || '--' })
   return arr
-
-  // return [
-  //   { label: '申请法院', value: obj.courtName },
-  //   { label: '保全类别', value: obj.courtCategory },
-  //   { label: '案件类型', value: obj.cCaseType || '--' },
-  //   { label: '案号', value: obj.cCaseNo.split('|').join('') || '--' },
-  //   { label: '申请保全额', value: obj.gMoney },
-  //   { label: '建议保全费', value: obj.guaranteeMoney },
-  //   { label: '提交人身份', value: obj.gIssueStatus },
-  //   { label: '提交时间', value: obj.createTime.split(' ')[0] || '--' },
-  //   { label: '备注', value: obj.gDesc || '--' }
-  // ]
 }
 
 export const applicantData = (ary) => {

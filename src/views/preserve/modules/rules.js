@@ -24,3 +24,18 @@ export const DetailThree = {
   cCaseReasonMain: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.cCaseReasonMain) }],
   cCaseReasonAction: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.cCaseReasonAction) }]
 }
+
+export const selectCommon = {
+  purchaseStatus: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.purchaseStatus) }],
+  purchasePlat: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.purchasePlat) }]
+}
+
+export const selectOne = {
+  gId: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.gId) }]
+}
+
+export const selectTwo = {
+  guaranteeType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.guaranteeType) }],
+  orgId: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.orgId) }],
+  guaranteeValue: [{ validator: (rule, value, callback) => validatePrice(rule, value, callback, fields.guaranteeValue, '填写', 1, 11) }]
+}

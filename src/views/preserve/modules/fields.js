@@ -14,10 +14,19 @@ export const DetailFields = {
   cCaseReasonMain: '主体案由',
   cCaseReasonAction: '行为案由',
   cMoney: '保全金额',
-  guaranteeCase: '	担保情况',
+  guaranteeCase: '担保情况',
   noGuaranteeReason: '无需担保原因',
   cIssueStatus: '提交人身份',
   cDesc: '备注',
   step: '	创建步骤',
-  cStatus: '保全状态'
+  cStatus: '保全状态',
+  //
+  purchaseStatus: '是否购买',
+  purchasePlat: '购买平台',
+  gId: '关联ID',
+  guaranteeType: '担保方式',
+  guaranteePerson: '担保人',
+  orgId: '担保机构',
+  guaranteeValue: '担保价值',
+  guaranteeDesc: '担保说明'
 }

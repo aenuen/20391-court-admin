@@ -83,6 +83,17 @@ export const preserve = {
         activeMenu: '/preserve/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'select/:id',
+      name: 'preserveSelect',
+      component: () => import('@/views/preserve/select'),
+      meta: {
+        title: '选择担保',
+        roles: ['user'],
+        activeMenu: '/preserve/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
     }
   ]
 }
