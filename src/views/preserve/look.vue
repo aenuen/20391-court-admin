@@ -1,10 +1,10 @@
 <template>
-  <Audit is-preserve is-preview />
+  <preview is-preserve is-preview />
 </template>
 <script>
 // api
 // components
-import Audit from '@/views/guarantee/audit'
+import preview from '@/views/guarantee/preview'
 // data
 // filter
 // function
@@ -13,7 +13,7 @@ import Audit from '@/views/guarantee/audit'
 // settings
 export default {
   name: '',
-  components: { Audit },
+  components: { preview },
   mixins: [],
   data() {
     return {}

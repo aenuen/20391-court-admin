@@ -12,5 +12,9 @@ export const preserveApi = {
   // get
   details: (params) => request({ url: '/litigation/get/' + params, method: 'get' }), // 详情
   //
-  order: (params) => request({ url: '/LitigationOrder/get/' + params, method: 'get' }) // 获取诉讼责任险详情
+  order: (params) => request({ url: '/LitigationOrder/get/' + params, method: 'get' }), // 获取诉讼责任险详情
+  // 法院审批列表
+  // /courtApprove/getApproveList
+  approveList: (data) => request({ url: '/courtApprove/getApproveList', method: 'post', params: data }), // 获取诉讼责任险详情
+  approve: (data) => request({ url: '/courtApprove/approve', method: 'post', params: data }) // 审批
 }

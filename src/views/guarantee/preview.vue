@@ -222,10 +222,10 @@ export default {
     getPreserveDetails() {
       preserveApi.details(this.updateId).then(({ code, data, msg }) => {
         if (code === 200) {
-          const { baseInfo } = data
-          this.baseObj = baseInfo
-          this.step = baseInfo.step ? baseInfo.step : 0
-          this.baseData = baseGain(baseInfo)
+          const { courtBaseInfo } = data
+          this.baseObj = courtBaseInfo
+          this.step = courtBaseInfo.step ? courtBaseInfo.step : 0
+          this.baseData = baseGain(courtBaseInfo)
         } else {
           this.$message.error(msg)
         }

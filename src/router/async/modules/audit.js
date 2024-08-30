@@ -39,6 +39,16 @@ export const audit = {
         icon: 'audit',
         roles: ['admin']
       }
+    },
+    {
+      path: 'preserve',
+      name: 'audit-preserve',
+      component: () => import('@/views/audit/preserve'),
+      meta: {
+        title: '保全审核',
+        icon: 'audit',
+        roles: ['court']
+      }
     }
   ]
 }

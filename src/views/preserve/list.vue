@@ -45,7 +45,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="cMoney" :label="fields.cMoney" align="center" />
-      <el-table-column prop="guaranteeCase" :label="fields.guaranteeCase" align="center" />
+      <el-table-column prop="guaranteeCase" :label="fields.guaranteeCase" align="center">
+        <template slot-scope="{ row: { guaranteeCase } }">
+          <span>{{ getEnsureName(guaranteeCase) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="cIssueStatus" :label="fields.cIssueStatus" align="center" />
       <el-table-column label="编辑" align="center" width="95">
         <template slot-scope="{ row: { step, cId, status, guaranteeCase } }">
@@ -114,6 +118,15 @@ export default {
     startHandle() {
       this.gainList()
       this.gainCourtList()
+    },
+    getEnsureName(val) {
+      let name = ''
+      this.ensureAry.forEach((item) => {
+        if (+item.dictValue === +val) {
+          name = item.name
+        }
+      })
+      return name
     },
     gainList() {
       courtApi.all().then(({ code, data, msg }) => {

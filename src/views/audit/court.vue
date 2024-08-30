@@ -17,10 +17,15 @@
           <span>{{ getCnName(courtAddress) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="审核" align="center" width="120">
+      <el-table-column label="状态" align="center" width="120">
         <template slot-scope="{ row: { courtStatus } }">
-          <el-button v-if="+courtStatus === 1" type="success">完成</el-button>
-          <el-button v-else-if="+courtStatus === 0" type="primary" :icon="el - icon - bangzhu">审批</el-button>
+          <span>{{ courtStatus | filterStatus }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="审核" align="center" width="140">
+        <template slot-scope="{ row: { courtStatus } }">
+          <el-alert v-if="+courtStatus === 1" type="success" center show-icon :closable="false">完成</el-alert>
+          <el-button v-else-if="+courtStatus === 0" type="primary" icon="el-icon-bangzhu">审批</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,6 +54,17 @@ import { codeToText } from 'element-china-area-data'
 export default {
   name: 'AuditCourt',
   components: { Pagination },
+  filters: {
+    filterStatus(status) {
+      if (+status === 0) {
+        return '审核中'
+      } else if (+status === 1) {
+        return '通过'
+      } else if (+status === 3) {
+        return '不通过'
+      }
+    }
+  },
   mixins: [ListMixin, MethodsMixin],
   data() {
     return {
