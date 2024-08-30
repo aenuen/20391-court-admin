@@ -8,7 +8,7 @@ export const preserve = {
   meta: {
     title: '保全管理',
     icon: 'preserve',
-    roles: ['user']
+    roles: ['user', 'manager']
   },
   children: [
     {
@@ -17,7 +17,7 @@ export const preserve = {
       component: () => import('@/views/preserve/list'),
       meta: {
         title: '保全列表',
-        roles: ['user']
+        roles: ['user', 'manager']
       }
     },
     {
@@ -35,7 +35,7 @@ export const preserve = {
       component: () => import('@/views/preserve/details'),
       meta: {
         title: '担保资料',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/preserve/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -46,7 +46,7 @@ export const preserve = {
       component: () => import('@/views/preserve/upload'),
       meta: {
         title: '上传资料',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/preserve/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -57,7 +57,7 @@ export const preserve = {
       component: () => import('@/views/preserve/preview'),
       meta: {
         title: '预览订单',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/preserve/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -68,7 +68,7 @@ export const preserve = {
       component: () => import('@/views/preserve/look'),
       meta: {
         title: '预览订单',
-        roles: ['user'],
+        roles: ['user', 'manager', 'court'],
         activeMenu: '/audit/preserve' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -79,7 +79,7 @@ export const preserve = {
       component: () => import('@/views/preserve/audit'),
       meta: {
         title: '提交审核',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/preserve/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -90,7 +90,7 @@ export const preserve = {
       component: () => import('@/views/preserve/select'),
       meta: {
         title: '选择担保',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/preserve/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中

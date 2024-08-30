@@ -8,7 +8,7 @@ export const court = {
   meta: {
     title: '法院信息',
     icon: 'org',
-    roles: ['court']
+    roles: ['court', 'manager']
   },
   children: [
     {
@@ -26,7 +26,7 @@ export const court = {
       component: () => import('@/views/court/list'),
       meta: {
         title: '法院列表',
-        roles: ['admin']
+        roles: ['manager']
       }
     },
     {
@@ -68,7 +68,7 @@ export const court = {
       component: () => import('@/views/court/look'),
       meta: {
         title: '认证信息',
-        roles: ['admin'],
+        roles: ['manager'],
         activeMenu: '/audit/court' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中

@@ -8,7 +8,7 @@ export const dict = {
   meta: {
     title: '字典管理',
     icon: 'dict',
-    roles: ['admin']
+    roles: ['manager']
   },
   children: [
     {
@@ -17,7 +17,7 @@ export const dict = {
       component: () => import('@/views/dict/list'),
       meta: {
         title: '字典管理',
-        roles: ['admin']
+        roles: ['manager']
       }
     }
   ]

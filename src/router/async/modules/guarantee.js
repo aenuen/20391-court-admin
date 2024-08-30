@@ -8,7 +8,7 @@ export const guarantee = {
   meta: {
     title: '担保管理',
     icon: 'guarantee',
-    roles: ['user']
+    roles: ['user', 'manager']
   },
   children: [
     {
@@ -17,7 +17,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/list'),
       meta: {
         title: '担保列表',
-        roles: ['user']
+        roles: ['user', 'manager']
       }
     },
     {
@@ -35,7 +35,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/details'),
       meta: {
         title: '担保资料',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -46,7 +46,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/upload'),
       meta: {
         title: '上传资料',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -57,7 +57,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/select'),
       meta: {
         title: '选择担保机构',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -68,7 +68,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/preview'),
       meta: {
         title: '预览订单',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -79,7 +79,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/look'),
       meta: {
         title: '预览订单',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/audit/guarantee' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -90,7 +90,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/audit'),
       meta: {
         title: '提交审核',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -101,7 +101,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/pay'),
       meta: {
         title: '支付订单',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -112,7 +112,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/fees'),
       meta: {
         title: '缴费确认',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中
@@ -123,7 +123,7 @@ export const guarantee = {
       component: () => import('@/views/guarantee/sweat'),
       meta: {
         title: '等待出函',
-        roles: ['user'],
+        roles: ['user', 'manager'],
         activeMenu: '/guarantee/list' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中

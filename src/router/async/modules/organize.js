@@ -8,7 +8,7 @@ export const organize = {
   meta: {
     title: '机构信息',
     icon: 'org',
-    roles: ['shops']
+    roles: ['shops', 'manager']
   },
   children: [
     {
@@ -26,7 +26,7 @@ export const organize = {
       component: () => import('@/views/organize/list'),
       meta: {
         title: '机构列表',
-        roles: ['admin']
+        roles: ['manager']
       }
     },
     {
@@ -68,7 +68,7 @@ export const organize = {
       component: () => import('@/views/organize/look'),
       meta: {
         title: '认证信息',
-        roles: ['admin'],
+        roles: ['manager'],
         activeMenu: '/audit/organize' // 指定高亮位置
       },
       hidden: true // 不显示在侧边栏中

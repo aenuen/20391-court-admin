@@ -7,7 +7,8 @@ export const audit = {
   redirect: '/audit/create',
   meta: {
     title: '信息审核',
-    icon: 'audit'
+    icon: 'audit',
+    roles: ['manager', 'shops', 'court']
   },
   children: [
     {
@@ -17,7 +18,7 @@ export const audit = {
       meta: {
         title: '机构审核',
         icon: 'audit',
-        roles: ['admin']
+        roles: ['manager']
       }
     },
     {
@@ -37,7 +38,7 @@ export const audit = {
       meta: {
         title: '法院审核',
         icon: 'audit',
-        roles: ['admin']
+        roles: ['manager']
       }
     },
     {
