@@ -5,7 +5,7 @@ export const toPages = (gId, status) => {
       path = 'audit'
       break
     case 1:
-      path = 'preview'
+      path = 'look'
       break
     case 2:
       path = 'details'

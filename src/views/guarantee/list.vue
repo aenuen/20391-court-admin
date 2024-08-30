@@ -29,6 +29,18 @@
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
+      <el-table-column label="支付" align="center" width="120">
+        <template slot-scope="{ row: { payImage } }">
+          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="保函" align="center" width="120">
+        <template slot-scope="{ row: { gFileUrl, status } }">
+          <el-image v-if="gFileUrl && status === 1" :src="pdf" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="download(gFileUrl)" />
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="courtName" :label="fields.gCourt" align="center" />
       <el-table-column prop="guaranteeCategory" :label="fields.guaranteeCategory" align="center" />
       <el-table-column :label="fields.outLawsuitTime" align="center">
@@ -79,6 +91,9 @@
     <div style="text-align: center">
       <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
     </div>
+    <el-dialog v-if="seeController" :visible.sync="seeController" title="支付凭证" :before-close="seeClose">
+      <el-image :src="sweatImg" style="width: 100%; height: 100%" fit="contain" />
+    </el-dialog>
     <!-- 弹窗 -->
     <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="原因详情" :before-close="dialogClose">
       <table>
@@ -108,12 +123,14 @@ import { DetailFields as fields } from './modules/fields'
 // filter
 // function
 import { toUpdate, toPages } from './modules/tPage'
+import { downloadSave } from './modules/utils'
 // mixins
 import ListMixin from '@/components/Mixins/ListMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 import GainDict from '@/components/Mixins/GainDict'
 // plugins
 // settings
+import { serveUrl } from '@/settings'
 export default {
   name: 'GuaranteeList',
   components: { Pagination },
@@ -142,6 +159,9 @@ export default {
   mixins: [ListMixin, MethodsMixin, GainDict],
   data() {
     return {
+      pdf: require(`@/assets/image/fileType/PDF.png`),
+      seeController: false,
+      sweatImg: '',
       fields,
       dialogVisible: false,
       expStatus: '-1',
@@ -150,6 +170,11 @@ export default {
   },
   created() {},
   methods: {
+    // 获取网址
+    getPayFullUrl(url) {
+      const arr = url.split('/')
+      return `${serveUrl}/file/pay/${arr[arr.length - 2]}/${arr[arr.length - 1]}`
+    },
     statusHandle(status, description) {
       return +status === 2 || +status === 3 || (+status === 4 && description)
     },
@@ -193,6 +218,17 @@ export default {
       this.gainDict_caseTypeAry() // 案件类型
       this.gainDict_issueStatusAry() // 提交人类型
       this.getList()
+    },
+    seeImage(url) {
+      this.seeController = true
+      this.sweatImg = url
+    },
+    // 下载
+    download(url) {
+      guaranteeApi.download({ path: url }).then((data) => {
+        downloadSave('电子保函' + Date.now(), 'pdf', data)
+        this.$message.success('下载成功')
+      })
     },
     // 获取列表
     getList() {

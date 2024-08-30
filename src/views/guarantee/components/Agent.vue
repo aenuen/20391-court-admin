@@ -26,7 +26,7 @@
           </el-form-item>
         </el-col>
         <!-- 执业号 -->
-        <el-col :span="12">
+        <el-col v-if="+postForm.agentType === 91" :span="12">
           <el-form-item class="is-required" prop="practiceCertNo" :label="fields.practiceCertNo" :label-width="labelWidth">
             <el-input v-model="postForm.practiceCertNo" :placeholder="fields.practiceCertNo" maxlength="18" :style="{ width: '100%' }" />
           </el-form-item>

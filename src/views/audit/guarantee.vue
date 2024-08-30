@@ -15,12 +15,12 @@
         </template>
       </el-table-column>
       <el-table-column label="保函" align="center" width="120">
-        <template slot-scope="{ row: { gFileUrl } }">
-          <el-image v-if="gFileUrl" :src="pdf" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="download(gFileUrl)" />
+        <template slot-scope="{ row: { gFileUrl, status } }">
+          <el-image v-if="gFileUrl && status === 1" :src="pdf" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="download(gFileUrl)" />
           <div v-else>--</div>
         </template>
       </el-table-column>
-      <el-table-column prop="gCourt" :label="fields.gCourt" align="center" />
+      <el-table-column prop="courtName" :label="fields.gCourt" align="center" />
       <el-table-column prop="guaranteeCategory" :label="fields.guaranteeCategory" align="center" />
       <el-table-column :label="fields.outLawsuitTime" align="center">
         <template slot-scope="{ row: { outLawsuitTime } }">
@@ -72,6 +72,7 @@
 <script>
 // api
 import { approveApi } from '@/api/approve'
+import { guaranteeApi } from '@/api/guarantee'
 // components
 import GExplain from './components/GExplain'
 import Pagination from '@/components/Pagination'
@@ -87,7 +88,7 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
 // settings
 import { serveUrl } from '@/settings'
-import { guaranteeApi } from '@/api/guarantee'
+
 export default {
   name: 'AuditGuarantee',
   components: { Pagination, GExplain, GSweat },

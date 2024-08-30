@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <div style="height: 50px; line-height: 30px; font-size: 16px">担保编号：{{ gId }}</div>
     <Base file-text="电子保函" :action="action" :file-list="fileList" :file-accept="accept" :file-data="{ gId }" @onSuccess="onSuccess" />
   </div>
 </template>
