@@ -1,20 +1,20 @@
 <template>
   <div class="uploadMulti">
     <div class="uploadList">
-      <div v-for="(item, key) in fileList" :key="key" class="item" :style="{width:width + 'px',height:height + 50 + 'px'}">
+      <div v-for="(item, key) in fileList" :key="key" class="item" :style="{ width: width + 'px', height: height + 50 + 'px' }">
         <div class="line">
-          <div class="file" :style="{width:width + 'px',height:height + 'px'}">
-            <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" :style="{width:width + 'px',height:height + 'px'}" />
-            <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="fit" :style="{width:width + 'px',height:height + 'px'}" />
-            <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="fit" :style="{width:width + 'px',height:height + 'px'}" />
-            <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="fit" :style="{width:width + 'px',height:height + 'px'}" />
+          <div class="file" :style="{ width: width + 'px', height: height + 'px' }">
+            <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="fit" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="fit" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="fit" :style="{ width: width + 'px', height: height + 'px' }" />
           </div>
-          <div class="mask" :style="{width:width + 'px',height:height + 'px'}" />
+          <div class="mask" :style="{ width: width + 'px', height: height + 'px' }" />
           <div class="icon">
             <span v-if="fileClassify(item.url) === 'pic'" @click="onUploadPreview(getFullUrl(item.url))">
               <i class="el-icon-zoom-in" />
             </span>
-            <span v-else @click="onUploadDownload(getFullUrl(item.url))">
+            <span v-else @click="onUploadDownload(item.url)">
               <i class="el-icon-download" />
             </span>
             <span @click="onUploadRemove(item.fileId)">
@@ -22,15 +22,15 @@
             </span>
           </div>
         </div>
-        <div class="name" :style="{width:width + 'px',height:50 + 'px'}">{{ item.fileName }}</div>
+        <div class="name" :style="{ width: width + 'px', height: 50 + 'px' }">{{ item.fileName }}</div>
       </div>
       <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>
     </div>
-    <div class="load" :style="{width:width + 'px',height:height + 50 + 'px'}">
-      <el-upload v-if="limit > fileList.length" class="uploaderItem" :multiple="false" :action="action" :headers="headers" :accept="accept" :data="data" :show-file-list="false" :on-success="onSuccess" :before-upload="onBeforeUpload" :on-error="onUploadError" :style="{width:width + 'px',height:height + 'px'}">
-        <i class="el-icon-plus uploaderIcon" :style="{width:width + 'px',height:height + 'px'}" />
+    <div class="load" :style="{ width: width + 'px', height: height + 50 + 'px' }">
+      <el-upload v-if="limit > fileList.length" class="uploaderItem" :multiple="false" :action="action" :headers="headers" :accept="accept" :data="data" :show-file-list="false" :on-success="onSuccess" :before-upload="onBeforeUpload" :on-error="onUploadError" :style="{ width: width + 'px', height: height + 'px' }">
+        <i class="el-icon-plus uploaderIcon" :style="{ width: width + 'px', height: height + 'px' }" />
         <div v-if="progress" class="progress">
           <el-progress type="circle" :percentage="percentage" :width="width" />
         </div>
@@ -44,12 +44,14 @@
 // data
 // filter
 // function
+import { fileSave } from '@/libs/fileSave'
 // mixin
 // plugins
 import { getToken } from '@/libs/utils/token'
 import { fileClassify } from 'abbott-methods/import'
 // settings
 import { serveUrl } from '@/settings'
+import { guaranteeApi } from '@/api/guarantee'
 export default {
   name: 'ComponentsUploadMulti',
   components: {},
@@ -139,7 +141,10 @@ export default {
     },
     // 下载
     onUploadDownload(url) {
-      window.open(url)
+      guaranteeApi.download({ path: url }).then(({ code, data, msg }) => {
+        fileSave(Date.now(), 'docx', data)
+        this.$message.success('下载成功')
+      })
     },
     // 删除
     onUploadRemove(fileId) {

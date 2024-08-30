@@ -26,7 +26,7 @@ export const toPages = (gId, status) => {
   return `/preserve/${path}/${gId}`
 }
 
-export const toUpdate = (step, gId) => {
+export const toUpdate = (gId, step) => {
   let path = ''
   switch (step) {
     case 1:

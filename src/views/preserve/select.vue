@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form ref="postForm" :model="postForm" :rules="rulesForm" :validate-on-rule-change="false">
-      <!-- 法院 -->
+      <!-- 是否购买 -->
       <el-row>
         <el-col>
           <el-form-item class="is-required" prop="purchaseStatus" :label="fields.purchaseStatus" :label-width="labelWidth">
@@ -9,7 +9,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <template v-if="+postForm.purchaseStatus === 2">
+      <template v-if="+postForm.purchaseStatus === 1">
         <!-- 购买平台 -->
         <el-row>
           <el-col>
@@ -35,6 +35,15 @@
           </el-row>
         </template>
         <template v-else>
+          <!-- 上传保函 -->
+          <!-- TODO -->
+          <el-row>
+            <el-col>
+              <el-form-item class="is-required" label="上传保函" :label-width="labelWidth">
+                <Multi :action="action" :accept="accept" :data="{ cId: updateId }" />
+              </el-form-item>
+            </el-col>
+          </el-row>
           <!-- 担保方式 -->
           <el-row>
             <el-col>
@@ -86,8 +95,8 @@
       <el-row>
         <el-col>
           <el-form-item :label-width="labelWidth">
-            <el-button v-if="+postForm.purchaseStatus === 1" @click="routerGo('/guarantee/create')">去购买</el-button>
-            <el-button type="primary" @click="submitForm">{{ submitTxt }}</el-button>
+            <el-button v-if="+postForm.purchaseStatus === 0" @click="routerGo('/guarantee/create')">去购买</el-button>
+            <el-button v-if="+postForm.purchaseStatus === 1" type="primary" @click="submitForm">{{ submitTxt }}</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -102,8 +111,10 @@
 // api
 import { preserveApi } from '@/api/preserve'
 import { guaranteeApi } from '@/api/guarantee'
+import { approveApi } from '@/api/approve'
 // components
 import Table from './table'
+import Multi from '@/components/Upload/Multi'
 // data
 import { DetailFields as fields } from './modules/fields'
 import { selectCommon as rulesForm } from './modules/rules'
@@ -117,9 +128,10 @@ import GainDict from '@/components/Mixins/GainDict'
 // plugins
 import { controlInputPrice, numberPriceBigWrite } from 'abbott-methods/import'
 // settings
+import { apiCourtUrl } from '@/settings'
 export default {
   name: 'PreserveSelect',
-  components: { Table },
+  components: { Table, Multi },
   mixins: [ListMixin, DetailMixin, MethodsMixin, GainDict],
   data() {
     return {
@@ -127,17 +139,19 @@ export default {
       fields,
       rulesForm,
       postForm: {
-        purchaseStatus: '1'
+        purchaseStatus: '0'
       },
       submitTxt: '下一步',
       purchaseStatusAry: [
-        { dictValue: '1', name: '是' },
-        { dictValue: '2', name: '否' }
+        { dictValue: '0', name: '未购买' },
+        { dictValue: '1', name: '已购买' }
       ],
       purchasePlatAry: [
         { dictValue: '1', name: '本系统' },
         { dictValue: '2', name: '其它平台' }
       ],
+      accept: ['.pdf'].join(','),
+      fileList: [],
       litigationId: '',
       bigWritePrice: '',
       dialogVisible: false
@@ -146,6 +160,9 @@ export default {
   computed: {
     cStyle() {
       return { width: this.commonWidth }
+    },
+    action() {
+      return apiCourtUrl + '/LitigationOrder/upload'
     }
   },
   watch: {
@@ -211,13 +228,49 @@ export default {
       this.$refs.postForm.validate((valid, fields) => {
         this.submitLoadingOpen()
         if (valid) {
-          console.log('🚀 ~ this.$refs.postForm.validate ~ valid', valid)
-          //
+          const newForm = {
+            litigationId: this.litigationId,
+            cid: this.updateId
+          }
+          newForm.purchaseStatus = this.postForm.purchaseStatus
+          newForm.purchasePlat = this.postForm.purchasePlat
+          if (+newForm.purchasePlat === 1) {
+            newForm.gId = this.postForm.gId
+          } else {
+            newForm.guaranteeType = this.postForm.guaranteeType
+            newForm.guaranteePerson = this.postForm.guaranteePerson
+            newForm.orgId = this.postForm.orgId
+            newForm.guaranteeValue = this.postForm.guaranteeValue
+            newForm.guaranteeDesc = this.postForm.guaranteeDesc
+          }
           if (this.isUpdate) {
-            //
+            preserveApi.createOrder(newForm).then(({ code, data, msg }) => {
+              if (code === 200) {
+                if (+newForm.purchasePlat === 1) {
+                  approveApi.preserveApprove({ cId: this.updateId }).then(({ code, data, msg }) => {
+                    if (code === 200) {
+                      this.$message.success('提交成功')
+                      this.routerClose(`/preserve/audit/${this.updateId}`)
+                    } else {
+                      this.$message.error(msg)
+                    }
+                  })
+                } else {
+                  preserveApi.step({ cId: this.updateId, step: 11 }).then(({ code, data, msg }) => {
+                    if (code === 200) {
+                      this.$message.success('提交成功')
+                      this.routerClose('/preserve/details/' + this.updateId)
+                    } else {
+                      this.$message.error(msg)
+                    }
+                  })
+                }
+              } else {
+                this.$message.error(msg)
+              }
+            })
             this.submitLoadingClose()
           } else {
-            //
             this.submitLoadingClose()
           }
         } else {

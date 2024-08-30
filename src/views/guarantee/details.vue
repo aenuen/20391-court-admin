@@ -237,17 +237,23 @@ export default {
           this.routerClose(`/guarantee/upload/${this.updateId}`)
         }
       } else {
-        guaranteeApi.step({ gId: this.updateId, step: 2 }).then(({ code, data, msg }) => {
-          if (code === 200) {
-            if (this.isPreserve) {
-              this.routerClose(`/preserve/upload/${this.updateId}`)
+        if (this.isPreserve) {
+          preserveApi.step({ cId: this.updateId, step: 2 }).then(({ code, data, msg }) => {
+            if (code === 200) {
+              this.routerClose('/preserve/upload/' + this.updateId)
             } else {
-              this.routerClose(`/guarantee/upload/${this.updateId}`)
+              this.$message.error(msg)
             }
-          } else {
-            this.$message.error(msg)
-          }
-        })
+          })
+        } else {
+          guaranteeApi.step({ gId: this.updateId, step: 2 }).then(({ code, data, msg }) => {
+            if (code === 200) {
+              this.routerClose(`/guarantee/upload/${this.updateId}`)
+            } else {
+              this.$message.error(msg)
+            }
+          })
+        }
       }
     },
     // 基本资料

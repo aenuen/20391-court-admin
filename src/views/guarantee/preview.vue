@@ -260,18 +260,25 @@ export default {
         })
     },
     approve() {
-      approveApi.approve({ gId: this.updateId }).then(({ code, data, msg }) => {
-        if (code === 200) {
-          this.$message.success(msg)
-          if (this.isPreserve) {
+      if (this.isPreserve) {
+        approveApi.preserveApprove({ cId: this.updateId }).then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.$message.success(msg)
             this.routerClose(`/preserve/audit/${this.updateId}`)
           } else {
-            this.routerClose(`/guarantee/audit/${this.updateId}`)
+            this.$message.error(msg)
           }
-        } else {
-          this.message.error(msg)
-        }
-      })
+        })
+      } else {
+        approveApi.approve({ gId: this.updateId }).then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.$message.success(msg)
+            this.routerClose(`/guarantee/audit/${this.updateId}`)
+          } else {
+            this.message.error(msg)
+          }
+        })
+      }
     }
   }
 }

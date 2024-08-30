@@ -23,8 +23,6 @@
       </el-select>
       <!-- 搜索 -->
       <el-button class="filter-btn el-icon-search" @click="handleFilter"> 搜索 </el-button>
-      <!-- 新增按纽 -->
-      <el-button type="success" class="filter-btn el-icon-plus" @click="$router.push('create')"> 新增 </el-button>
     </div>
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">

@@ -5,5 +5,7 @@ export const approveApi = {
   // post
   approve: (data) => request({ url: '/approve/submitApprove', method: 'post', params: data }), // 提交审批
   list: (data) => request({ url: '/approve/getApproveList', method: 'post', params: data }), // 列表
-  approval: (data) => request({ url: '/approve/approve', method: 'post', params: data }) // 审核
+  approval: (data) => request({ url: '/approve/approve', method: 'post', params: data }), // 审核
+  // 保全提交审批
+  preserveApprove: (data) => request({ url: '/courtApprove/submitApprove', method: 'post', params: data }) // 审核
 }

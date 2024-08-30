@@ -25,6 +25,7 @@ export const DetailThree = {
   cCaseReasonAction: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.cCaseReasonAction) }]
 }
 
+// 选择资料
 export const selectCommon = {
   purchaseStatus: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.purchaseStatus) }],
   purchasePlat: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.purchasePlat) }]

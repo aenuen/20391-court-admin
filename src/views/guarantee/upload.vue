@@ -76,6 +76,7 @@
 // api
 import { fileApi } from '@/api/file'
 import { guaranteeApi } from '@/api/guarantee'
+import { preserveApi } from '@/api/preserve.js'
 // components
 import Steps from './components/Steps'
 import StepPre from './components/StepPre'
@@ -184,17 +185,23 @@ export default {
           this.routerClose(`/guarantee/select/${this.updateId}`)
         }
       } else {
-        guaranteeApi.step({ gId: this.updateId, step: 3 }).then(({ code, data, msg }) => {
-          if (code === 200) {
-            if (this.isPreserve) {
-              this.routerClose(`/preserve/preview/${this.updateId}`)
+        if (this.isPreserve) {
+          preserveApi.step({ cId: this.updateId, step: 4 }).then(({ code, data, msg }) => {
+            if (code === 200) {
+              this.routerClose('/preserve/preview/' + this.updateId)
             } else {
-              this.routerClose(`/guarantee/select/${this.updateId}`)
+              this.$message.error(msg)
             }
-          } else {
-            this.$message.error(msg)
-          }
-        })
+          })
+        } else {
+          guaranteeApi.step({ gId: this.updateId, step: 3 }).then(({ code, data, msg }) => {
+            if (code === 200) {
+              this.routerClose(`/guarantee/select/${this.updateId}`)
+            } else {
+              this.$message.error(msg)
+            }
+          })
+        }
       }
     },
     // 下载模板
