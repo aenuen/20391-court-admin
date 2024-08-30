@@ -5,6 +5,7 @@ import { organize } from './modules/organize'
 import { court } from './modules/court'
 import { audit } from './modules/audit'
 import { account } from './modules/account'
+import { exchange } from './modules/exchange'
 import { user } from './modules/user'
 import { dict } from './modules/dict'
 import { icons } from './modules/icons'
@@ -14,6 +15,7 @@ const asyncRoutes = [
   organize,
   court,
   audit,
+  exchange,
   user,
   dict,
   account,
