@@ -1,11 +1,3 @@
-/*
- * @Author: aenuen aenuen@qq.com
- * @Date: 2024-08-23 09:32:54
- * @LastEditors: aenuen aenuen@qq.com
- * @LastEditTime: 2024-08-26 14:17:04
- * @FilePath: \court-admin-a1\src\router\async\modules\organize.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import Layout from '@/components/Layout'
 
 export const organize = {
@@ -26,6 +18,15 @@ export const organize = {
       meta: {
         title: '机构信息',
         roles: ['shops']
+      }
+    },
+    {
+      path: 'list',
+      name: 'organize-list',
+      component: () => import('@/views/organize/list'),
+      meta: {
+        title: '机构列表',
+        roles: ['admin']
       }
     },
     {

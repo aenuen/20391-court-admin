@@ -21,6 +21,15 @@ export const court = {
       }
     },
     {
+      path: 'list',
+      name: 'court-list',
+      component: () => import('@/views/court/list'),
+      meta: {
+        title: '法院列表',
+        roles: ['admin']
+      }
+    },
+    {
       path: 'step',
       name: 'courtStep',
       component: () => import('@/views/court/step'),
