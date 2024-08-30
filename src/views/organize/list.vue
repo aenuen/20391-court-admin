@@ -12,14 +12,19 @@
       <el-table-column prop="orgCode" :label="fields.orgCode" align="center" />
       <el-table-column prop="orgEmail" :label="fields.orgEmail" align="center" />
       <el-table-column prop="orgTelephone" :label="fields.orgTelephone" align="center" />
-      <el-table-column label="排序" align="center" width="120">
-        <template slot-scope="{ row: { orgId } }">
-          {{ orgId }}
+      <el-table-column label="排序" align="center" width="95">
+        <template slot-scope="{ row: { weight } }">
+          <span>{{ weight }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="排序" align="center" width="95">
+        <template slot-scope="{ row: { orgId, weight } }">
+          <el-button @click="handleWeight(orgId, weight)">修改</el-button>
         </template>
       </el-table-column>
       <el-table-column label="可见" align="center" width="95">
         <template #default="scope">
-          <el-switch v-model="scope.row.isShow" :active-value="1" :inactive-value="0" @change="isShowChange(scope.row.orgId, scope.row.isShow)" />
+          <el-switch v-model="scope.row.isShow" :active-value="true" :inactive-value="false" @change="isShowChange(scope.row.orgId, scope.row.isShow)" />
         </template>
       </el-table-column>
       <el-table-column label="认证" align="center" width="95">
@@ -37,6 +42,10 @@
     <div style="text-align: center">
       <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
     </div>
+    <!-- 弹窗 -->
+    <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="修改排序" :before-close="dialogClose">
+      <weight :org-id="theOrgId" :weight="theWeight" @weightSuccess="weightSuccess" />
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -44,6 +53,7 @@
 import { organizeApi } from '@/api/organize.js'
 // components
 import Pagination from '@/components/Pagination'
+import weight from './components/weight'
 // data
 import { fields } from '@/views/organize/modules/fields'
 // filter
@@ -55,15 +65,35 @@ import ListMixin from '@/components/Mixins/ListMixin'
 // settings
 export default {
   name: 'OrganizeList',
-  components: { Pagination },
+  components: { Pagination, weight },
   mixins: [MethodsMixin, ListMixin],
   data() {
     return {
-      fields
+      fields,
+      dialogVisible: false,
+      theOrgId: '',
+      theWeight: 0
     }
   },
   created() {},
   methods: {
+    handleWeight(orgId, weight) {
+      console.log('🚀 ~ handleWeight ~ orgId, weight', orgId, weight)
+      this.theOrgId = orgId
+      this.theWeight = weight
+      this.dialogVisible = true
+    },
+    dialogClose() {
+      this.theOrgId = ''
+      this.theWeight = ''
+      this.dialogVisible = false
+    },
+    weightSuccess() {
+      this.theOrgId = ''
+      this.theWeight = ''
+      this.dialogVisible = false
+      this.gainOrganizeList()
+    },
     startHandle() {
       this.gainOrganizeList()
     },
