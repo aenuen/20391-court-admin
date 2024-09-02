@@ -53,7 +53,7 @@
             <el-col :span="24">
               <div class="line foot" style="padding-left: 20px">
                 <div class="key">{{ fields.courtAddress }}</div>
-                <div class="value">{{ data.courtAddress }}</div>
+                <div class="value">{{ data.dwellArea }}</div>
               </div>
             </el-col>
           </el-row>

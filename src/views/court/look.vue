@@ -32,9 +32,9 @@ export default {
       courtApi.get(ParamsId).then(({ code, data, msg }) => {
         if (code === 200) {
           const newForm = {}
-          if (data.orgAddress) {
-            newForm.dwellArea = getAreaName(codeToText, getAddressArea(data.orgAddress)).replace(/\//g, '')
-            newForm.dwellAddress = getAddressText(data.orgAddress)
+          if (data.courtAddress) {
+            newForm.dwellArea = getAreaName(codeToText, getAddressArea(data.courtAddress))
+            newForm.dwellAddress = getAddressText(data.courtAddress)
           }
           this.postForm = { ...this.postForm, ...data, ...newForm }
         } else {

@@ -7,7 +7,6 @@
           <div class="titleName">对公汇款信息</div>
         </div>
         <div class="boxContent">
-          <el-alert :title="`本次诉讼担保订单金额 ${account.guaranteeMoney} (元)`" type="success" />
           <div class="account">
             <table>
               <tr>
@@ -20,7 +19,11 @@
               </tr>
               <tr>
                 <th>账号</th>
-                <td>{{ controlInputNumberSpace(account.orgAccount, 4) }}</td>
+                <td>{{ account.orgAccount ? controlInputNumberSpace(account.orgAccount, 4) : '' }}</td>
+              </tr>
+              <tr>
+                <th>支付金额</th>
+                <td>{{ account.expenseMoney }}</td>
               </tr>
             </table>
           </div>
@@ -109,7 +112,8 @@ export default {
             bank: guaranteeBaseInfo.bank,
             orgAccount: guaranteeBaseInfo.orgAccount,
             accountName: guaranteeBaseInfo.accountName,
-            guaranteeMoney: guaranteeBaseInfo.guaranteeMoney
+            guaranteeMoney: guaranteeBaseInfo.guaranteeMoney,
+            expenseMoney: guaranteeBaseInfo.expenseMoney
           }
           if (guaranteeBaseInfo.payImage) {
             this.fileList.push(guaranteeBaseInfo.payImage)

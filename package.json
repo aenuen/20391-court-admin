@@ -19,7 +19,7 @@
     "strong": "git push -f origin main"
   },
   "dependencies": {
-    "abbott-methods": "^1.0.9",
+    "abbott-methods": "^1.0.16",
     "axios": "0.26.0",
     "clipboard": "2.0.11",
     "crypto-js": "4.1.1",

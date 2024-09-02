@@ -97,7 +97,7 @@ export default {
               Object.keys(data).forEach((key) => {
                 newForm[key] = data[key] ? data[key] : ''
               })
-              newForm.courtAddress = data.courtAddress.split(',')
+              newForm.courtAddress = (data.courtAddress || '').split(',')
               this.postForm = newForm
             }
           } else {

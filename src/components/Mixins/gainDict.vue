@@ -1,6 +1,3 @@
-<template>
-  <div></div>
-</template>
 <script>
 // api
 import { dictApi } from '@/api/dict'
@@ -17,6 +14,7 @@ export default {
   mixins: [],
   data() {
     return {
+      expenseTypeAry: [], // 费率类型
       noGuaranteeReasonAry: [], // 无需担保原因
       orgTypeAry: [], // 机构类型
       assetType: [], // 财产类型
@@ -35,6 +33,22 @@ export default {
   },
   created() {},
   methods: {
+    // 机构类型
+    async gainDict_expenseTypeAry() {
+      const data = localStorage.getItem('expenseTypeAry')
+      if (data) {
+        this.expenseTypeAry = JSON.parse(data)
+      } else {
+        await dictApi.gain('expenseType').then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.expenseTypeAry = data.child
+            localStorage.setItem('expenseTypeAry', JSON.stringify(data.child))
+          } else {
+            this.$message.error(msg)
+          }
+        })
+      }
+    },
     // 机构类型
     async gainDict_noGuaranteeReasonAry() {
       const data = localStorage.getItem('noGuaranteeReasonAry')

@@ -69,10 +69,18 @@ export default {
       capsTooltip: false,
       submitTxt: '创建用户',
       capsLock: '您输入的是大写',
-      rolesAry
+      rolesAry: []
     }
   },
-  created() {},
+  created() {
+    const temp = []
+    rolesAry.forEach((item) => {
+      if (item.code === '1' || item.code === '2') {
+        temp.push(item)
+      }
+    })
+    this.rolesAry = temp
+  },
   methods: {
     // 大写时开启提示
     checkCapsLock(e) {
