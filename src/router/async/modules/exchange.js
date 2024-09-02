@@ -6,7 +6,7 @@ export const exchange = {
   component: Layout,
   redirect: '/exchange/create',
   meta: {
-    title: '汇率管理',
+    title: '费率管理',
     icon: 'money',
     roles: ['manager']
   },
@@ -16,7 +16,7 @@ export const exchange = {
       name: 'exchange-list',
       component: () => import('@/views/exchange/list'),
       meta: {
-        title: '汇率管理',
+        title: '费率管理',
         icon: 'money',
         roles: ['manager']
       }

@@ -13,34 +13,36 @@
       <el-table-column prop="orgName" :label="fields.orgId" width="220" align="center" />
       <el-table-column prop="courtName" :label="fields.courtId" width="220" align="center" />
       <el-table-column prop="expenseType" :label="fields.expenseType" align="center" />
+      <!-- 111 -->
       <el-table-column prop="expenseLow" :label="fields.expenseLow" align="center">
         <template slot-scope="{ row: { expenseLow } }">
-          <span>{{ expenseLow || '--' }}</span>
+          <span>{{ expenseLow ? expenseLow + '%' : '--' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="costLow" :label="fields.costLow" align="center">
         <template slot-scope="{ row: { expenseType, costLow } }">
-          <span>{{ expenseType === '阶梯费率' ? costLow || '--' : '--' }}</span>
+          <span>{{ expenseType === '阶梯费率' ? (costLow ? costLow + '元' : '--') : '--' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="expenseHigh" :label="fields.expenseHigh" align="center">
         <template slot-scope="{ row: { expenseHigh } }">
-          <span>{{ expenseHigh || '--' }}</span>
+          <span>{{ expenseHigh ? expenseHigh + '%' : '--' }}</span>
         </template>
       </el-table-column>
+      <!-- 112 -->
       <el-table-column prop="chargeLow" :label="fields.chargeLow" align="center">
         <template slot-scope="{ row: { chargeLow } }">
-          <span>{{ chargeLow || '--' }}</span>
+          <span>{{ chargeLow ? chargeLow + '元' : '--' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="costLow" :label="fields.costLow" align="center">
+        <template slot-scope="{ row: { expenseType, costLow } }">
+          <span>{{ expenseType === '固定费率' ? (costLow ? costLow + '元' : '--') : '--' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="chargeHigh" :label="fields.chargeHigh" align="center">
         <template slot-scope="{ row: { chargeHigh } }">
-          <span>{{ chargeHigh || '--' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="costLow" :label="fields.costLows" align="center">
-        <template slot-scope="{ row: { expenseType, costLow } }">
-          <span>{{ expenseType === '固定费率' ? costLow || '--' : '--' }}</span>
+          <span>{{ chargeHigh ? chargeHigh + '%' : '--' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="编辑" align="center" width="95">
@@ -132,7 +134,7 @@ export default {
         }
       })
     },
-    // 获取汇率列表
+    // 获取费率列表
     gainExchangeList() {
       exchangeApi.list(this.queryList).then(({ code, data, msg }) => {
         if (code === 200) {

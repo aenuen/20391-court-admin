@@ -17,6 +17,7 @@ export const DetailFields = {
   guaranteeCase: '担保情况',
   noGuaranteeReason: '无需担保原因',
   cIssueStatus: '提交人身份',
+  userName: '创建人',
   cDesc: '备注',
   step: '	创建步骤',
   cStatus: '保全状态',

@@ -51,13 +51,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="cIssueStatus" :label="fields.cIssueStatus" align="center" />
-      <el-table-column label="编辑" align="center" width="95">
+      <el-table-column prop="userName" :label="fields.userName" align="center" />
+      <el-table-column label="编辑" align="center" width="100">
         <template slot-scope="{ row: { step, cId, status, guaranteeCase } }">
           <el-button v-if="status || +status === 0" size="mini" type="success" icon="el-icon-view" @click="toPages(cId, status)"> 查看 </el-button>
           <el-button v-else size="mini" type="primary" icon="el-icon-edit" @click="toUpdate(cId, step, guaranteeCase)"> 编辑 </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="删除" align="center" width="95">
+      <el-table-column label="删除" align="center" width="100">
         <template slot-scope="{ row: { cId } }">
           <el-button size="mini" type="warning" icon="el-icon-delete" @click="onRemoveAlone(cId)"> 删除 </el-button>
         </template>

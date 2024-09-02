@@ -14,6 +14,7 @@ export const DetailFields = {
   gCaseZips: '案件类型代字',
   gCodeOrder: '案件序号',
   gIssueStatus: '提交人身份',
+  userName: '创建人',
   gDesc: '备注',
   step: '状态'
 }

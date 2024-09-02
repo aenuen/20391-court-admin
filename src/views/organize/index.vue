@@ -51,21 +51,26 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col>
-          <el-col>
-            <div class="addressArea">
-              <div class="area">
-                <el-form-item class="is-required" prop="dwellArea" :label="fields.dwellAddress" :label-width="labelWidth">
-                  <el-cascader v-model="postForm.dwellArea" :options="regionData" :placeholder="fields.dwellArea" style="width: 100%" />
-                </el-form-item>
-              </div>
-              <div class="address">
-                <el-form-item class="is-required" prop="dwellAddress">
-                  <el-input v-model="postForm.dwellAddress" :placeholder="fields.dwellAddress" maxlength="30" style="width: 100%" />
-                </el-form-item>
-              </div>
+        <el-col :span="12">
+          <el-form-item class="is-required" prop="type" :label="fields.type" :label-width="labelWidth">
+            <el-select v-model="postForm.type" placeholder="机构类型" style="width: 100%">
+              <el-option v-for="(item, key) in orgTypeAry" :key="key" :value="item.dictValue" :label="item.name" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <div class="addressArea">
+            <div class="area">
+              <el-form-item class="is-required" prop="dwellArea" :label="fields.dwellAddress" :label-width="labelWidth">
+                <el-cascader v-model="postForm.dwellArea" :options="regionData" :placeholder="fields.dwellArea" style="width: 100%" />
+              </el-form-item>
             </div>
-          </el-col>
+            <div class="address">
+              <el-form-item class="is-required" prop="dwellAddress">
+                <el-input v-model="postForm.dwellAddress" :placeholder="fields.dwellAddress" maxlength="30" style="width: 100%" />
+              </el-form-item>
+            </div>
+          </div>
         </el-col>
       </el-row>
       <el-row>
@@ -118,13 +123,13 @@
       <el-row>
         <!-- TODO 法人正面-->
         <el-col :span="12">
-          <el-form-item class="is-required" prop="agentImage1" :label="fields.agentImage1" :label-width="labelWidth">
+          <el-form-item class="is-required" prop="legalImage1" :label="fields.legalImage1" :label-width="labelWidth">
             <Multi :auto="false" :accept="accept" :file-list="legalOne" :action="action" :width="200" :height="126" :data="{ type: 3, orgId: theId }" :limit="1" @onUploadRemove="onUploadRemove" @onUploadSuccess="onUploadSuccess" />
           </el-form-item>
         </el-col>
         <!-- TODO 法人反面-->
         <el-col :span="12">
-          <el-form-item class="is-required" prop="agentImage2" :label="fields.agentImage2" :label-width="labelWidth">
+          <el-form-item class="is-required" prop="legalImage2" :label="fields.legalImage2" :label-width="labelWidth">
             <Multi :auto="false" :accept="accept" :file-list="legalTwo" :action="action" :width="200" :height="126" :data="{ type: 4, orgId: theId }" :limit="1" @onUploadRemove="onUploadRemove" @onUploadSuccess="onUploadSuccess" />
           </el-form-item>
         </el-col>
@@ -245,24 +250,7 @@ export default {
       legalOne: [],
       legalTwo: [],
       agentOne: [],
-      agentTwo: [],
-      testData: {
-        name: '万川集团',
-        orgCode: '123456789123456789',
-        orgEmail: 'aenuen@qq.com',
-        orgTelephone: '13055297726',
-        dwellArea: ['35', '3501', '350103'],
-        dwellAddress: '交通路永裕花园1座204',
-        orgLegal: '石志辉',
-        legalCertNo: '350583198306167132',
-        legalTelephone: '13055297726',
-        orgAgent: '石志辉',
-        agentCertNo: '350583198306167132',
-        agentTelephone: '13055297726',
-        bank: '兴业银行福建永泰支行',
-        accountName: '石志辉',
-        orgAccount: '1234567891234567891'
-      }
+      agentTwo: []
     }
   },
   computed: {
@@ -304,7 +292,7 @@ export default {
               this.agentTwo = data.agentCertImage2 ? [{ url: data.agentCertImage2 }] : []
               const newForm = {}
               if (data.orgId) newForm.orgId = data.orgId
-              newForm.type = 72
+              newForm.type = data.type
               if (data.name) newForm.name = data.name
               if (data.orgCode) newForm.orgCode = data.orgCode
               if (data.orgEmail) newForm.orgEmail = data.orgEmail
@@ -367,7 +355,6 @@ export default {
         this.submitLoadingOpen()
         if (valid) {
           this.postForm.orgId = this.theId
-          this.postForm.type = 72
           this.postForm.orgAddress = (this.postForm.dwellArea.join(',') || '') + '/' + (this.postForm.dwellAddress || '')
           organizeApi.complete(this.postForm).then(({ code, data, msg }) => {
             if (code === 200) {

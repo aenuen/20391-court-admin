@@ -60,7 +60,7 @@
         </el-row>
       </template>
       <template v-else-if="+postForm.expenseType === 112">
-        <!-- chargeLow -->
+        <!-- 固定费用 -->
         <el-row>
           <el-col>
             <el-form-item class="is-required" prop="chargeLow" :label="fields.chargeLow" :label-width="labelWidth">
@@ -70,12 +70,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- 低于费率 -->
+        <!-- 固定费用 -->
         <el-row>
           <el-col>
-            <el-form-item class="is-required" prop="chargeHigh" :label="fields.chargeHigh" :label-width="labelWidth">
-              <el-input v-model="postForm.chargeHigh" :placeholder="fields.chargeHigh" :style="cStyle">
-                <template slot="append">%</template>
+            <el-form-item class="is-required" prop="costLow" :label="fields.costLow" :label-width="labelWidth">
+              <el-input v-model="postForm.costLow" :placeholder="fields.costLow" :style="cStyle">
+                <template slot="append">元</template>
               </el-input>
             </el-form-item>
           </el-col>
@@ -83,8 +83,8 @@
         <!-- 超过费率 -->
         <el-row>
           <el-col>
-            <el-form-item class="is-required" prop="costLows" :label="fields.costLows" :label-width="labelWidth">
-              <el-input v-model="postForm.costLows" :placeholder="fields.costLows" :style="cStyle">
+            <el-form-item class="is-required" prop="chargeHigh" :label="fields.chargeHigh" :label-width="labelWidth">
+              <el-input v-model="postForm.chargeHigh" :placeholder="fields.chargeHigh" :style="cStyle">
                 <template slot="append">%</template>
               </el-input>
             </el-form-item>
@@ -266,7 +266,7 @@ export default {
           } else {
             data.chargeLow = this.postForm.chargeLow
             data.chargeHigh = this.postForm.chargeHigh
-            data.costLow = this.postForm.costLows
+            data.costLow = this.postForm.costLow
           }
           if (this.isUpdate) {
             data.expenseId = this.updateNumber

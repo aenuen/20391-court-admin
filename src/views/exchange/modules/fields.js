@@ -8,6 +8,5 @@ export const fields = {
   expenseHigh: '第二费率',
   // 112
   chargeLow: '固定费用',
-  chargeHigh: '低于费率',
-  costLows: '超过费率'
+  chargeHigh: '超过费率'
 }

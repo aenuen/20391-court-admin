@@ -75,13 +75,14 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="编辑" align="center" width="95">
+      <el-table-column prop="userName" :label="fields.userName" align="center" />
+      <el-table-column label="编辑" align="center" width="100">
         <template slot-scope="{ row: { step, gId, status } }">
           <el-button v-if="status || +status === 0" size="mini" type="success" icon="el-icon-view" @click="toPages(gId, status)"> 查看 </el-button>
           <el-button v-else size="mini" type="primary" icon="el-icon-edit" @click="toUpdate(step, gId)"> 编辑 </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="删除" align="center" width="95">
+      <el-table-column label="删除" align="center" width="100">
         <template slot-scope="{ row: { gId, step } }">
           <el-button size="mini" type="warning" icon="el-icon-delete" :disabled="step === -1" @click="onRemoveAlone(gId)"> 删除 </el-button>
         </template>

@@ -9,6 +9,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="name" :label="fields.name" align="center" />
+      <el-table-column prop="type" :label="fields.type" align="center" />
       <el-table-column prop="orgCode" :label="fields.orgCode" align="center" />
       <el-table-column prop="orgEmail" :label="fields.orgEmail" align="center" />
       <el-table-column prop="orgTelephone" :label="fields.orgTelephone" align="center" />
@@ -17,9 +18,9 @@
           <span>{{ weight }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="排序" align="center" width="95">
-        <template slot-scope="{ row: { orgId, weight } }">
-          <el-button @click="handleWeight(orgId, weight)">修改</el-button>
+      <el-table-column label="修改" align="center" width="95">
+        <template slot-scope="{ row: { orgId, weight, type } }">
+          <el-button size="mini" @click="handleWeight(orgId, weight, type)">修改</el-button>
         </template>
       </el-table-column>
       <el-table-column label="可见" align="center" width="95">
@@ -44,7 +45,7 @@
     </div>
     <!-- 弹窗 -->
     <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="修改排序" :before-close="dialogClose">
-      <weight :org-id="theOrgId" :weight="theWeight" @weightSuccess="weightSuccess" />
+      <weight :org-id="theOrgId" :weight="theWeight" :org-type="theType" @weightSuccess="weightSuccess" />
     </el-dialog>
   </div>
 </template>
@@ -72,15 +73,16 @@ export default {
       fields,
       dialogVisible: false,
       theOrgId: '',
-      theWeight: 0
+      theWeight: 0,
+      theType: ''
     }
   },
   created() {},
   methods: {
-    handleWeight(orgId, weight) {
-      console.log('🚀 ~ handleWeight ~ orgId, weight', orgId, weight)
+    handleWeight(orgId, weight, type) {
       this.theOrgId = orgId
       this.theWeight = weight
+      this.theType = type
       this.dialogVisible = true
     },
     dialogClose() {

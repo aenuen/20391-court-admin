@@ -49,7 +49,7 @@ export default {
         })
       }
     },
-    // 机构类型
+    // 原因
     async gainDict_noGuaranteeReasonAry() {
       const data = localStorage.getItem('noGuaranteeReasonAry')
       if (data) {
