@@ -1,11 +1,11 @@
 <template>
-  <div class="theContainer">
+  <div class="theContainer" :style="useBg">
     <div class="logo"></div>
     <div class="title">{{ someText.bigTitle }}</div>
-    <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm">
+    <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm" :style="formBg">
       <!-- 标题 -->
       <div class="title-container">
-        <div class="formTitle">用户登录</div>
+        <div class="formTitle">{{ userRoles }}登录</div>
       </div>
       <!-- 手机号码 -->
       <el-form-item prop="telephone">
@@ -58,6 +58,7 @@ import { loginRule } from './modules/rules'
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import Bg from './mixins/bg'
 // plugins
 import { CryptoJsEncode } from '@/libs/cryptojs'
 import { v4 as uuidV4 } from 'uuid'
@@ -67,7 +68,7 @@ import { apiBaseUrl } from '@/settings'
 export default {
   name: 'LoginIndex',
   components: {},
-  mixins: [DetailMixin, MethodsMixin],
+  mixins: [DetailMixin, MethodsMixin, Bg],
   data() {
     return {
       fields,
@@ -76,22 +77,21 @@ export default {
       postForm: { telephone: '' },
       passwordType: 'password',
       capsTooltip: false,
+      userRoles: '',
       otherQuery: {},
       uuid: '',
       authCode: ''
     }
   },
+  computed: {
+    formBg() {
+      return {
+        backgroundColor: +this.nowType === 2 || +this.nowType === 3 || +this.nowType === 4 ? '#fff' : 'none',
+        borderRadius: '20px'
+      }
+    }
+  },
   watch: {
-    $route: {
-      handler: function (route) {
-        const query = route.query
-        if (query) {
-          this.redirect = query.redirect
-          this.otherQuery = this.getOtherQuery(query)
-        }
-      },
-      immediate: true
-    },
     'postForm.telephone': function (value) {
       this.postForm.telephone = holdNumber(value)
     },
@@ -121,13 +121,6 @@ export default {
     // 登录跳转
     loginSubmit() {
       this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-    },
-    // 获取其它参数
-    getOtherQuery(query) {
-      return Object.keys(query).reduce((acc, cur) => {
-        if (cur !== 'redirect') acc[cur] = query[cur]
-        return acc
-      }, {})
     },
     // 登录
     submitForm() {

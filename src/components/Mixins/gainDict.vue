@@ -33,7 +33,7 @@ export default {
   },
   created() {},
   methods: {
-    // 机构类型
+    // 费率类型
     async gainDict_expenseTypeAry() {
       const data = localStorage.getItem('expenseTypeAry')
       if (data) {

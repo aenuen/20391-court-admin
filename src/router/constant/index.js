@@ -4,10 +4,11 @@ import Router from 'vue-router'
 Vue.use(Router)
 // 固定加载
 import { home } from './modules/home'
-import { login, register, find, httpRedirect, authRedirect } from './modules/account'
+import { guide, login, register, find, httpRedirect, authRedirect } from './modules/account'
 import { error401, error404 } from './modules/errorPage'
 
 export const constantRoutes = [
+  guide, // 引导页
   login, // 登录
   register, // 注册
   find, // 找回密码

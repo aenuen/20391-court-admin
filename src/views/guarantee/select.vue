@@ -12,7 +12,7 @@
         <el-row>
           <el-col>
             <el-form-item class="is-required" label="选择机构品类" :label-width="labelWidth">
-              <el-radio v-for="(item, key) in theTypeAry" :key="key" v-model="theType" :label="item.label" @change="handleRadioChange">
+              <el-radio v-for="(item, key) in orgTypeAry" :key="key" v-model="theType" :label="item.dictKey" @change="handleRadioChange">
                 {{ item.name }}
               </el-radio>
             </el-form-item>
@@ -65,12 +65,13 @@ import Steps from './components/Steps'
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import GainDict from '@/components/Mixins/GainDict'
 // plugins
 // settings
 export default {
   name: 'GuaranteeSelect',
   components: { Steps },
-  mixins: [DetailMixin, MethodsMixin],
+  mixins: [DetailMixin, MethodsMixin, GainDict],
   data() {
     return {
       isUpdate: true,
@@ -83,7 +84,7 @@ export default {
       bankList: [],
       guaranteeList: [],
       insuranceList: [],
-      theType: 'bank',
+      theType: 'bx',
       radio: '0'
     }
   },
@@ -92,6 +93,7 @@ export default {
     startHandle() {
       this.getStep()
       this.getList()
+      this.gainDict_orgTypeAry()
     },
     getList() {
       selectApi.list().then(({ code, data, msg }) => {

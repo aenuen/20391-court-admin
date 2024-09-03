@@ -1,15 +1,8 @@
-<!--
- * @Author: abbott
- * @Date: 2024-08-08 17:36:02
- * @LastEditors: abbott
- * @LastEditTime: 2024-08-09 08:43:25
- * @Description:
--->
 <template>
-  <div class="theContainer">
+  <div class="theContainer" :style="useBg">
     <div class="logo"></div>
     <div class="title">{{ someText.bigTitle }}</div>
-    <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm">
+    <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm" :style="formBg">
       <!-- 标题 -->
       <div class="title-container">
         <div class="formTitle">找回密码</div>
@@ -75,6 +68,7 @@ import { findRule } from './modules/rules'
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import Bg from './mixins/bg'
 // plugins
 import { formatMobile } from 'abbott-methods/import'
 import { CryptoJsEncode } from '@/libs/cryptojs'
@@ -82,7 +76,7 @@ import Cookies from 'js-cookie'
 export default {
   name: '',
   components: {},
-  mixins: [DetailMixin, MethodsMixin],
+  mixins: [DetailMixin, MethodsMixin, Bg],
   data() {
     return {
       fields,
