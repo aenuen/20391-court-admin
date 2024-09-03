@@ -35,7 +35,7 @@
       </el-table-column>
       <el-table-column label="状态" align="center" width="120">
         <template slot-scope="{ row: { orgStatus } }">
-          {{ orgStatus === 1 ? '已认证' : '未认证' }}
+          <span>{{ orgStatus === 1 ? '已认证' : '未认证' }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -43,7 +43,7 @@
     <div style="text-align: center">
       <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
     </div>
-    <!-- 弹窗 -->
+    <!-- 权重弹窗 -->
     <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="修改排序" :before-close="dialogClose">
       <weight :org-id="theOrgId" :weight="theWeight" :org-type="theType" @weightSuccess="weightSuccess" />
     </el-dialog>
@@ -79,26 +79,30 @@ export default {
   },
   created() {},
   methods: {
+    startHandle() {
+      this.gainOrganizeList()
+    },
+    // 显示修改权重弹窗
     handleWeight(orgId, weight, type) {
       this.theOrgId = orgId
       this.theWeight = weight
       this.theType = type
       this.dialogVisible = true
     },
+    // 关闭修改权重弹窗
     dialogClose() {
       this.theOrgId = ''
       this.theWeight = ''
       this.dialogVisible = false
     },
+    // 修改权重成功
     weightSuccess() {
       this.theOrgId = ''
       this.theWeight = ''
       this.dialogVisible = false
       this.gainOrganizeList()
     },
-    startHandle() {
-      this.gainOrganizeList()
-    },
+    // 可见切换
     isShowChange(orgId, isShow) {
       organizeApi.set({ orgId, isShow: +isShow === 1 }).then(({ code, data, msg }) => {
         if (code === 200) {
@@ -109,6 +113,7 @@ export default {
         }
       })
     },
+    // 状态切换
     statusChange(orgId, status) {
       organizeApi.Update({ orgId, status: +status === 1 }).then(({ code, data, msg }) => {
         if (code === 200) {
@@ -119,6 +124,7 @@ export default {
         }
       })
     },
+    // 机构列表
     gainOrganizeList() {
       organizeApi.list(this.queryList).then(({ code, data, msg }) => {
         if (code === 200) {
