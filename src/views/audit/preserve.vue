@@ -135,7 +135,7 @@ export default {
       return name
     },
     goSee(id) {
-      this.routerGo('/preserve/look/' + id)
+      this.routerGo('/audit/p-look/' + id)
     }
   }
 }

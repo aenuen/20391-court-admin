@@ -14,6 +14,7 @@ export const guaranteeApi = {
   step: (data) => request({ url: '/guarantee/updateStep', method: 'post', params: data }), // 步骤
   upload: (data) => request({ url: '/guarantee/upload/pay', method: 'post', params: data }), // 上传
   sweat: (data) => request({ url: '/guarantee/upload/file', method: 'post', params: data }), // 出函
+  upt: (data) => request({ url: '/guarantee/uptNum', method: 'post', params: data }), // 出函
   download: (data) => request2({ url: '/guarantee/download', method: 'post', params: data, responseType: 'blob' }), // 下载
   // delete
   remove: (data) => request({ url: '/guarantee/delete/' + data, method: 'delete' }) // 删除

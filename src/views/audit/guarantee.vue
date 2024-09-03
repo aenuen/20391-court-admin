@@ -8,18 +8,6 @@
           <el-button icon="el-icon-view" @click="goSee(gId)">详情</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="支付" align="center" width="120">
-        <template slot-scope="{ row: { payImage } }">
-          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
-          <div v-else>--</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="保函" align="center" width="120">
-        <template slot-scope="{ row: { gFileUrl, status } }">
-          <el-image v-if="gFileUrl && status === 1" :src="pdf" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="download(gFileUrl)" />
-          <div v-else>--</div>
-        </template>
-      </el-table-column>
       <el-table-column prop="courtName" :label="fields.gCourt" align="center" />
       <el-table-column prop="guaranteeCategory" :label="fields.guaranteeCategory" align="center" />
       <el-table-column :label="fields.outLawsuitTime" align="center">
@@ -40,6 +28,18 @@
       <el-table-column prop="gMoney" :label="fields.gMoney" align="center" />
       <el-table-column prop="guaranteeMoney" :label="fields.guaranteeMoney" align="center" />
       <el-table-column prop="gIssueStatus" :label="fields.gIssueStatus" align="center" />
+      <el-table-column label="支付凭证" align="center" width="120">
+        <template slot-scope="{ row: { payImage } }">
+          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="电子保函" align="center" width="120">
+        <template slot-scope="{ row: { gFileUrl, status } }">
+          <a v-if="gFileUrl && status === 1" style="color: #1890ff" @click="download(gFileUrl)">下载</a>
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" align="center" width="120">
         <template slot-scope="{ row: { status } }">
           <span>{{ status | filterStatus }}</span>
@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="审核" align="center" width="120">
         <template slot-scope="{ row: { approveId, gId, status } }">
-          <el-button v-if="+status === 1" type="success">完成</el-button>
+          <el-alert v-if="+status === 1" type="success" center :closable="false">完成</el-alert>
           <el-button v-else-if="+status !== 6" type="primary" :disabled="!(+status === 0 || +status === 5 || +status === 6)" icon="el-icon-bangzhu" @click="goApproval(approveId, status, gId)">审批</el-button>
           <el-button v-else type="success" icon="el-icon-reading" @click="goSweat(gId)">出函</el-button>
         </template>
@@ -61,9 +61,11 @@
     <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="审批" :before-close="dialogClose">
       <GExplain :approval-id="approvalId" :the-status="theStatus" :g-id="gId" @onApprovalSuccess="onApprovalSuccess" />
     </el-dialog>
+    <!-- 出函 -->
     <el-dialog v-if="sweatController" :visible.sync="sweatController" title="出函" :before-close="sweatClose">
       <GSweat :g-id="gId" @onSweatSuccess="onSweatSuccess" />
     </el-dialog>
+    <!-- 支付 -->
     <el-dialog v-if="seeController" :visible.sync="seeController" title="支付凭证" :before-close="seeClose">
       <el-image :src="sweatImg" style="width: 100%; height: 100%" fit="contain" />
     </el-dialog>
@@ -111,7 +113,7 @@ export default {
       }
     },
     filterGCaseNo(str) {
-      return (str || '').replace(/\|/g, '')
+      return str ? str.replace(/\|/g, '') : '--'
     }
   },
   mixins: [ListMixin, MethodsMixin],
@@ -137,7 +139,7 @@ export default {
       return `${serveUrl}/file/pay/${arr[arr.length - 2]}/${arr[arr.length - 1]}`
     },
     goSee(id) {
-      this.routerGo('/guarantee/look/' + id)
+      this.routerGo('/audit/g-look/' + id)
     },
     goApproval(approvalId, status, gId) {
       this.dialogVisible = true

@@ -32,6 +32,28 @@ export const audit = {
       }
     },
     {
+      path: 'g-look/:id',
+      name: 'audit-guarantee-look',
+      component: () => import('@/views/guarantee/look'),
+      meta: {
+        title: '预览订单',
+        roles: ['shops'],
+        activeMenu: '/audit/guarantee' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
+      path: 'p-look/:id',
+      name: 'audit-preserve-look',
+      component: () => import('@/views/preserve/look'),
+      meta: {
+        title: '预览订单',
+        roles: ['court'],
+        activeMenu: '/audit/preserve' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
       path: 'court',
       name: 'auditCourt',
       component: () => import('@/views/audit/court'),

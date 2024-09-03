@@ -30,7 +30,7 @@ export const baseGain = (obj) => {
     arr.push({ label: '案由', value: obj.cCaseReason || '--' })
   }
   arr.push({ label: '保全金额', value: obj.cMoney || '--' })
-  arr.push({ label: '担保情况', value: obj.guaranteeCase || '--' })
+  arr.push({ label: '担保情况', value: obj.guaranteeCase ? (+obj.guaranteeCase === 1 ? '有担保' : '无需担保') : '--' })
   if (obj.cCaseType && +obj.guaranteeCase === 2) {
     arr.push({ label: '无需担保原因', value: obj.noGuaranteeReason || '--' })
   }
@@ -130,7 +130,7 @@ export const propertyData = (ary) => {
     array.push({ label: PropertyFields.assetType, value: item.assetType })
     array.push({ label: PropertyFields.assetBelong, value: item.assetBelong })
     if (item.address) {
-      const area = getAreaName(codeToText, getAddressArea(item.address)).split('/').join('')
+      const area = (getAreaName(codeToText, getAddressArea(item.address)) || '').split('/').join('')
       const text = getAddressText(item.address)
       array.push({ label: PropertyFields.dwellAddress, value: area + text, tip: true })
     }

@@ -29,7 +29,7 @@
       </el-dialog>
     </div>
     <div class="load" :style="{ width: width + 'px', height: height + 50 + 'px' }">
-      <el-upload v-if="limit > fileList.length" class="uploaderItem" :multiple="false" :action="action" :headers="headers" :accept="accept" :data="data" :show-file-list="false" :on-success="onSuccess" :before-upload="onBeforeUpload" :on-error="onUploadError" :style="{ width: width + 'px', height: height + 'px' }">
+      <el-upload v-if="limit > fileList.length" ref="multi" class="uploaderItem" :multiple="false" :action="action" :headers="headers" :accept="accept" :data="data" :show-file-list="false" :on-success="onSuccess" :before-upload="onBeforeUpload" :on-error="onUploadError" :style="{ width: width + 'px', height: height + 'px' }" :auto-upload="auto">
         <i class="el-icon-plus uploaderIcon" :style="{ width: width + 'px', height: height + 'px' }" />
         <div v-if="progress" class="progress">
           <el-progress type="circle" :percentage="percentage" :width="width" />
@@ -64,7 +64,8 @@ export default {
     fileExceed: { type: Number, default: 2 },
     limit: { type: Number, default: 5 },
     width: { type: Number, default: 100 },
-    height: { type: Number, default: 100 }
+    height: { type: Number, default: 100 },
+    auto: { type: Boolean, default: true }
   },
   data() {
     return {
@@ -94,7 +95,6 @@ export default {
     },
     // 上传成功
     onSuccess({ code, data }, file) {
-      console.log('🚀 ~ onSuccess ~ data:', data)
       if (code === 200) {
         this.isUpdate = false
         if (typeof data === 'string') {

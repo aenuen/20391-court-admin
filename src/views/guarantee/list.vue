@@ -29,13 +29,13 @@
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column label="支付" align="center" width="120">
+      <el-table-column label="支付凭证" align="center" width="120">
         <template slot-scope="{ row: { payImage } }">
           <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
           <div v-else>--</div>
         </template>
       </el-table-column>
-      <el-table-column label="保函" align="center" width="120">
+      <el-table-column label="电子保函" align="center" width="120">
         <template slot-scope="{ row: { gFileUrl, status } }">
           <el-image v-if="gFileUrl && status === 1" :src="pdf" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="download(gFileUrl)" />
           <div v-else>--</div>

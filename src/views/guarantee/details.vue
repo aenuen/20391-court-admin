@@ -176,6 +176,7 @@ export default {
           this.RespondentData = respondent
           this.AgentData = agent
           this.PropertyData = assetClue
+          console.log('🚀 ~ guaranteeApi.details ~ assetClue', assetClue)
         } else {
           this.$message.error(msg)
         }
@@ -185,7 +186,6 @@ export default {
       preserveApi.details(this.updateId).then(({ code, data, msg }) => {
         if (code === 200) {
           const { courtBaseInfo } = data
-          console.log('🚀 ~ preserveApi.details ~ baseInfo', courtBaseInfo)
           this.baseObj = courtBaseInfo
           this.step = courtBaseInfo.step ? courtBaseInfo.step : 0
           this.baseData = baseGain(courtBaseInfo)

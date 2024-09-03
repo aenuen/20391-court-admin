@@ -24,7 +24,7 @@ export const MobileRule = {
 export const loginRule = {
   telephone: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }],
   password: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '登录密码', '填写', 6, 30) }],
-  code: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '验证码', '填写', 5, 5) }]
+  code: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, '验证码', '填写') }]
 }
 
 // 注册验证

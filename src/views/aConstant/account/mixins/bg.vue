@@ -38,7 +38,7 @@ export default {
   computed: {
     formBg() {
       return {
-        backgroundColor: +this.nowType === 1 || +this.nowType === 2 || +this.nowType === 3 ? '#fff' : '#000',
+        backgroundColor: +this.nowType === 2 || +this.nowType === 3 || +this.nowType === 4 ? '#fff' : 'none',
         borderRadius: '20px'
       }
     }

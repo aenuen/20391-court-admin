@@ -25,7 +25,7 @@
         请将 <em>{{ fileText }} 拖入</em> 或 <em>点击上传</em>
       </div>
     </el-upload>
-    <div v-else style="width: 300px; margin: auto">
+    <div v-else style="width: 100px">
       <div v-for="(item, key) in fileList" :key="key">
         <el-image v-if="fileClassify(item) === 'pic'" :src="getFullUrl(item)" fit="cover" @click="View(getFullUrl(item))" />
         <el-image v-else-if="fileClassify(item) === 'doc'" :src="doc" fit="fit" />
