@@ -45,7 +45,9 @@ export default {
   data() {
     return {}
   },
-  created() {},
+  created() {
+    localStorage.clear()
+  },
   methods: {
     openNewWindow(id) {
       const newWindowURL = window.location.origin + '/#/login?t=' + id // 创建一个新的URL，用于在新窗口中打开
