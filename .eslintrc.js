@@ -1,73 +1,135 @@
 module.exports = {
+  /**
+   * 根目录标识
+   * 要将 ESLint 限制为特定项目，请将 "root": true 放在 .eslintrc.* 文件或 package.json 文件的 eslintConfig 字段中，或在项目根级别的 .eslintrc.* 文件中。
+   * ESLint 一旦找到带有"root": true的配置，标识当前配置文件为eslint的根配置文件，让其停止在父级目录中继续寻找。
+   */
   root: true,
+
+  /**
+   * 解析器配置项
+   * https://eslint.org/docs/latest/user-guide/configuring/language-options#specifying-parser-options
+   * 不同的解析器可能有不同附加配置项。
+   */
   parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module'
+    sourceType: 'module', // 指定JS代码来源的类型，script（默认）| module（es6的module模块）。
+    parser: 'babel-eslint'
   },
+
+  /**
+   * 运行环境
+   * 可用的环境 https://eslint.org/docs/latest/user-guide/configuring/language-options#specifying-environments
+   * 一个环境定义了一组预定义的全局变量
+   * browser - 浏览器环境中的全局变量。
+   * node - Node.js 全局变量和 Node.js 作用域。
+   * es6 - 启用除了 modules 以外的所有 ECMAScript 6 特性（该选项会自动设置 ecmaVersion 解析器选项为 6）。
+   */
   env: {
     browser: true,
     node: true,
     es6: true
   },
+
+  /**
+   * 规则继承
+   * https://eslint.org/docs/latest/user-guide/configuring/configuration-files#extending-configuration-files
+   * eslint内置推荐规则，即【eslint:recommended】
+   * 可以使用三方配置文件中的扩展规则，书写时配置名称中省略【eslint-config-】的前缀，例如，airbnb 解析为 eslint-config-airbnb。
+   * 使用插件中的配置【plugin:插件包名/配置名】，可以省略包名的【eslint-plugin-】的前缀。例如，【eslint-plugin-react】的书写为"plugin:react/recommended"。
+   * 可以直接引入配置文件，例："./node_modules/coding-standard/eslintDefaults.js"。
+   * 继承使用第三方的规则集（注意放置顺序）。
+   */
   extends: ['plugin:vue/recommended', 'eslint:recommended'],
 
   // 在此处添加自定义规则
   rules: {
-    'vue/max-attributes-per-line': [2, {
-      'singleline': 20,
-      'multiline': {
-        'max': 1,
-        'allowFirstLine': false
+    'vue/max-attributes-per-line': [
+      2,
+      {
+        singleline: 20,
+        multiline: {
+          max: 1,
+          allowFirstLine: false
+        }
       }
-    }],
-    'prettier/prettier': 0, // 以prettier规则优先
+    ],
+    // 以prettier规则优先
+    'prettier/prettier': 0,
     'vue/html-self-closing': 0,
     'vue/singleline-html-element-content-newline': 'off',
     'vue/multiline-html-element-content-newline': 'off',
     'vue/name-property-casing': ['error', 'PascalCase'],
     'vue/no-v-html': 'off',
     'accessor-pairs': 2,
-    'arrow-spacing': [2, { // 箭头空格（前:true、后:true）
-      'before': true,
-      'after': true
-    }],
+    // 箭头空格（前:true、后:true）
+    'arrow-spacing': [
+      2,
+      {
+        before: true,
+        after: true
+      }
+    ],
     'block-spacing': [2, 'always'],
-    'brace-style': [2, '1tbs', {
-      'allowSingleLine': true
-    }],
-    'camelcase': [0, { 'properties': 'always' }],
+    'brace-style': [
+      2,
+      '1tbs',
+      {
+        allowSingleLine: true
+      }
+    ],
+    camelcase: [0, { properties: 'always' }],
     'comma-dangle': [2, 'never'],
-    'comma-spacing': [2, { // 逗号空格（前：false,后:true）
-      'before': false,
-      'after': true
-    }],
+    'comma-spacing': [
+      2,
+      {
+        // 逗号空格（前：false,后:true）
+        before: false,
+        after: true
+      }
+    ],
     'comma-style': [2, 'last'],
     'constructor-super': 2,
-    'curly': [2, 'multi-line'],
+    curly: [2, 'multi-line'],
     'dot-location': [2, 'property'],
     'eol-last': 2,
-    'eqeqeq': ['error', 'always', { 'null': 'ignore' }],
-    'generator-star-spacing': [2, {
-      'before': true,
-      'after': true
-    }],
+    eqeqeq: ['error', 'always', { null: 'ignore' }],
+    'generator-star-spacing': [
+      2,
+      {
+        before: true,
+        after: true
+      }
+    ],
     'handle-callback-err': [2, '^(err|error)$'],
-    'indent': [2, 2, {
-      'SwitchCase': 1
-    }],
+    indent: [
+      2,
+      2,
+      {
+        SwitchCase: 1
+      }
+    ],
     'jsx-quotes': [2, 'prefer-double'], // 在 JSX 属性中一致使用双引号或单引号,['prefer-single','prefer-double']
-    'key-spacing': [2, {
-      'beforeColon': false,
-      'afterColon': true
-    }],
-    'keyword-spacing': [2, {
-      'before': true,
-      'after': true
-    }],
-    'new-cap': [2, {
-      'newIsCap': true,
-      'capIsNew': false
-    }],
+    'key-spacing': [
+      2,
+      {
+        beforeColon: false,
+        afterColon: true
+      }
+    ],
+    'keyword-spacing': [
+      2,
+      {
+        before: true,
+        after: true
+      }
+    ],
+    'new-cap': [
+      2,
+      {
+        newIsCap: true,
+        capIsNew: false
+      }
+    ],
     'new-parens': 2,
     'no-array-constructor': 2,
     'no-caller': 2,
@@ -98,17 +160,23 @@ module.exports = {
     'no-irregular-whitespace': 2,
     'no-iterator': 2,
     'no-label-var': 2,
-    'no-labels': [2, {
-      'allowLoop': false,
-      'allowSwitch': false
-    }],
+    'no-labels': [
+      2,
+      {
+        allowLoop: false,
+        allowSwitch: false
+      }
+    ],
     'no-lone-blocks': 2,
     'no-mixed-spaces-and-tabs': 2,
     'no-multi-spaces': 2,
     'no-multi-str': 2,
-    'no-multiple-empty-lines': [2, {
-      'max': 1
-    }],
+    'no-multiple-empty-lines': [
+      2,
+      {
+        max: 1
+      }
+    ],
     'no-native-reassign': 2,
     'no-negated-in-lhs': 2,
     'no-new-object': 2,
@@ -136,62 +204,93 @@ module.exports = {
     'no-undef-init': 2,
     'no-unexpected-multiline': 2,
     'no-unmodified-loop-condition': 2,
-    'no-unneeded-ternary': [2, {
-      'defaultAssignment': false
-    }],
+    'no-unneeded-ternary': [
+      2,
+      {
+        defaultAssignment: false
+      }
+    ],
     'no-unreachable': 2,
     'no-unsafe-finally': 2,
-    'no-unused-vars': [2, {
-      'vars': 'all',
-      'args': 'none'
-    }],
+    'no-unused-vars': [
+      2,
+      {
+        vars: 'all',
+        args: 'none'
+      }
+    ],
     'no-useless-call': 2,
     'no-useless-computed-key': 2,
     'no-useless-constructor': 2,
     'no-useless-escape': 0,
     'no-whitespace-before-property': 2,
     'no-with': 2,
-    'one-var': [2, {
-      'initialized': 'never'
-    }],
-    'operator-linebreak': [2, 'after', {
-      'overrides': {
-        '?': 'before',
-        ':': 'before'
+    'one-var': [
+      2,
+      {
+        initialized: 'never'
       }
-    }],
+    ],
+    'operator-linebreak': [
+      2,
+      'after',
+      {
+        overrides: {
+          '?': 'before',
+          ':': 'before'
+        }
+      }
+    ],
     'padded-blocks': [2, 'never'],
-    'quotes': [2, 'single', {
-      'avoidEscape': true,
-      'allowTemplateLiterals': true
-    }],
-    'semi': [2, 'never'],
-    'semi-spacing': [2, {
-      'before': false,
-      'after': true
-    }],
+    quotes: [
+      2,
+      'single',
+      {
+        avoidEscape: true,
+        allowTemplateLiterals: true
+      }
+    ],
+    semi: [2, 'never'],
+    'semi-spacing': [
+      2,
+      {
+        before: false,
+        after: true
+      }
+    ],
     'space-before-blocks': [2, 'always'],
     'space-before-function-paren': [0],
     'space-in-parens': [2, 'never'],
     'space-infix-ops': 2,
-    'space-unary-ops': [2, {
-      'words': true,
-      'nonwords': false
-    }],
-    'spaced-comment': [2, 'always', {
-      'markers': ['global', 'globals', 'eslint', 'eslint-disable', '*package', '!', ',']
-    }],
+    'space-unary-ops': [
+      2,
+      {
+        words: true,
+        nonwords: false
+      }
+    ],
+    'spaced-comment': [
+      2,
+      'always',
+      {
+        markers: ['global', 'globals', 'eslint', 'eslint-disable', '*package', '!', ',']
+      }
+    ],
     'template-curly-spacing': [2, 'never'],
     'use-isnan': 2,
     'valid-typeof': 2,
     'wrap-iife': [2, 'any'],
     'yield-star-spacing': [2, 'both'],
-    'yoda': [2, 'never'],
+    yoda: [2, 'never'],
     'prefer-const': 2,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'object-curly-spacing': [2, 'always', {
-      objectsInObjects: false
-    }],
+    'object-curly-spacing': [
+      2,
+      'always',
+      {
+        objectsInObjects: false
+      }
+    ],
     'array-bracket-spacing': [2, 'never']
   }
 }
