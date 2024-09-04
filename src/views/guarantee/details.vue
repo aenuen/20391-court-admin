@@ -176,7 +176,6 @@ export default {
           this.RespondentData = respondent
           this.AgentData = agent
           this.PropertyData = assetClue
-          console.log('🚀 ~ guaranteeApi.details ~ assetClue', assetClue)
         } else {
           this.$message.error(msg)
         }
@@ -231,29 +230,37 @@ export default {
       })
     },
     submitForm() {
-      if (+this.step === -1) {
-        if (this.isPreserve) {
-          this.routerClose(`/preserve/upload/${this.updateId}`)
-        } else {
-          this.routerClose(`/guarantee/upload/${this.updateId}`)
-        }
+      if (this.ApplicantData.length <= 0) {
+        this.$message.error('请添加申请人')
+      } else if (this.RespondentData.length <= 0) {
+        this.$message.error('请添加被申请人')
+      } else if (this.PropertyData.length <= 0) {
+        this.$message.error('请添加财产线索')
       } else {
-        if (this.isPreserve) {
-          preserveApi.step({ cId: this.updateId, step: 2 }).then(({ code, data, msg }) => {
-            if (code === 200) {
-              this.routerClose('/preserve/upload/' + this.updateId)
-            } else {
-              this.$message.error(msg)
-            }
-          })
+        if (+this.step === -1) {
+          if (this.isPreserve) {
+            this.routerClose(`/preserve/upload/${this.updateId}`)
+          } else {
+            this.routerClose(`/guarantee/upload/${this.updateId}`)
+          }
         } else {
-          guaranteeApi.step({ gId: this.updateId, step: 2 }).then(({ code, data, msg }) => {
-            if (code === 200) {
-              this.routerClose(`/guarantee/upload/${this.updateId}`)
-            } else {
-              this.$message.error(msg)
-            }
-          })
+          if (this.isPreserve) {
+            preserveApi.step({ cId: this.updateId, step: 2 }).then(({ code, data, msg }) => {
+              if (code === 200) {
+                this.routerClose('/preserve/upload/' + this.updateId)
+              } else {
+                this.$message.error(msg)
+              }
+            })
+          } else {
+            guaranteeApi.step({ gId: this.updateId, step: 2 }).then(({ code, data, msg }) => {
+              if (code === 200) {
+                this.routerClose(`/guarantee/upload/${this.updateId}`)
+              } else {
+                this.$message.error(msg)
+              }
+            })
+          }
         }
       }
     },
@@ -364,27 +371,31 @@ export default {
         }
       })
     },
-    // 财产线索
+    // 财产线索新增
     PropertyCreate() {
       this.PropertyVisible = true
       this.PropertyIsUpdate = false
     },
+    // 财产线索新增成功
     PropertyCreateSuccess() {
       this.PropertyVisible = false
       this.PropertyIsUpdate = false
       this.propertyList()
     },
+    // 财产线索更新
     PropertyUpdate(id) {
       this.PropertyVisible = true
       this.PropertyIsUpdate = true
       this.PropertyId = id
     },
+    // 财产线索更新成功
     PropertyUpdateSuccess() {
       this.PropertyVisible = false
       this.PropertyIsUpdate = false
       this.PropertyId = ''
       this.propertyList()
     },
+    // 财产线索删除
     PropertyDelete(clueId) {
       propertyApi.remove(clueId).then(({ code, msg }) => {
         if (code === 200) {

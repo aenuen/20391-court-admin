@@ -50,7 +50,6 @@ export default {
         .upload({ userId: this.aid, base64Str: ((res.dataURL || '').split(',') || ['', ''])[1] })
         .then(({ code, data, msg }) => {
           const imageUrl = serveUrl + data + '?' + Date.now()
-          console.log('imageUrl: ', imageUrl)
           if (code === 200) {
             this.$store.commit('user/SET_Avatar', imageUrl)
             this.$message.success(msg)

@@ -119,7 +119,6 @@ export default {
     },
     submitForm() {
       if (this.radio !== '0') {
-        console.log(this.updateId, this.radio)
         guaranteeApi.select({ gId: this.updateId, orgId: this.radio }).then(({ code, data, msg }) => {
           if (code === 200) {
             this.$message.success('选择担保机构成功')

@@ -51,7 +51,6 @@ export default {
   methods: {
     openNewWindow(id) {
       const newWindowURL = window.location.origin + '/#/login?t=' + id // 创建一个新的URL，用于在新窗口中打开
-      console.log('🚀 ~ openNewWindow ~ newWindowURL', newWindowURL)
       window.open(newWindowURL, '_blank') // 打开新窗口
     }
   }
