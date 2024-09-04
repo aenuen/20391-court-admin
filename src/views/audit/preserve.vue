@@ -26,6 +26,7 @@
           <span>{{ getEnsureName(guaranteeCase) }}</span>
         </template>
       </el-table-column>
+      <el-table-column prop="userName" label="创建人" align="center" />
       <el-table-column prop="cIssueStatus" :label="fields.cIssueStatus" align="center" />
       <el-table-column label="状态" align="center" width="120">
         <template slot-scope="{ row: { status } }">

@@ -131,7 +131,7 @@
           </el-row>
         </template>
         <template v-if="+postForm.purchaseStatus === 1">
-          <!-- 购买平台 -->
+          <!-- 购买平台
           <el-row>
             <el-col>
               <el-form-item class="is-required" prop="purchasePlat" :label="fields.purchasePlat" :label-width="labelWidth">
@@ -140,8 +140,8 @@
                 </el-select>
               </el-form-item>
             </el-col>
-          </el-row>
-          <template v-if="+postForm.purchasePlat === 1">
+          </el-row> -->
+          <template>
             <!-- 关联ID -->
             <el-row>
               <el-col>
@@ -155,8 +155,8 @@
               </el-col>
             </el-row>
           </template>
-          <template v-else>
-            <!-- 上传保函 -->
+          <!-- <template v-else>
+            上传保函
             <el-row>
               <el-col>
                 <el-form-item class="is-required" label="上传保函" :label-width="labelWidth">
@@ -164,7 +164,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <!-- 担保方式 -->
+            担保方式
             <el-row>
               <el-col>
                 <el-form-item class="is-required" prop="guaranteeType" :label="fields.guaranteeType" :label-width="labelWidth">
@@ -174,7 +174,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <!-- 担保人 -->
+            担保人
             <el-row>
               <el-col>
                 <el-form-item class="is-required" prop="guaranteePerson" :label="fields.guaranteePerson" :label-width="labelWidth">
@@ -182,7 +182,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <!-- 担保机构 -->
+            担保机构
             <el-row>
               <el-col>
                 <el-form-item class="is-required" prop="orgId" :label="fields.orgId" :label-width="labelWidth">
@@ -190,7 +190,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <!-- 担保价值 -->
+            担保价值
             <el-row>
               <el-col>
                 <el-form-item class="is-required" prop="guaranteeValue" :label="fields.guaranteeValue" :label-width="labelWidth">
@@ -201,7 +201,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <!-- 担保机构 -->
+            担保机构
             <el-row>
               <el-col>
                 <el-form-item class="is-required" prop="guaranteeDesc" :label="fields.guaranteeDesc" :label-width="labelWidth">
@@ -209,7 +209,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-          </template>
+          </template> -->
         </template>
       </template>
       <template v-if="+postForm.guaranteeCase === 2">
@@ -278,7 +278,7 @@ import { guaranteeApi } from '@/api/guarantee'
 import { approveApi } from '@/api/approve'
 // components
 import Notice from './Notice'
-import Multi from '@/components/Upload/MultiNoAuto'
+// import Multi from '@/components/Upload/MultiNoAuto'
 import Table from '../table'
 // data
 import { DetailFields as fields } from '../modules/fields.js'
@@ -297,7 +297,7 @@ import { controlInputPrice, numberPriceBigWrite } from 'abbott-methods/import'
 import { apiCourtUrl } from '@/settings'
 export default {
   name: 'PreserveDetail',
-  components: { Notice, Multi, Table },
+  components: { Notice, Table },
   mixins: [DetailMixin, MethodsMixin, GainDict, ListMixin],
   data() {
     return {
@@ -397,12 +397,17 @@ export default {
       this.getList(this.queryList)
     },
     // 选中担保记录
-    onSelected(gId) {
+    onSelected(row) {
       this.postForm = {
         ...this.postForm,
-        ...{ gId }
+        ...{
+          gId: row.gId,
+          cCourt: row.gCourt,
+          cMoney: row.gMoney
+        }
       }
       this.dialogVisible = false
+      this.$message.success('选取成功')
     },
     // 打开选取弹窗
     getGid() {

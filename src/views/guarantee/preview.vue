@@ -249,7 +249,7 @@ export default {
       })
     },
     submitForm() {
-      this.$confirm('审批后将再修改，确定继续审批吗？', '温馨提示', {
+      this.$confirm('审批后将不能再修改，确定继续审批吗？', '温馨提示', {
         type: 'warning'
       })
         .then(() => {

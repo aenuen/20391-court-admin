@@ -1,0 +1,28 @@
+[
+  {
+    "warrantyNumber": "123123123",
+    "payImage": "/usr/local/java/wanchuan/doc/pay/1830542623251886080/logo阳光.png",
+    "gId": "1830542623251886080",
+    "gCourt": "b6100963ea804c019b23388f564951e1",
+    "orgName": "阳光财产保险股份有限公司临清支公司",
+    "outLawsuitTime": "未起诉或提起仲裁前",
+    "description": "1",
+    "expenseMoney": 200,
+    "userName": "哈哈",
+    "gMoney": 3000,
+    "gStatus": 0,
+    "orgId": "d5c72aafd1f6487897fc5f98112dd2da",
+    "guaranteeMoney": 3000,
+    "createBy": "d7d5cdcc2abc494da842b6126bf4f9f5",
+    "courtName": "测试法院",
+    "guaranteeType": "财产保全",
+    "createTime": "2024-09-02 17:45:46",
+    "gFileUrl": "/usr/local/java/wanchuan/doc/pay/1830542623251886080/财产保全申请流程图(3).pdf",
+    "gIssueStatus": "申请人",
+    "gCaseType": "",
+    "step": -1,
+    "gCaseNo": "",
+    "guaranteeCategory": "诉前保全",
+    "status": 1
+  }
+]

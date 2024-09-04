@@ -48,8 +48,8 @@
       <el-table-column prop="guaranteeMoney" :label="fields.guaranteeMoney" align="center" />
       <el-table-column prop="gIssueStatus" :label="fields.gIssueStatus" align="center" />
       <el-table-column label="选取" align="center" width="95">
-        <template slot-scope="{ row: { gId } }">
-          <el-button size="mini" type="warning" icon="el-icon-check" @click="selected(gId)"> 选取 </el-button>
+        <template slot-scope="{ row }">
+          <el-button size="mini" type="warning" icon="el-icon-check" @click="selected(row)"> 选取 </el-button>
         </template>
       </el-table-column>
     </el-table>

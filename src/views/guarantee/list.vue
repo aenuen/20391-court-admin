@@ -41,7 +41,7 @@
           <span>{{ gCaseType || '--' }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="fields.gCaseNo" align="center" width="200">
+      <el-table-column :label="fields.gCaseNo" align="center">
         <template slot-scope="{ row: { gCaseNo } }">
           <span>{{ gCaseNo | filterGCaseNo }}</span>
         </template>
@@ -61,6 +61,7 @@
           <div v-else>--</div>
         </template>
       </el-table-column>
+      <el-table-column prop="orgName" label="担保机构" align="center" />
       <el-table-column :label="fields.step" align="center">
         <template slot-scope="{ row: { status, description } }">
           <div :title="statusHandle(status, description) ? '点击查看详情' : ''" :style="{ cursor: statusHandle(status, description) ? 'pointer' : 'default' }" @click="explain(status, description)">
