@@ -3,11 +3,6 @@
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column label="详情" align="center" width="120">
-        <template slot-scope="{ row: { orgId } }">
-          <el-button icon="el-icon-view" @click="goSee(orgId)">详情</el-button>
-        </template>
-      </el-table-column>
       <el-table-column prop="name" :label="fields.name" align="center" />
       <el-table-column prop="type" :label="fields.type" align="center" />
       <el-table-column prop="orgCode" :label="fields.orgCode" align="center" />
@@ -36,6 +31,11 @@
       <el-table-column label="状态" align="center" width="120">
         <template slot-scope="{ row: { orgStatus } }">
           <span>{{ orgStatus === 1 ? '已认证' : '未认证' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="材料查看" align="center" width="150">
+        <template slot-scope="{ row: { orgId } }">
+          <el-button icon="el-icon-view" @click="goSee(orgId)">材料查看</el-button>
         </template>
       </el-table-column>
     </el-table>

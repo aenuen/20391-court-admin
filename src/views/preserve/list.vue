@@ -52,6 +52,18 @@
       </el-table-column>
       <el-table-column prop="cIssueStatus" :label="fields.cIssueStatus" align="center" />
       <el-table-column prop="userName" :label="fields.userName" align="center" />
+      <el-table-column label="支付凭证" align="center" width="120">
+        <template slot-scope="{ row: { payImage } }">
+          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="电子保函" align="center" width="120">
+        <template slot-scope="{ row: { gFileUrl, status } }">
+          <a v-if="gFileUrl && status === 1" style="color: #1890ff" @click="download(gFileUrl)">下载</a>
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
       <el-table-column label="编辑" align="center" width="100">
         <template slot-scope="{ row: { step, cId, status, guaranteeCase } }">
           <el-button v-if="status || +status === 0" size="mini" type="success" icon="el-icon-view" @click="toPages(cId, status)"> 查看 </el-button>
@@ -74,6 +86,7 @@
 // api
 import { courtApi } from '@/api/court'
 import { preserveApi } from '@/api/preserve.js'
+import { guaranteeApi } from '@/api/guarantee'
 // components
 import Pagination from '@/components/Pagination'
 // data
@@ -82,12 +95,14 @@ import { DetailFields as fields } from './modules/fields'
 import { emptyValueFilter } from '@/libs/filter'
 // function
 import { toPages, toUpdate } from './modules/tPage.js'
+import { downloadSave } from '../guarantee/modules/utils'
 // mixin
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 import ListMixin from '@/components/Mixins/ListMixin'
 import GainDict from '@/components/Mixins/GainDict'
 // plugins
 // settings
+import { serveUrl } from '@/settings'
 export default {
   name: 'PreserveList',
   components: { Pagination },
@@ -119,6 +134,18 @@ export default {
     startHandle() {
       this.gainList()
       this.gainCourtList()
+    },
+    // 获取网址
+    getPayFullUrl(url) {
+      const arr = url.split('/')
+      return `${serveUrl}/file/pay/${arr[arr.length - 2]}/${arr[arr.length - 1]}`
+    },
+    // 下载
+    download(url) {
+      guaranteeApi.download({ path: url }).then((data) => {
+        downloadSave('电子保函' + Date.now(), 'pdf', data)
+        this.$message.success('下载成功')
+      })
     },
     getEnsureName(val) {
       let name = ''

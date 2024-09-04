@@ -3,11 +3,6 @@
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column label="详情" align="center" width="120">
-        <template slot-scope="{ row }">
-          <el-button icon="el-icon-view" @click="goSee(row.cId)">详情</el-button>
-        </template>
-      </el-table-column>
       <el-table-column prop="courtName" :label="fields.cCourt" align="center" />
       <el-table-column prop="courtCategory" :label="fields.courtCategory" align="center" />
       <el-table-column prop="cCaseType" :label="fields.cCaseType" align="center">
@@ -28,7 +23,18 @@
       </el-table-column>
       <el-table-column prop="userName" label="创建人" align="center" />
       <el-table-column prop="cIssueStatus" :label="fields.cIssueStatus" align="center" />
-      <el-table-column label="状态" align="center" width="120">
+      <el-table-column label="电子保函" align="center" width="120">
+        <template slot-scope="{ row: { gFileUrl, status } }">
+          <a v-if="gFileUrl && status === 1" style="color: #1890ff" @click="download(gFileUrl)">下载</a>
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="保全资料" align="center" width="200">
+        <template slot-scope="{ row }">
+          <el-button icon="el-icon-view" @click="goSee(row.cId)">保全资料查看</el-button>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="状态" align="center" width="120">
         <template slot-scope="{ row: { status } }">
           <span>{{ status | filterStatus }}</span>
         </template>
@@ -38,7 +44,7 @@
           <el-alert v-if="+row.status === 1" type="success" center show-icon :closable="false">完成</el-alert>
           <el-button v-else :disabled="+row.status === 3" type="primary" icon="el-icon-bangzhu" @click="goApproval(row.approveId, row.cId)">审批</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <!-- 分页 -->
     <div style="text-align: center">
@@ -64,6 +70,7 @@ import { emptyValueFilter } from '@/libs/filter'
 // mixin
 import ListMixin from '@/components/Mixins/ListMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import Download from '../guarantee/mixin/Download'
 // plugins
 // settings
 export default {
@@ -84,7 +91,7 @@ export default {
       return val ? val.replace(/\|/g, '') : '--'
     }
   },
-  mixins: [ListMixin, MethodsMixin],
+  mixins: [ListMixin, MethodsMixin, Download],
   data() {
     return {
       fields,

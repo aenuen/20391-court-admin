@@ -141,6 +141,23 @@
               <td><div class="liTitle">其它材料</div></td>
               <td><FileShow :file-list="fileListEight" /></td>
             </tr>
+            <tr v-if="fileLIstNine.url">
+              <!-- gFileUrl -->
+              <td><div class="liTitle">电子保函</div></td>
+              <td>
+                <div class="fileShow">
+                  <div class="item" @click="download(fileLIstNine.url)">
+                    <div class="file">
+                      <el-image v-if="fileClassify(fileLIstNine.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" />
+                      <el-image v-else-if="fileClassify(fileLIstNine.url) === 'doc'" :src="doc" fit="fit" />
+                      <el-image v-else-if="fileClassify(fileLIstNine.url) === 'xls'" :src="xls" fit="fit" />
+                      <el-image v-else-if="fileClassify(fileLIstNine.url) === 'pdf'" :src="pdf" fit="fit" />
+                    </div>
+                    <div class="name">{{ fileLIstNine.fileName }}</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
@@ -169,19 +186,26 @@ import { baseData, baseGain, applicantData, agentData, propertyData } from './mo
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import Download from './mixin/Download'
 // plugins
+import { fileClassify } from 'abbott-methods/import'
 // settings
 export default {
   name: 'GuaranteePreview',
   components: { Steps, StepPre, BaseData, FileShow },
-  mixins: [DetailMixin, MethodsMixin],
+  mixins: [DetailMixin, MethodsMixin, Download],
   props: {
     isPreview: { type: Boolean, default: false },
     isPreserve: { type: Boolean, default: false }
   },
   data() {
     return {
+      fileClassify,
+      doc: require(`@/assets/image/fileType/word.png`),
+      xls: require(`@/assets/image/fileType/excel.png`),
+      pdf: require(`@/assets/image/fileType/PDF.png`),
       isUpdate: true,
+      baseObj: {},
       baseData: [],
       ApplicantData: [],
       RespondentData: [],
@@ -194,20 +218,23 @@ export default {
       fileListFive: [],
       fileListSix: [],
       fileListSeven: [],
-      fileListEight: []
+      fileListEight: [],
+      fileLIstNine: []
     }
   },
   created() {},
   methods: {
     getDetail() {
-      guaranteeApi.details(this.updateId).then(({ code, data, msg }) => {
+      guaranteeApi.details(this.updateId).then(async ({ code, data, msg }) => {
         if (code === 200) {
           const { guaranteeBaseInfo, applicant, respondent, agent, assetClue } = data
           if (!this.isPreserve && guaranteeBaseInfo) {
             this.step = guaranteeBaseInfo.step ? guaranteeBaseInfo.step : 0
+            this.baseObj = guaranteeBaseInfo
             this.baseData = baseData(guaranteeBaseInfo)
+            this.getFile()
           } else {
-            this.getPreserveDetails()
+            await this.getPreserveDetails()
           }
           this.ApplicantData = applicantData(applicant)
           this.RespondentData = applicantData(respondent)
@@ -219,17 +246,23 @@ export default {
       })
       this.getUpload()
     },
-    getPreserveDetails() {
+    async getPreserveDetails() {
       preserveApi.details(this.updateId).then(({ code, data, msg }) => {
         if (code === 200) {
           const { courtBaseInfo } = data
           this.baseObj = courtBaseInfo
           this.step = courtBaseInfo.step ? courtBaseInfo.step : 0
           this.baseData = baseGain(courtBaseInfo)
+          this.getFile()
         } else {
           this.$message.error(msg)
         }
       })
+    },
+    getFile() {
+      if (this.baseObj.gFileUrl) {
+        this.fileLIstNine = { url: this.baseObj.gFileUrl, fileName: '电子保函' }
+      }
     },
     // 获取列表
     getUpload() {
@@ -273,7 +306,7 @@ export default {
         approveApi.approve({ gId: this.updateId }).then(({ code, data, msg }) => {
           if (code === 200) {
             this.$message.success(msg)
-            this.routerClose(`/guarantee/audit/${this.updateId}`)
+            this.routerClose(`/guarantee/audits/${this.updateId}`)
           } else {
             this.message.error(msg)
           }
@@ -286,4 +319,30 @@ export default {
 <style lang="scss" scoped>
 @import url('./styles/details.scss');
 @import url('./styles/preview.scss');
+.fileShow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  .item {
+    height: 80px;
+    width: 300px;
+    display: flex;
+    border: 1px solid #ddd;
+    padding: 14px;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+    .file {
+      margin-right: 10px;
+      .el-image {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    .name {
+      display: flex;
+      align-items: center; /* 垂直居中 */
+    }
+  }
+}
 </style>

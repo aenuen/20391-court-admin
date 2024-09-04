@@ -441,7 +441,7 @@ export default {
           if (code === 200) {
             this.$message.success('提交成功')
             this.submitLoadingClose()
-            this.routerClose(`/preserve/audit/${this.updateId}`)
+            this.routerClose(`/preserve/audits/${this.updateId}`)
           } else {
             this.$message.error(msg)
           }

@@ -20,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
       next({ path: '/' }) // 目标是登录页面直接进入首页
       NProgress.done()
     } else {
-      //
+      // 是否需要角色
       const hasRoles = store.getters.roles && store.getters.roles.length > 0 // 去拿角色
       if (hasRoles) {
         // 有角色直接进去

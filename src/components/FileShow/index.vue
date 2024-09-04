@@ -42,7 +42,9 @@ export default {
     // 获取网址
     getFullUrl(url) {
       const arr = url.split('/')
-      return `${serveUrl}/file/images/${arr[arr.length - 1]}`
+      const path = `${serveUrl}/file/images/${arr[arr.length - 1]}`
+
+      return path
     },
     // 下载
     download(url) {

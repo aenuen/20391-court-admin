@@ -68,7 +68,7 @@ export const audit = {
       name: 'audit-preserve',
       component: () => import('@/views/audit/preserve'),
       meta: {
-        title: '保全审核',
+        title: '保全查看',
         icon: 'audit',
         roles: ['court']
       }

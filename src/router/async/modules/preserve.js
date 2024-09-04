@@ -85,6 +85,17 @@ export const preserve = {
       hidden: true // 不显示在侧边栏中
     },
     {
+      path: 'audits/:id',
+      name: 'preserveAudits',
+      component: () => import('@/views/preserve/audit'),
+      meta: {
+        title: '提交审核',
+        roles: ['user', 'manager'],
+        activeMenu: '/preserve/list' // 指定高亮位置
+      },
+      hidden: true // 不显示在侧边栏中
+    },
+    {
       path: 'select/:id',
       name: 'preserveSelect',
       component: () => import('@/views/preserve/select'),

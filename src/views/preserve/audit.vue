@@ -4,7 +4,7 @@
 <script>
 // api
 // components
-import Audit from '@/views/guarantee/audit'
+import Audit from '@/views/guarantee/audits'
 // data
 // filter
 // function
