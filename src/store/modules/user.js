@@ -43,77 +43,88 @@ const actions = {
   login({ commit }, userInfo) {
     const { telephone, password, code, codeId } = userInfo
     return new Promise((resolve, reject) => {
-      userApi.login({
-        telephone: telephone.trim(),
-        password: password,
-        code: code.trim(),
-        codeId
-      }).then(({
-        code,
-        data
-      }) => {
-        if (code === 200) {
-          commit('SET_Token', data)
-          setToken(data)
-          resolve()
-        } else {
-          reject('登录失败')
-        }
-      }).catch(error => {
-        reject(error)
-      })
+      userApi
+        .login({
+          telephone: telephone.trim(),
+          password: password,
+          code: code.trim(),
+          codeId
+        })
+        .then(({ code, data }) => {
+          if (code === 200) {
+            commit('SET_Token', data)
+            setToken(data)
+            resolve()
+          } else {
+            reject('登录失败')
+          }
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
   // 用户注册
   register({ commit }, userInfo) {
     const { telephone, telCode, password, name, cardNo } = userInfo
     return new Promise((resolve, reject) => {
-      userApi.register({
-        telephone: telephone.trim(),
-        telCode: telCode.trim(),
-        password: password,
-        name: name.trim(),
-        cardNo: cardNo.trim()
-      }).then(({
-        code, msg
-      }) => {
-        if (code === 200) {
-          resolve({ code, msg })
-        } else {
-          reject('登录失败')
-        }
-      }).catch(error => {
-        reject(error)
-      })
+      userApi
+        .register({
+          telephone: telephone.trim(),
+          telCode: telCode.trim(),
+          password: password,
+          name: name.trim(),
+          cardNo: cardNo.trim()
+        })
+        .then(({ code, msg }) => {
+          if (code === 200) {
+            resolve({ code, msg })
+          } else {
+            reject('登录失败')
+          }
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
   // 获取用户信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      userApi.info(state.token).then(({ code, data }) => {
-        if (code === 200) {
-          data || reject('验证失败，请重新登录。')
-          const { cardNo, img, name, roleId, telephone, userId } = data
-          const roles = []
-          rolesAry.forEach((item) => {
-            if (String(item.code) === String(roleId)) {
-              roles.push(item.value)
+      userApi
+        .info(state.token)
+        .then(({ code, data }) => {
+          if (code === 200) {
+            data || reject('验证失败，请重新登录。')
+            const { cardNo, img, name, roleId, telephone, userId } = data
+            const roles = []
+            rolesAry.forEach((item) => {
+              if (String(item.code) === String(roleId)) {
+                roles.push(item.value)
+              }
+            })
+            const newData = {
+              roles,
+              aid: userId,
+              cardNo,
+              realName: name,
+              mobile: telephone,
+              avatar: img === null ? serveUrl + '/images/default.png' : serveUrl + img
             }
-          })
-          const newData = { roles, aid: userId, cardNo, realName: name, mobile: telephone, avatar: img === null ? serveUrl + '/images/default.png' : serveUrl + img }
-          commit('SET_Roles', newData.roles)
-          commit('SET_Aid', newData.aid)
-          commit('SET_CardNo', newData.cardNo)
-          commit('SET_RealName', newData.realName)
-          commit('SET_Mobile', newData.mobile)
-          commit('SET_Avatar', newData.avatar)
-          resolve(newData)
-        } else {
-          reject('获取用户信息失败')
-        }
-      }).catch(error => {
-        reject(error)
-      })
+            commit('SET_Roles', newData.roles)
+            commit('SET_Aid', newData.aid)
+            commit('SET_CardNo', newData.cardNo)
+            commit('SET_RealName', newData.realName)
+            commit('SET_Mobile', newData.mobile)
+            commit('SET_Avatar', newData.avatar)
+            resolve(newData)
+          } else {
+            reject('获取用户信息失败')
+          }
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
   // 用户登出
@@ -133,7 +144,7 @@ const actions = {
   },
   // 移除token
   removeToken({ commit }) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       commit('SET_Token', '')
       commit('SET_Roles', [])
       removeToken()
