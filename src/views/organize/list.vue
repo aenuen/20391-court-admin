@@ -79,6 +79,9 @@ export default {
   },
   created() {},
   methods: {
+    goSee(orgId) {
+      this.$router.push({ path: '/organize/look/' + orgId })
+    },
     startHandle() {
       this.gainOrganizeList()
     },

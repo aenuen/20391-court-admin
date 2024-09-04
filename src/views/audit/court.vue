@@ -3,11 +3,6 @@
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column label="详情" align="center" width="120">
-        <template slot-scope="{ row: { courtId } }">
-          <el-button icon="el-icon-view" @click="goSee(courtId)">详情</el-button>
-        </template>
-      </el-table-column>
       <el-table-column prop="courtName" :label="fields.courtName" align="center" />
       <el-table-column prop="courtCode" :label="fields.courtCode" align="center" />
       <el-table-column prop="courtCharge" :label="fields.courtCharge" align="center" />
@@ -20,6 +15,11 @@
       <el-table-column label="状态" align="center" width="120">
         <template slot-scope="{ row: { courtStatus } }">
           <span>{{ courtStatus | filterStatus }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="材料查看" align="center" width="200">
+        <template slot-scope="{ row: { courtId } }">
+          <el-button icon="el-icon-view" @click="goSee(courtId)">材料查看</el-button>
         </template>
       </el-table-column>
       <el-table-column label="审核" align="center" width="140">
