@@ -125,7 +125,7 @@
           <el-row>
             <el-col>
               <el-form-item :label-width="labelWidth">
-                <el-button @click="routerGo('/guarantee/create')">去购买</el-button>
+                <span style="color: #666">无担保的情况不能申请保全，<a style="color: #1890ff" @click="routerGo('/guarantee/create')">立即申请</a> </span>
               </el-form-item>
             </el-col>
           </el-row>
@@ -255,7 +255,7 @@
       <el-row>
         <el-col>
           <el-form-item :label-width="labelWidth">
-            <el-button type="primary" @click="submitForm">{{ submitTxt }}</el-button>
+            <el-button type="primary" :disabled="+postForm.guaranteeCase === 1 && +postForm.purchaseStatus === 0" @click="submitForm">{{ submitTxt }}</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -306,11 +306,11 @@ export default {
       typeUse: false,
       selectTxt: '如未在法院立案，请选择“诉前保全”，如已在法院立案，请选择“诉讼保全”，若选择错误，可能导致保全不成功！',
       postForm: {
-        courtType: '1',
-        courtCategory: '1',
-        guaranteeCase: '1',
-        purchaseStatus: '0',
-        purchasePlat: '1'
+        courtType: '1', // 保全类型
+        courtCategory: '1', // 保全类别
+        guaranteeCase: '1', // 担保情况
+        purchaseStatus: '1', // 是否购买
+        purchasePlat: '1' // 购买平台
       },
       ensureAry: [
         { name: '有担保', dictValue: '1' },
@@ -335,7 +335,13 @@ export default {
       commonStyle: {
         width: this.commonWidth
       },
-      tempCase: 0
+      tempCase: 0,
+      query2: { isApprove: true },
+      query: {
+        isApprove: true,
+        pageNum: 1,
+        pageSize: 5
+      }
     }
   },
   computed: {
@@ -369,8 +375,8 @@ export default {
   },
   methods: {
     // 获取列表
-    getList() {
-      guaranteeApi.list(this.queryList).then(({ code, data, msg }) => {
+    getList(query) {
+      guaranteeApi.list(query).then(({ code, data, msg }) => {
         if (code === 200) {
           const { records, total } = data
           this.tableData = records
@@ -382,13 +388,13 @@ export default {
     },
     // 过滤
     onHandleFilter(queryList) {
-      this.queryList = { ...this.queryList, ...queryList }
-      this.getList()
+      this.queryList = { ...this.query, ...this.queryList, ...queryList, ...this.query2 }
+      this.getList(this.queryList)
     },
     // 刷新
     onRefresh(queryList) {
-      this.queryList = { ...this.queryList, ...queryList }
-      this.getList()
+      this.queryList = { ...this.query, ...this.queryList, ...queryList, ...this.query2 }
+      this.getList(this.queryList)
     },
     // 选中担保记录
     onSelected(gId) {
@@ -401,15 +407,7 @@ export default {
     // 打开选取弹窗
     getGid() {
       this.dialogVisible = true
-      this.$router.push({
-        path: this.$route.path,
-        query: {
-          isApprove: true,
-          pageNum: 1,
-          pageSize: 5
-        }
-      })
-      this.getList()
+      this.getList(this.query)
     },
     // 关闭选取弹窗
     dialogClose() {
@@ -422,18 +420,22 @@ export default {
     // 更新步聚并跳转
     stepJump(num) {
       if (+num === 11) {
+        // 无需担保、其它平台走流程
         preserveApi.step({ cId: this.updateId, step: 11 }).then(({ code, data, msg }) => {
           if (code === 200) {
             this.$message.success('提交成功')
+            this.submitLoadingClose()
             this.routerClose('/preserve/details/' + this.updateId)
           } else {
             this.$message.error(msg)
           }
         })
       } else if (+num === 1) {
+        // 本系统直接审核
         approveApi.preserveApprove({ cId: this.updateId }).then(({ code, data, msg }) => {
           if (code === 200) {
             this.$message.success('提交成功')
+            this.submitLoadingClose()
             this.routerClose(`/preserve/audit/${this.updateId}`)
           } else {
             this.$message.error(msg)
@@ -452,16 +454,15 @@ export default {
           } else {
             preserveApi.create(data).then(({ code, data, msg }) => {
               if (code === 200) {
+                // 赋值cId
                 this.updateId = data
-                this.$message.success(msg)
-                this.tempCase = +data.guaranteeCase
-                this.submitLoadingClose()
-                if (+data.guaranteeCase === 2) {
+                // this.$message.success(msg)
+                if (+this.postForm.guaranteeCase === 2) {
                   // 无需担保
                   this.stepJump(11)
                 } else {
                   // 有但保
-                  if (+data.purchasePlat === 1) {
+                  if (+this.postForm.purchasePlat === 1) {
                     // 本系统
                     this.stepJump(1)
                   } else {

@@ -40,7 +40,7 @@ export default {
   methods: {
     async logout() {
       await this.$store.dispatch('user/logout')
-      localStorage.clear()
+      localStorage.removeItem('Admin-Token')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="uploadMulti">
-    <el-image v-if="fileName" :src="pdf" fit="cover" style="margin: 20px 20px 0 0" :style="{ width: width + 'px', height: height + 'px' }" />
+    <el-image v-if="fileName.length > 0" :src="pdf" fit="cover" style="margin: 20px 20px 0 0" :style="{ width: width + 'px', height: height + 'px' }" />
     <div class="uploadList">
       <div v-for="(item, key) in fileList" :key="key" class="item" :style="{ width: width + 'px', height: height + 50 + 'px' }">
         <div class="line">

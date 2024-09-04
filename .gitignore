@@ -3,6 +3,7 @@
 node_modules/
 dist/
 dist.zip
+account.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

@@ -24,7 +24,9 @@ export default {
     refreshToken() {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i)
-        localStorage.removeItem(key)
+        if (key !== 'Admin-Token') {
+          localStorage.removeItem(key)
+        }
       }
       this.$message.success('缓存已经清除')
       // store.dispatch('user/refreshToken').then((data) => {
