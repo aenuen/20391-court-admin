@@ -361,9 +361,6 @@ export default {
     this.rulesForm = { ...DetailCommon, ...DetailOne, ...DetailTwo, ...DetailThree, ...selectOne, ...selectTwo }
   },
   methods: {
-    startHandle() {
-      this.getList()
-    },
     // 获取列表
     getList() {
       guaranteeApi.list(this.queryList).then(({ code, data, msg }) => {
@@ -376,20 +373,17 @@ export default {
         }
       })
     },
-    setData() {
-      return {
-        isApprove: true,
-        pageSize: 5
-      }
-    },
+    // 过滤
     onHandleFilter(queryList) {
       this.queryList = { ...this.queryList, ...queryList }
-      this.handleFilter()
+      this.getList()
     },
+    // 刷新
     onRefresh(queryList) {
       this.queryList = { ...this.queryList, ...queryList }
-      this.refresh()
+      this.getList()
     },
+    // 选中担保记录
     onSelected(gId) {
       this.postForm = {
         ...this.postForm,
@@ -397,12 +391,24 @@ export default {
       }
       this.dialogVisible = false
     },
+    // 打开选取弹窗
     getGid() {
       this.dialogVisible = true
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          isApprove: true,
+          pageNum: 1,
+          pageSize: 5
+        }
+      })
+      this.getList()
     },
+    // 关闭选取弹窗
     dialogClose() {
       this.dialogVisible = false
     },
+    // 上传成功
     onUploadSuccess() {
       if (+this.tempCase === 2) {
         this.routerClose('/preserve/details/' + this.updateId)
@@ -410,6 +416,7 @@ export default {
         this.routerClose('/preserve/list')
       }
     },
+    // 提交
     submitForm() {
       this.$refs.postForm.validate((valid, fields) => {
         this.submitLoadingOpen()
@@ -438,6 +445,7 @@ export default {
         }
       })
     },
+    // 法院列表
     gainList() {
       courtApi.all().then(({ code, data, msg }) => {
         if (code === 200) {
@@ -447,13 +455,16 @@ export default {
         }
       })
     },
+    // 我同意
     IAgree() {
       this.noticeControl = false
       this.postForm.IAgree = true
     },
+    // 打开须知
     noticeOpen() {
       this.noticeControl = true
     },
+    // 关闭须知
     noticeClose() {
       this.noticeControl = false
     }

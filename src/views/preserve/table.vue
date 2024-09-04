@@ -55,7 +55,7 @@
     </el-table>
     <!-- 分页 -->
     <div style="text-align: center">
-      <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" :page-sizes="[5, 10]" @pagination="refresh" />
+      <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" :page-sizes="[5]" @pagination="refresh" />
     </div>
   </div>
 </template>

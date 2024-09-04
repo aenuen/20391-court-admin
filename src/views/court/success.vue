@@ -32,7 +32,7 @@ import MethodsMixin from '@/components/Mixins/MethodsMixin'
 // plugins
 // settings
 export default {
-  name: '',
+  name: 'CourtSuccess',
   components: {},
   mixins: [MethodsMixin],
   data() {
@@ -43,7 +43,7 @@ export default {
   created() {},
   methods: {
     goSee() {
-      this.routerClose('/organize/view')
+      this.routerClose('/court/view')
     }
   }
 }

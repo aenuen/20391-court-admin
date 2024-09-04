@@ -29,18 +29,6 @@
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column label="支付凭证" align="center" width="120">
-        <template slot-scope="{ row: { payImage } }">
-          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
-          <div v-else>--</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="电子保函" align="center" width="120">
-        <template slot-scope="{ row: { gFileUrl, status } }">
-          <el-image v-if="gFileUrl && status === 1" :src="pdf" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="download(gFileUrl)" />
-          <div v-else>--</div>
-        </template>
-      </el-table-column>
       <el-table-column prop="courtName" :label="fields.gCourt" align="center" />
       <el-table-column prop="guaranteeCategory" :label="fields.guaranteeCategory" align="center" />
       <el-table-column :label="fields.outLawsuitTime" align="center">
@@ -61,6 +49,18 @@
       <el-table-column prop="gMoney" :label="fields.gMoney" align="center" />
       <el-table-column prop="guaranteeMoney" :label="fields.guaranteeMoney" align="center" />
       <el-table-column prop="gIssueStatus" :label="fields.gIssueStatus" align="center" />
+      <el-table-column label="支付凭证" align="center" width="120">
+        <template slot-scope="{ row: { payImage } }">
+          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="电子保函" align="center" width="120">
+        <template slot-scope="{ row: { gFileUrl, status } }">
+          <a v-if="gFileUrl && status === 1" style="color: #1890ff" @click="download(gFileUrl)">下载</a>
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
       <el-table-column :label="fields.step" align="center">
         <template slot-scope="{ row: { status, description } }">
           <div :title="statusHandle(status, description) ? '点击查看详情' : ''" :style="{ cursor: statusHandle(status, description) ? 'pointer' : 'default' }" @click="explain(status, description)">

@@ -173,6 +173,7 @@ export default {
   created() {
     this.gainDict_orgTypeAry()
     this.gainOrder()
+    this.getList()
   },
   methods: {
     startHandle() {
