@@ -1,14 +1,13 @@
 {
-  "name": "tender-admin-a1",
+  "name": "court-admin-a1",
   "version": "1.0.0",
-  "description": "tender,admin",
+  "description": "court,admin",
   "author": "aenuen<aenuen@qq.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "pro": "vue-cli-service build",
     "build": "vue-cli-service build",
-    "new": "plop",
     "lint": "eslint --ext .js,.vue src",
     "rm:dist": "rimraf dist",
     "rm:node": "rimraf node_modules",
@@ -76,24 +75,20 @@
     "uuid": "^10.0.0",
     "vue-template-compiler": "2.6.14"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aenuen/20371-tender-admin.git"
+    "url": "git+https://github.com/aenuen/20391-court-admin.git"
   },
   "bugs": {
-    "url": "https://github.com/aenuen/20371-tender-admin/issues"
+    "url": "https://github.com/aenuen/20391-court-admin/issues"
   },
-  "homepage": "https://github.com/aenuen/20371-tender-admin#readme",
+  "homepage": "https://github.com/aenuen/20391-court-admin#readme",
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"
   },
   "keywords": [
-    "template",
+    "court",
     "admin"
   ],
   "license": "MIT",

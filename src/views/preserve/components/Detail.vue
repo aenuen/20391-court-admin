@@ -197,7 +197,7 @@
                   <el-input v-model="postForm.guaranteeValue" :placeholder="fields.guaranteeValue" clearable :style="cStyle">
                     <template slot="append">元</template>
                   </el-input>
-                  <div class="bigPrice">{{ bigWritePrice }}</div>
+                  <div class="bigPrice">{{ bigPrice }}</div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -242,6 +242,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <!-- 需知 -->
       <el-row>
         <el-col>
           <el-form-item prop="IAgree" :label-width="labelWidth">
@@ -274,6 +275,7 @@
 import { courtApi } from '@/api/court'
 import { preserveApi } from '@/api/preserve'
 import { guaranteeApi } from '@/api/guarantee'
+import { approveApi } from '@/api/approve'
 // components
 import Notice from './Notice'
 import Multi from '@/components/Upload/MultiNoAuto'
@@ -326,6 +328,7 @@ export default {
       fileList: [],
       litigationId: '',
       bigWritePrice: '',
+      bigPrice: '',
       dialogVisible: false,
       courtAry: [],
       noticeControl: true,
@@ -347,6 +350,10 @@ export default {
     'postForm.cMoney': function (val) {
       this.postForm.cMoney = controlInputPrice(val)
       this.bigWritePrice = this.postForm.cMoney ? numberPriceBigWrite(this.postForm.cMoney) : ''
+    },
+    'postForm.guaranteeValue': function (val) {
+      this.postForm.guaranteeValue = controlInputPrice(val)
+      this.bigPrice = this.postForm.guaranteeValue ? numberPriceBigWrite(this.postForm.guaranteeValue) : ''
     }
   },
   created() {
@@ -410,10 +417,28 @@ export default {
     },
     // 上传成功
     onUploadSuccess() {
-      if (+this.tempCase === 2) {
-        this.routerClose('/preserve/details/' + this.updateId)
-      } else {
-        this.routerClose('/preserve/list')
+      this.stepJump(11)
+    },
+    // 更新步聚并跳转
+    stepJump(num) {
+      if (+num === 11) {
+        preserveApi.step({ cId: this.updateId, step: 11 }).then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.$message.success('提交成功')
+            this.routerClose('/preserve/details/' + this.updateId)
+          } else {
+            this.$message.error(msg)
+          }
+        })
+      } else if (+num === 1) {
+        approveApi.preserveApprove({ cId: this.updateId }).then(({ code, data, msg }) => {
+          if (code === 200) {
+            this.$message.success('提交成功')
+            this.routerClose(`/preserve/audit/${this.updateId}`)
+          } else {
+            this.$message.error(msg)
+          }
+        })
       }
     },
     // 提交
@@ -429,11 +454,24 @@ export default {
               if (code === 200) {
                 this.updateId = data
                 this.$message.success(msg)
-                this.$nextTick(() => {
-                  this.$refs.upload.$refs.multi.submit()
-                }, 100)
-                this.submitLoadingClose()
                 this.tempCase = +data.guaranteeCase
+                this.submitLoadingClose()
+                if (+data.guaranteeCase === 2) {
+                  // 无需担保
+                  this.stepJump(11)
+                } else {
+                  // 有但保
+                  if (+data.purchasePlat === 1) {
+                    // 本系统
+                    this.stepJump(1)
+                  } else {
+                    // 其它平台
+                    this.$refs.upload.fileName = ''
+                    this.$nextTick(() => {
+                      this.$refs.upload.$refs.multi.submit()
+                    }, 100)
+                  }
+                }
               } else {
                 this.$message.error(msg)
               }
