@@ -61,6 +61,12 @@
           <div v-else>--</div>
         </template>
       </el-table-column>
+      <el-table-column label="发票" align="center" width="120">
+        <template slot-scope="{ row: { billUrl, status } }">
+          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl)">下载</a>
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="orgName" label="担保机构" align="center" />
       <el-table-column :label="fields.step" align="center">
         <template slot-scope="{ row: { status, description } }">

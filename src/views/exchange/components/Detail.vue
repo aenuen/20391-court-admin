@@ -274,7 +274,7 @@ export default {
                 isRight = false
                 this.$message.error(`费率规则（${index + 1}）的“大于等于”为必填项`)
                 return
-              } else if (!/^[0-9]+$/.test(item.greater)) {
+              } else if (!/^-?\d+(\.\d+)?$/.test(item.greater)) {
                 isRight = false
                 this.$message.error(`费率规则（${index + 1}）的“大于等于”必须是数字`)
                 return
@@ -286,7 +286,7 @@ export default {
                 isRight = false
                 this.$message.error(`费率规则（${index + 1}）的“小于”为必填项`)
                 return
-              } else if (!/^[0-9]+$/.test(item.less)) {
+              } else if (!/^-?\d+(\.\d+)?$/.test(item.less)) {
                 isRight = false
                 this.$message.error(`费率规则（${index + 1}）的“小于”必须是数字`)
                 return
@@ -297,7 +297,7 @@ export default {
               isRight = false
               this.$message.error(`费率规则（${index + 1}）的“费率”为必填项`)
               return
-            } else if (!/^[0-9]+$/.test(item.cost)) {
+            } else if (!/^-?\d+(\.\d+)?$/.test(item.cost)) {
               isRight = false
               this.$message.error(`费率规则（${index + 1}）的“费率”必须是数字`)
               return

@@ -18,9 +18,10 @@ export default {
   },
   created() {},
   methods: {
-    download(url) {
+    download(url, fileName) {
+      fileName = fileName || '电子保函'
       guaranteeApi.download({ path: url }).then((data) => {
-        downloadSave('电子保函' + Date.now(), 'pdf', data)
+        downloadSave(fileName + Date.now(), 'pdf', data)
         this.$message.success('下载成功')
       })
     }

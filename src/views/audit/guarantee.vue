@@ -41,16 +41,22 @@
           <div v-else>--</div>
         </template>
       </el-table-column>
+      <el-table-column label="发票" align="center" width="120">
+        <template slot-scope="{ row: { billUrl, status } }">
+          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl)">下载</a>
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" align="center" width="120">
         <template slot-scope="{ row: { status } }">
           <span>{{ status | filterStatus }}</span>
         </template>
       </el-table-column>
       <el-table-column label="审核" align="center" width="120">
-        <template slot-scope="{ row: { approveId, gId, status } }">
+        <template slot-scope="{ row: { approveId, gId, status, gFileUrl, warrantyNumber } }">
           <el-alert v-if="+status === 1" type="success" center :closable="false">完成</el-alert>
           <el-button v-else-if="+status !== 6" type="primary" :disabled="!(+status === 0 || +status === 5 || +status === 6)" icon="el-icon-bangzhu" @click="goApproval(approveId, status, gId)">审批</el-button>
-          <el-button v-else type="success" icon="el-icon-reading" @click="goSweat(gId)">出函</el-button>
+          <el-button v-else type="success" icon="el-icon-reading" @click="goSweat(gId, gFileUrl, warrantyNumber, approveId)">出函</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -60,11 +66,11 @@
     </div>
     <!-- 弹窗 -->
     <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="审批" :before-close="dialogClose">
-      <GExplain :approval-id="approvalId" :the-status="theStatus" :g-id="gId" @onApprovalSuccess="onApprovalSuccess" />
+      <GExplain :approval-id="approvalId" :the-status="theStatus" :g-id="gid" @onApprovalSuccess="onApprovalSuccess" />
     </el-dialog>
     <!-- 出函 -->
-    <el-dialog v-if="sweatController" :visible.sync="sweatController" title="出函" :before-close="sweatClose">
-      <GSweat :g-id="gId" @onSweatSuccess="onSweatSuccess" />
+    <el-dialog v-if="sweatController" :visible.sync="sweatController" width="800px" title="出函" :before-close="sweatClose">
+      <GSweat :g-id="gid" :warranty-number="warranty" :g-file-url="fileUrl" :approve-id="appId" @onSweatSuccess="onSweatSuccess" />
     </el-dialog>
     <!-- 支付 -->
     <el-dialog v-if="seeController" :visible.sync="seeController" title="支付凭证" :before-close="seeClose">
@@ -129,6 +135,9 @@ export default {
       approvalId: '',
       theStatus: -1,
       gid: '',
+      warranty: '',
+      fileUrl: '',
+      appId: '',
       pdf: require(`@/assets/image/fileType/PDF.png`)
     }
   },
@@ -146,31 +155,34 @@ export default {
       this.dialogVisible = true
       this.approvalId = approvalId
       this.theStatus = status
-      this.gId = gId
+      this.gid = gId
     },
-    goSweat(gId) {
+    goSweat(gId, gFileUrl, warrantyNumber, approveId) {
       this.sweatController = true
-      this.gId = gId
+      this.gid = gId
+      this.fileUrl = gFileUrl
+      this.warranty = warrantyNumber
+      this.appId = approveId
     },
     sweatClose() {
       this.sweatController = false
-      this.gId = ''
+      this.gid = ''
     },
     onSweatSuccess() {
-      this.gId = ''
+      this.gid = ''
       this.sweatController = false
       this.startHandle()
     },
     onApprovalSuccess() {
       this.approvalId = ''
-      this.gId = ''
+      this.gid = ''
       this.theStatus = -1
       this.dialogVisible = false
       this.startHandle()
     },
     dialogClose() {
       this.approvalId = ''
-      this.gId = ''
+      this.gid = ''
       this.theStatus = -1
       this.dialogVisible = false
     },

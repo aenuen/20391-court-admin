@@ -64,6 +64,12 @@
           <div v-else>--</div>
         </template>
       </el-table-column>
+      <el-table-column label="发票" align="center" width="120">
+        <template slot-scope="{ row: { gFileUrl, status } }">
+          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl)">下载</a>
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
       <el-table-column label="编辑" align="center" width="100">
         <template slot-scope="{ row: { step, cId, status, guaranteeCase } }">
           <el-button v-if="status || +status === 0" size="mini" type="success" icon="el-icon-view" @click="toPages(cId, status)"> 查看 </el-button>

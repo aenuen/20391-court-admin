@@ -29,6 +29,12 @@
           <div v-else>--</div>
         </template>
       </el-table-column>
+      <el-table-column label="发票" align="center" width="120">
+        <template slot-scope="{ row: { gFileUrl, status } }">
+          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl)">下载</a>
+          <div v-else>--</div>
+        </template>
+      </el-table-column>
       <el-table-column label="保全资料" align="center" width="200">
         <template slot-scope="{ row }">
           <el-button icon="el-icon-view" @click="goSee(row.cId)">保全资料查看</el-button>

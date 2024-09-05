@@ -141,6 +141,7 @@
               <td><div class="liTitle">其它材料</div></td>
               <td><FileShow :file-list="fileListEight" /></td>
             </tr>
+            <!-- 电子保函 -->
             <tr v-if="fileLIstNine.url">
               <!-- gFileUrl -->
               <td><div class="liTitle">电子保函</div></td>
@@ -154,6 +155,23 @@
                       <el-image v-else-if="fileClassify(fileLIstNine.url) === 'pdf'" :src="pdf" fit="fit" />
                     </div>
                     <div class="name">{{ fileLIstNine.fileName }}</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="fileLIstTen.url">
+              <!-- 发票 -->
+              <td><div class="liTitle">发票</div></td>
+              <td>
+                <div class="fileShow">
+                  <div class="item" @click="download(fileLIstTen.url, '发票')">
+                    <div class="file">
+                      <el-image v-if="fileClassify(fileLIstTen.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" />
+                      <el-image v-else-if="fileClassify(fileLIstTen.url) === 'doc'" :src="doc" fit="fit" />
+                      <el-image v-else-if="fileClassify(fileLIstTen.url) === 'xls'" :src="xls" fit="fit" />
+                      <el-image v-else-if="fileClassify(fileLIstTen.url) === 'pdf'" :src="pdf" fit="fit" />
+                    </div>
+                    <div class="name">{{ fileLIstTen.fileName }}</div>
                   </div>
                 </div>
               </td>
@@ -219,7 +237,8 @@ export default {
       fileListSix: [],
       fileListSeven: [],
       fileListEight: [],
-      fileLIstNine: []
+      fileLIstNine: [],
+      fileLIstTen: []
     }
   },
   created() {},
@@ -262,6 +281,9 @@ export default {
     getFile() {
       if (this.baseObj.gFileUrl) {
         this.fileLIstNine = { url: this.baseObj.gFileUrl, fileName: '电子保函' }
+      }
+      if (this.baseObj.billUrl) {
+        this.fileLIstTen = { url: this.baseObj.billUrl, fileName: '发票' }
       }
     },
     // 获取列表
