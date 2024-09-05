@@ -17,6 +17,7 @@ export default {
     return {
       nowType: 0,
       useBg: '',
+      bigTitle: '',
       bgOne: {
         backgroundImage: `url(${bgOne})`
       },
@@ -73,22 +74,27 @@ export default {
         case '1':
           this.userRoles = '用户'
           this.useBg = this.bgOne
+          this.bigTitle = '法院诉讼保函平台'
           break
         case '2':
           this.userRoles = '法官'
           this.useBg = this.bgTwo
+          this.bigTitle = '法院管理平台'
           break
         case '3':
           this.userRoles = '金融机构'
           this.useBg = this.bgThree
+          this.bigTitle = '金融机构管理平台'
           break
         case '4':
           this.userRoles = '管理员'
           this.useBg = this.bgFour
+          this.bigTitle = '管理员后台'
           break
         default:
           this.userRoles = '用户'
           this.useBg = this.bgOne
+          this.bigTitle = '法院诉讼保函平台'
           break
       }
     },

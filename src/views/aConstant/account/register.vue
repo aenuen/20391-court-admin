@@ -1,7 +1,7 @@
 <template>
   <div class="theContainer" :style="useBg">
     <div class="logo"></div>
-    <div class="title">{{ someText.bigTitle }}</div>
+    <div class="title">{{ bigTitle }}</div>
     <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm" :style="formBg">
       <!-- 标题 -->
       <div class="title-container">

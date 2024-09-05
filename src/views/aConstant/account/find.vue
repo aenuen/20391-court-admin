@@ -1,7 +1,7 @@
 <template>
   <div class="theContainer" :style="useBg">
     <div class="logo"></div>
-    <div class="title">{{ someText.bigTitle }}</div>
+    <div class="title">{{ bigTitle }}</div>
     <el-form ref="postForm" :model="postForm" :rules="formRules" class="postForm" :style="formBg">
       <!-- 标题 -->
       <div class="title-container">
@@ -49,9 +49,12 @@
       <!-- 按钮 -->
       <el-button :loading="submitLoading" type="primary" class="submitBtn" @click="submitForm"> {{ someText.submitFind }} </el-button>
       <!-- 链接 -->
-      <div class="routerGo">
+      <div v-if="+nowType === 1" class="routerGo">
         <i @click="routerGo('/login')">{{ someText.toLogin }}</i>
         <b @click="routerGo('/register')">{{ someText.toRegister }}</b>
+      </div>
+      <div v-else class="routerGo2">
+        <i @click="routerGo('/login')">{{ someText.toLogin }}</i>
       </div>
     </el-form>
   </div>

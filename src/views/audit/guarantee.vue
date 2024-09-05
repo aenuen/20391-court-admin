@@ -28,6 +28,7 @@
       <el-table-column prop="gMoney" :label="fields.gMoney" align="center" />
       <el-table-column prop="guaranteeMoney" :label="fields.guaranteeMoney" align="center" />
       <el-table-column prop="gIssueStatus" :label="fields.gIssueStatus" align="center" />
+      <el-table-column prop="userName" :label="fields.userName" align="center" />
       <el-table-column label="支付凭证" align="center" width="120">
         <template slot-scope="{ row: { payImage } }">
           <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />

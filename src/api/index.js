@@ -1,5 +1,6 @@
 import request from '@/libs/axios/courtReq'
 
+// 费率管理api
 export const exchangeApi = {}
 // 创建
 exchangeApi.create = (data) => request({ url: '/expense/create', method: 'put', data })

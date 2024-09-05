@@ -1,7 +1,7 @@
 <template>
   <div class="guide-container">
     <div class="logo"></div>
-    <div class="title">智慧法院电子管理平台</div>
+    <div class="title">智慧司法电子管理平台</div>
     <div class="list-wrap">
       <div class="entry">
         <i class="icon bg1"></i>

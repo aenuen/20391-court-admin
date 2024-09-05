@@ -18,6 +18,13 @@
       </el-row>
       <el-row>
         <el-col>
+          <el-form-item class="is-required" label="电子保函" :label-width="labelWidth">
+            <Base file-text="电子保函" :action="action" :file-list="fileList" :file-accept="accept" :file-data="{ gId }" @onSuccess="onSuccess" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
           <el-form-item :label-width="labelWidth">
             <el-button type="primary" @click="submitForm">{{ submitTxt }}</el-button>
           </el-form-item>
@@ -60,6 +67,9 @@ export default {
   computed: {
     action() {
       return apiCourtUrl + '/guarantee/upload/file'
+    },
+    billAction() {
+      return apiCourtUrl + '/guarantee/upload/bill'
     }
   },
   created() {

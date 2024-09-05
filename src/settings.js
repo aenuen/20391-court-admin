@@ -1,6 +1,6 @@
 const servePort = 8000
 const current = 1
-const serveUrl = current === 1 ? 'http://121.41.65.226' : 'http://192.168.2.53'
+const serveUrl = current === 2 ? 'http://121.41.65.226' : 'http://192.168.2.53'
 const adminPort = 20391
 const title = '诉讼保函-智慧法院电子管理平台'
 const isDevMode = process.env.NODE_ENV === 'development'

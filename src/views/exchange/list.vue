@@ -2,6 +2,12 @@
   <div class="app-container">
     <!-- 过滤 -->
     <div class="filter-container">
+      <!-- 机构 -->
+      <el-cascader v-model="queryList.orgId" :placeholder="fields.orgId" :options="organizeAry" class="filter-ele" filterable clearable @clear="handleFilter" @change="handleFilter" />
+      <!-- 银行 -->
+      <el-select v-model="queryList.courtId" :placeholder="fields.courtId" class="filter-ele" filterable clearable @clear="handleFilter" @change="handleFilter">
+        <el-option v-for="(item, key) in courtAry" :key="key" :value="String(item.courtId)" :label="item.courtName" />
+      </el-select>
       <!-- 搜索 -->
       <el-button class="filter-btn el-icon-search" @click="handleFilter"> 搜索 </el-button>
       <!-- 新增按纽 -->
@@ -10,39 +16,32 @@
     <!-- 表格 -->
     <el-table :data="tableData" border fit highlight-current-row style="width: 100%">
       <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column prop="orgName" :label="fields.orgId" width="220" align="center" />
-      <el-table-column prop="courtName" :label="fields.courtId" width="220" align="center" />
-      <el-table-column prop="expenseType" :label="fields.expenseType" align="center" />
-      <!-- 111 -->
-      <el-table-column prop="expenseLow" :label="fields.expenseLow" align="center">
-        <template slot-scope="{ row: { expenseLow } }">
-          <span>{{ expenseLow ? expenseLow + '%' : '--' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="costLow" :label="fields.costLow" align="center">
-        <template slot-scope="{ row: { expenseType, costLow } }">
-          <span>{{ expenseType === '阶梯费率' ? (costLow ? costLow + '元' : '--') : '--' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="expenseHigh" :label="fields.expenseHigh" align="center">
-        <template slot-scope="{ row: { expenseHigh } }">
-          <span>{{ expenseHigh ? expenseHigh + '%' : '--' }}</span>
-        </template>
-      </el-table-column>
-      <!-- 112 -->
-      <el-table-column prop="chargeLow" :label="fields.chargeLow" align="center">
-        <template slot-scope="{ row: { chargeLow } }">
-          <span>{{ chargeLow ? chargeLow + '元' : '--' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="costLow" :label="fields.costLow" align="center">
-        <template slot-scope="{ row: { expenseType, costLow } }">
-          <span>{{ expenseType === '固定费率' ? (costLow ? costLow + '元' : '--') : '--' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="chargeHigh" :label="fields.chargeHigh" align="center">
-        <template slot-scope="{ row: { chargeHigh } }">
-          <span>{{ chargeHigh ? chargeHigh + '%' : '--' }}</span>
+      <el-table-column prop="orgName" :label="fields.orgId" width="200" align="center" />
+      <el-table-column prop="courtName" :label="fields.courtId" width="200" align="center" />
+      <el-table-column label="费率规则" align="center">
+        <template slot-scope="{ row: { rules } }">
+          <ul v-for="(item, index) in JSON.parse(rules)" :key="index" class="lineList">
+            <li>
+              <b>{{ fields.type }}</b>
+              ：{{ item.type | typeFilter }}
+            </li>
+            <li>
+              <b>{{ fields.greater }}</b>
+              ：{{ item.greater ? item.greater + '元' : '--' }}
+            </li>
+            <li>
+              <b>{{ fields.less }}</b>
+              ：{{ item.less ? item.less + '元' : '--' }}
+            </li>
+            <li class="percent">
+              <b>{{ fields.percent }}</b>
+              ：{{ item.percent | percentFilter }}
+            </li>
+            <li>
+              <b>{{ fields.cost }}</b>
+              ：{{ item.cost | costFilter(fields.percent) }}
+            </li>
+          </ul>
         </template>
       </el-table-column>
       <el-table-column label="编辑" align="center" width="95">
@@ -61,14 +60,16 @@
       <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
     </div>
     <!-- 添加修改 -->
-    <el-dialog v-if="detailShow" :visible.sync="detailShow" width="750px" :title="'汇率' + detailAction" :before-close="detailClose">
-      <Detail :is-update="isUpdate" :update-number="updateNumber" @createSuccess="createSuccess" @updateSuccess="updateSuccess" />
+    <el-dialog v-if="detailShow" :visible.sync="detailShow" width="1200px" :title="'费率' + detailAction" :before-close="detailClose">
+      <Detail v-if="detailShow" :is-update="isUpdate" :update-number="updateNumber" @createSuccess="createSuccess" @updateSuccess="updateSuccess" />
     </el-dialog>
   </div>
 </template>
 <script>
 // api
 import { exchangeApi } from '@/api'
+import { selectApi } from '@/api/select.js'
+import { courtApi } from '@/api/court.js'
 // components
 import Detail from './components/Detail'
 import Pagination from '@/components/Pagination'
@@ -84,6 +85,17 @@ import ListMixin from '@/components/Mixins/ListMixin'
 export default {
   name: 'ExchangeList',
   components: { Detail, Pagination },
+  filters: {
+    typeFilter(num) {
+      return +num === 1 ? '区间' : +num === 2 ? '大于等于' : '小于'
+    },
+    percentFilter(boolean) {
+      return boolean ? '百分比' : '固定金额'
+    },
+    costFilter(num, p) {
+      return p ? num + '%' : num + '元'
+    }
+  },
   mixins: [MethodsMixin, ListMixin],
   data() {
     return {
@@ -91,11 +103,70 @@ export default {
       detailAction: '',
       fields,
       updateNumber: 0,
-      isUpdate: false
+      isUpdate: false,
+      organizeAry: [],
+      courtAry: []
     }
   },
-  created() {},
+  created() {
+    this.gainOrganizeList() // 机构列表
+    this.gainCourtList() // 法院列表
+  },
   methods: {
+    handleFilter() {
+      this.queryList.pageNum = 1
+      this.refresh()
+    },
+    // 刷新
+    refresh() {
+      if (this.queryList.orgId) {
+        this.queryList.orgId = this.queryList.orgId[1]
+      }
+      this.$router.push({ path: this.$route.path, query: this.queryList })
+    },
+    // 机构列表
+    gainOrganizeList() {
+      selectApi.list().then(({ code, data, msg }) => {
+        if (code === 200) {
+          const bank = data.bank || []
+          bank.forEach((item) => {
+            item.value = item.orgId
+            item.label = item.name
+          })
+          const dbjg = data.dbjg || []
+          dbjg.forEach((item) => {
+            item.value = item.orgId
+            item.label = item.name
+          })
+          const bx = data.bx || []
+          bx.forEach((item) => {
+            item.value = item.orgId
+            item.label = item.name
+          })
+          if (bank.length > 0) {
+            this.organizeAry.push({ value: 'bank', label: '银行', children: bank })
+          }
+          if (dbjg.length > 0) {
+            this.organizeAry.push({ value: 'dbjg', label: '担保机构', children: dbjg })
+          }
+          if (bx.length > 0) {
+            this.organizeAry.push({ value: 'bx', label: '保险', children: bx })
+          }
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
+    // 法院列表
+    gainCourtList() {
+      courtApi.all().then(({ code, data, msg }) => {
+        if (code === 200) {
+          this.courtAry = data
+        } else {
+          this.$message.error(msg)
+        }
+      })
+    },
     toCreate() {
       this.detailShow = true
       this.detailAction = '新增'
@@ -149,4 +220,24 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.lineList,
+.lineList li {
+  list-style: none;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+.lineList {
+  display: flex;
+  width: 800px;
+}
+.lineList li {
+  width: 140px;
+  margin-right: 10px;
+  line-height: 36px;
+}
+.lineList li.percent {
+  width: 160px;
+}
+</style>

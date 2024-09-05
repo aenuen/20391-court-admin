@@ -19,78 +19,60 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <!-- 方式 -->
+      <!-- 费用规则 -->
       <el-row>
         <el-col>
-          <el-form-item class="is-required" prop="expenseType" :label="fields.expenseType" :label-width="labelWidth">
-            <el-radio v-for="(item, key) in expenseTypeAry" :key="key" v-model="postForm.expenseType" :disabled="item.dictValue === '3'" :label="item.dictValue">{{ item.name }}</el-radio>
+          <el-form-item class="is-required" label="费用规则" :label-width="labelWidth">
+            <a style="color: #1890ff" @click="createLine"><i class="el-icon-plus" /> 添加一条规则</a>
           </el-form-item>
         </el-col>
       </el-row>
-      <template v-if="+postForm.expenseType === 111">
-        <!-- 最低费率 -->
-        <el-row>
-          <el-col>
-            <el-form-item class="is-required" prop="expenseLow" :label="fields.expenseLow" :label-width="labelWidth">
-              <el-input v-model="postForm.expenseLow" :placeholder="fields.expenseLow" :style="cStyle">
-                <template slot="append">%</template>
-              </el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!-- 最低费用 -->
-        <el-row>
-          <el-col>
-            <el-form-item class="is-required" prop="costLow" :label="fields.costLow" :label-width="labelWidth">
-              <el-input v-model="postForm.costLow" :placeholder="fields.costLow" :style="cStyle">
-                <template slot="append">元</template>
-              </el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!-- 最高费率 -->
-        <el-row>
-          <el-col>
-            <el-form-item class="is-required" prop="expenseHigh" :label="fields.expenseHigh" :label-width="labelWidth">
-              <el-input v-model="postForm.expenseHigh" :placeholder="fields.expenseHigh" :style="cStyle">
-                <template slot="append">%</template>
-              </el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </template>
-      <template v-else-if="+postForm.expenseType === 112">
-        <!-- 固定费用 -->
-        <el-row>
-          <el-col>
-            <el-form-item class="is-required" prop="chargeLow" :label="fields.chargeLow" :label-width="labelWidth">
-              <el-input v-model="postForm.chargeLow" :placeholder="fields.chargeLow" :style="cStyle">
-                <template slot="append">元</template>
-              </el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!-- 固定费用 -->
-        <el-row>
-          <el-col>
-            <el-form-item class="is-required" prop="costLow" :label="fields.costLow" :label-width="labelWidth">
-              <el-input v-model="postForm.costLow" :placeholder="fields.costLow" :style="cStyle">
-                <template slot="append">元</template>
-              </el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!-- 超过费率 -->
-        <el-row>
-          <el-col>
-            <el-form-item class="is-required" prop="chargeHigh" :label="fields.chargeHigh" :label-width="labelWidth">
-              <el-input v-model="postForm.chargeHigh" :placeholder="fields.chargeHigh" :style="cStyle">
-                <template slot="append">%</template>
-              </el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </template>
+      <!-- 循环行 -->
+      <el-row v-for="(item, index) in postForm.rules" :key="index">
+        <el-col>
+          <div class="InputGroup">
+            <div>
+              <el-form-item class="is-required" :label="'费用规则（' + (index + 1) + '）'" :label-width="labelWidth">
+                <el-select v-model="item.type" placeholder="选择方式" filterable style="width: 130px">
+                  <el-option v-for="(i, key) in typeAry" :key="key" :value="i.value" :label="i.label" />
+                </el-select>
+              </el-form-item>
+            </div>
+            <div v-if="+item.type === 1 || +item.type === 2">
+              <el-form-item class="is-required">
+                <el-input v-model="item.greater" placeholder="大于等于" filterable style="width: 150px">
+                  <template slot="append">元</template>
+                </el-input>
+              </el-form-item>
+            </div>
+            <div v-if="+item.type === 1 || +item.type === 3">
+              <el-form-item class="is-required">
+                <el-input v-model="item.less" placeholder="小于" filterable style="width: 150px">
+                  <template slot="append">元</template>
+                </el-input>
+              </el-form-item>
+            </div>
+            <div>
+              <el-form-item class="is-required">
+                <el-select v-model="item.percent" placeholder="是否百分比" filterable style="width: 130px">
+                  <el-option v-for="(i, key) in percentAry" :key="key" :value="i.value" :label="i.label" />
+                </el-select>
+              </el-form-item>
+            </div>
+            <div>
+              <el-form-item class="is-required">
+                <el-input v-model="item.cost" placeholder="费率" filterable style="width: 130px">
+                  <template slot="append">{{ +item.percent === 0 ? '元' : '%' }}</template>
+                </el-input>
+              </el-form-item>
+            </div>
+            <div>
+              <el-button icon="el-icon-minus" style="width: 50px" type="warning" @click="removeLine(index)" />
+            </div>
+            <div style="line-height: 36px">{{ computeText(item) }}</div>
+          </div>
+        </el-col>
+      </el-row>
       <!-- 提交 -->
       <el-row>
         <el-col>
@@ -110,7 +92,7 @@ import { courtApi } from '@/api/court.js'
 // components
 // data
 import { fields } from '../modules/fields.js'
-import { DetailCommon as rulesForm, DetailOne, DetailTwo } from '../modules/rules'
+import { DetailCommon as rulesForm } from '../modules/rules'
 // filter
 // function
 // mixin
@@ -118,7 +100,7 @@ import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 import GainDict from '@/components/Mixins/GainDict'
 // plugins
-import { controlInputPrice } from 'abbott-methods/import'
+// import { controlInputPrice } from 'abbott-methods/import'
 // settings
 export default {
   name: 'ExchangeDetail',
@@ -132,6 +114,15 @@ export default {
     return {
       fields,
       rulesForm,
+      typeAry: [
+        { value: '1', label: '区间' },
+        { value: '2', label: '大于等于' },
+        { value: '3', label: '小于' }
+      ],
+      percentAry: [
+        { value: '0', label: '固定金额' },
+        { value: '1', label: '百分比' }
+      ],
       organizeAry: [],
       courtAry: []
     }
@@ -139,56 +130,64 @@ export default {
   computed: {
     cStyle() {
       return {
-        width: this.commonWidth
+        width: '860px'
       }
     }
   },
-  watch: {
-    'postForm.expenseLow': function (val) {
-      this.postForm.expenseLow = controlInputPrice(val)
-    },
-    'postForm.costLow': function (val) {
-      this.postForm.costLow = controlInputPrice(val)
-    },
-    'postForm.expenseHigh': function (val) {
-      this.postForm.expenseHigh = controlInputPrice(val)
-    },
-    'postForm.chargeLow': function (val) {
-      this.postForm.chargeLow = controlInputPrice(val)
-    },
-    'postForm.chargeHigh': function (val) {
-      this.postForm.chargeHigh = controlInputPrice(val)
-    },
-    'postForm.costLows': function (val) {
-      this.postForm.costLows = controlInputPrice(val)
-    },
-    'postForm.expenseType': function (val) {
-      this.$refs.postForm.clearValidate()
-      if (+val === 111) {
-        this.rulesForm = { ...rulesForm, ...DetailOne }
-      } else if (+val === 112) {
-        this.rulesForm = { ...rulesForm, ...DetailTwo }
-      }
-    }
-  },
+  watch: {},
   created() {
     this.submitTxt = this.isUpdate ? '编辑' : '新增'
-    this.gainDict_expenseTypeAry()
-    this.gainOrganizeList()
-    this.gainCourtList()
+    this.gainOrganizeList() // 机构列表
+    this.gainCourtList() // 法院列表
+    // 表单添加初始值
     this.$nextTick(() => {
       this.postForm = {
         ...this.postForm,
-        ...{
-          expenseType: '111'
-        }
+        rules: [
+          {
+            type: '1', // 1-区间，2-大于等于，3-小于
+            greater: '', // 大于等于
+            less: '', // 小于
+            percent: '0', // 是否百分比
+            cost: '' // 费率
+          }
+        ]
       }
     }, 500)
+    // 编辑时获取详情
     if (this.isUpdate && this.updateNumber > 0) {
       this.gainExchangeDetail()
     }
   },
   methods: {
+    // 显示规则信息
+    computeText(item) {
+      if (+item.type === 1) {
+        return item.greater && item.less ? `${item.greater}元 <= X <${item.less}元` : ''
+      } else if (+item.type === 2) {
+        return item.greater ? `${item.greater}元 <= X` : ''
+      } else if (+item.type === 3) {
+        return item.less ? `X <${item.less}元` : ''
+      }
+    },
+    // 添加规则
+    createLine() {
+      this.postForm.rules.push({
+        type: '1', // 1-区间，2-大于等于，3-小于
+        greater: '', // 大于等于
+        less: '', // 小于
+        percent: '0', // 是否百分比
+        cost: '' // 费率
+      })
+    },
+    // 删除规则
+    removeLine(index) {
+      this.$confirm('删除后将无法恢复，确定继续删除吗？', '温馨提示', {
+        type: 'warning'
+      }).then(() => {
+        this.postForm.rules.splice(index, 1)
+      })
+    },
     // 机构列表
     gainOrganizeList() {
       selectApi.list().then(({ code, data, msg }) => {
@@ -232,19 +231,21 @@ export default {
         }
       })
     },
+    // 费率详情
     gainExchangeDetail() {
       exchangeApi.detail(this.updateNumber).then(({ code, data, msg }) => {
         if (code === 200) {
-          if (+data.expenseType === 112) {
-            data.costLows = data.costLow
-            data.costLow = ''
-          }
-          this.postForm = {
-            ...data,
-            ...{
-              expenseType: String(data.expenseType)
-            }
-          }
+          this.postForm = Object.assign({}, data)
+          data.rules = JSON.parse(data.rules) || [] // 字符串解析
+          // 循环处理
+          data.rules.forEach((item) => {
+            item.type = String(item.type) // 1-区间，2-大于等于，3-小于
+            item.greater = item.greater || '' // 大于等于
+            item.less = item.less || '' // 小于
+            item.percent = item.percent ? '1' : '0' // 是否百分比
+            item.cost = item.cost || '' // 费率
+          })
+          this.postForm.rules = data.rules
         } else {
           this.$message.error(msg)
         }
@@ -258,37 +259,74 @@ export default {
           const data = {}
           data.orgId = this.postForm.orgId[1]
           data.courtId = this.postForm.courtId
-          data.expenseType = this.postForm.expenseType
-          if (+data.expenseType === 111) {
-            data.expenseLow = this.postForm.expenseLow
-            data.costLow = this.postForm.costLow
-            data.expenseHigh = this.postForm.expenseHigh
-          } else {
-            data.chargeLow = this.postForm.chargeLow
-            data.chargeHigh = this.postForm.chargeHigh
-            data.costLow = this.postForm.costLow
-          }
-          if (this.isUpdate) {
-            data.expenseId = this.updateNumber
-            exchangeApi.update(data).then(({ code, data, msg }) => {
-              if (code === 200) {
-                this.$message.success(msg)
-                this.$emit('updateSuccess')
-              } else {
-                this.$message.error(msg)
+          data.rules = []
+          let isRight = true
+          this.postForm.rules.forEach((item, index) => {
+            const temp = {}
+            temp.type = +item.type
+            temp.greater = +item.greater // 大于等于
+            temp.less = +item.less // 小于
+            temp.percent = +item.percent === 1 // 是否百分比
+            temp.cost = +item.cost // 费率
+            // 大于等于验证
+            if (+item.type === 1 || +item.type === 2) {
+              if (!item.greater) {
+                isRight = false
+                this.$message.error(`费率规则（${index + 1}）的“大于等于”为必填项`)
+                return
+              } else if (!/^[0-9]+$/.test(item.greater)) {
+                isRight = false
+                this.$message.error(`费率规则（${index + 1}）的“大于等于”必须是数字`)
+                return
               }
-            })
-            this.submitLoadingClose()
-          } else {
-            exchangeApi.create(data).then(({ code, data, msg }) => {
-              if (code === 200) {
-                this.$message.success(msg)
-                this.$emit('createSuccess')
-              } else {
-                this.$message.error(msg)
+            }
+            // 小于验证
+            if (+item.type === 1 || +item.type === 3) {
+              if (!item.less) {
+                isRight = false
+                this.$message.error(`费率规则（${index + 1}）的“小于”为必填项`)
+                return
+              } else if (!/^[0-9]+$/.test(item.less)) {
+                isRight = false
+                this.$message.error(`费率规则（${index + 1}）的“小于”必须是数字`)
+                return
               }
-            })
-            this.submitLoadingClose()
+            }
+            // 费率验证
+            if (!item.cost) {
+              isRight = false
+              this.$message.error(`费率规则（${index + 1}）的“费率”为必填项`)
+              return
+            } else if (!/^[0-9]+$/.test(item.cost)) {
+              isRight = false
+              this.$message.error(`费率规则（${index + 1}）的“费率”必须是数字`)
+              return
+            }
+            data.rules.push(temp)
+          })
+          if (isRight) {
+            if (this.isUpdate) {
+              data.expenseId = this.updateNumber
+              exchangeApi.update(data).then(({ code, data, msg }) => {
+                if (code === 200) {
+                  this.$message.success(msg)
+                  this.$emit('updateSuccess')
+                } else {
+                  this.$message.error(msg)
+                }
+              })
+              this.submitLoadingClose()
+            } else {
+              exchangeApi.create(data).then(({ code, data, msg }) => {
+                if (code === 200) {
+                  this.$message.success(msg)
+                  this.$emit('createSuccess')
+                } else {
+                  this.$message.error(msg)
+                }
+              })
+              this.submitLoadingClose()
+            }
           }
         } else {
           this.validateErrHandle(fields)
@@ -298,4 +336,6 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import url('../styles/detail.scss');
+</style>
