@@ -49,25 +49,29 @@
       <el-table-column prop="gMoney" :label="fields.gMoney" align="center" />
       <el-table-column prop="guaranteeMoney" :label="fields.guaranteeMoney" align="center" />
       <el-table-column prop="gIssueStatus" :label="fields.gIssueStatus" align="center" />
+      <!-- 支付凭证 -->
       <el-table-column label="支付凭证" align="center" width="120">
         <template slot-scope="{ row: { payImage } }">
-          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
+          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="showImageMethods(getPayFullUrl(payImage))" />
           <div v-else>--</div>
         </template>
       </el-table-column>
       <el-table-column label="电子保函" align="center" width="120">
         <template slot-scope="{ row: { gFileUrl, status } }">
-          <a v-if="gFileUrl && status === 1" style="color: #1890ff" @click="download(gFileUrl)">下载</a>
+          <a v-if="gFileUrl && status === 1" style="color: #1890ff" @click="fileDownload(gFileUrl)">下载</a>
           <div v-else>--</div>
         </template>
       </el-table-column>
+      <!-- 发票 -->
       <el-table-column label="发票" align="center" width="120">
         <template slot-scope="{ row: { billUrl, status } }">
-          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl)">下载</a>
+          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="fileDownload(billUrl)">下载</a>
           <div v-else>--</div>
         </template>
       </el-table-column>
+      <!-- 担保机构 -->
       <el-table-column prop="orgName" label="担保机构" align="center" />
+      <!-- 状态 -->
       <el-table-column :label="fields.step" align="center">
         <template slot-scope="{ row: { status, description } }">
           <div :title="statusHandle(status, description) ? '点击查看详情' : ''" :style="{ cursor: statusHandle(status, description) ? 'pointer' : 'default' }" @click="explain(status, description)">
@@ -82,13 +86,16 @@
           </div>
         </template>
       </el-table-column>
+      <!-- 创建者 -->
       <el-table-column prop="userName" :label="fields.userName" align="center" />
+      <!-- 编辑 -->
       <el-table-column label="编辑" align="center" width="100">
         <template slot-scope="{ row: { step, gId, status } }">
           <el-button v-if="status || +status === 0" size="mini" type="success" icon="el-icon-view" @click="toPages(gId, status)"> 查看 </el-button>
           <el-button v-else size="mini" type="primary" icon="el-icon-edit" @click="toUpdate(step, gId)"> 编辑 </el-button>
         </template>
       </el-table-column>
+      <!-- 删除 -->
       <el-table-column label="删除" align="center" width="100">
         <template slot-scope="{ row: { gId, step } }">
           <el-button size="mini" type="warning" icon="el-icon-delete" :disabled="step === -1" @click="onRemoveAlone(gId)"> 删除 </el-button>
@@ -99,8 +106,9 @@
     <div style="text-align: center">
       <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
     </div>
-    <el-dialog v-if="seeController" :visible.sync="seeController" title="支付凭证" :before-close="seeClose">
-      <el-image :src="sweatImg" style="width: 100%; height: 100%" fit="contain" />
+    <!-- 图片预览 -->
+    <el-dialog v-if="showImageController" :visible.sync="showImageController" title="支付凭证" :before-close="showImageClose">
+      <el-image v-if="showImageController" :src="showImagePhoto" style="width: 100%; height: 100%" fit="contain" />
     </el-dialog>
     <!-- 弹窗 -->
     <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" title="原因详情" :before-close="dialogClose">
@@ -131,11 +139,12 @@ import { DetailFields as fields } from './modules/fields'
 // filter
 // function
 import { toUpdate, toPages } from './modules/tPage'
-import { downloadSave } from './modules/utils'
 // mixins
 import ListMixin from '@/components/Mixins/ListMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 import GainDict from '@/components/Mixins/GainDict'
+import Download from '@/views/mixins/Download'
+import ShowImage from '@/views/mixins/ShowImage'
 // plugins
 // settings
 import { serveUrl } from '@/settings'
@@ -164,12 +173,10 @@ export default {
       return (str || '').replace(/\|/g, '')
     }
   },
-  mixins: [ListMixin, MethodsMixin, GainDict],
+  mixins: [ListMixin, MethodsMixin, GainDict, Download, ShowImage],
   data() {
     return {
       pdf: require(`@/assets/image/fileType/PDF.png`),
-      seeController: false,
-      sweatImg: '',
       fields,
       dialogVisible: false,
       expStatus: '-1',
@@ -226,21 +233,6 @@ export default {
       this.gainDict_caseTypeAry() // 案件类型
       this.gainDict_issueStatusAry() // 提交人类型
       this.getList()
-    },
-    seeImage(url) {
-      this.seeController = true
-      this.sweatImg = url
-    },
-    seeClose() {
-      this.seeController = false
-      this.sweatImg = ''
-    },
-    // 下载
-    download(url) {
-      guaranteeApi.download({ path: url }).then((data) => {
-        downloadSave('电子保函' + Date.now(), 'pdf', data)
-        this.$message.success('下载成功')
-      })
     },
     // 获取列表
     getList() {
