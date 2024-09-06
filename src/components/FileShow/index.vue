@@ -1,6 +1,6 @@
 <template>
   <div class="fileShow">
-    <div v-for="(item, key) in fileList" :key="key" class="item" @click="download(getFullUrl(item.url))">
+    <div v-for="(item, key) in fileList" :key="key" class="item" @click="download(item.url, '材料')">
       <div class="file">
         <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" />
         <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="fit" />
@@ -14,6 +14,7 @@
 <script>
 // api
 // components
+import Download from '@/views/guarantee/mixin/Download.vue'
 // data
 // filter
 // function
@@ -25,7 +26,7 @@ import { serveUrl } from '@/settings'
 export default {
   name: 'ComponentsFileShow',
   components: {},
-  mixins: [],
+  mixins: [Download],
   props: {
     fileList: { type: Array, default: () => [] }
   },
@@ -45,10 +46,6 @@ export default {
       const path = `${serveUrl}/file/images/${arr[arr.length - 1]}`
 
       return path
-    },
-    // 下载
-    download(url) {
-      window.open(url)
     }
   }
 }

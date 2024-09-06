@@ -14,7 +14,8 @@ module.exports = {
     // host: 'localhost',
     port: defaultSettings.port, // 项目端口
     open: true,
-    overlay: { // 在浏览器上全屏显示编译的errors或warnings
+    overlay: {
+      // 在浏览器上全屏显示编译的errors或warnings
       warnings: process.env.NODE_ENV === 'development',
       errors: true
     }
@@ -23,7 +24,8 @@ module.exports = {
   configureWebpack: {
     name: defaultSettings.title, // 项目名称
     resolve: {
-      alias: { // 设置目录别名
+      alias: {
+        // 设置目录别名
         '@': resolve('src')
       }
     }
@@ -36,6 +38,11 @@ module.exports = {
         include: 'initial'
       }
     ])
+
+    // 当页面太多时，会导致太多无意义的请求
+    // 当有很多页面时，会产生很多无意义的请求
+    // 所以需要把他们单独拆包   减少http请求
+    config.plugins.delete('preload')
     /**
      * config.plugins.md.delete('prefetch')
      * 当页面太多时，会导致太多无意义的请求
@@ -46,44 +53,54 @@ module.exports = {
 
     // 设置svg加载程序
     config.module.rule('svg').exclude.add(resolve('src/libs/svgIcon')).end()
-    config.module.rule('icons').test(/\.svg$/).include.add(resolve('src/libs/svgIcon')).end()
-      .use('svg-sprite-loader').loader('svg-sprite-loader').options({ symbolId: 'icon-[name]' }).end()
+    config.module
+      .rule('icons')
+      .test(/\.svg$/)
+      .include.add(resolve('src/libs/svgIcon'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({ symbolId: 'icon-[name]' })
+      .end()
 
     // 开发环境代码方式：source-map(源始代码)、eval（加密但生成速度）
-    config.when(process.env.NODE_ENV !== 'development', config => config.devtool('source-map'))
+    config.when(process.env.NODE_ENV !== 'development', (config) => config.devtool('source-map'))
 
-    config
-      .when(process.env.NODE_ENV !== 'development',
-        config => {
-          config.plugin('ScriptExtHtmlWebpackPlugin').after('html').use('script-ext-html-webpack-plugin', [{
+    config.when(process.env.NODE_ENV !== 'development', (config) => {
+      config
+        .plugin('ScriptExtHtmlWebpackPlugin')
+        .after('html')
+        .use('script-ext-html-webpack-plugin', [
+          {
             inline: /runtime\..*\.js$/ // `runtime`必须与runtimeChunk名称相同。默认值为“运行时”`
-          }]).end()
-          config.optimization.splitChunks({
-            chunks: 'all',
-            cacheGroups: {
-              libs: {
-                name: 'chunk-libs',
-                test: /[\\/]node_modules[\\/]/,
-                priority: 10,
-                chunks: 'initial' // 仅包最初依赖的第三方
-              },
-              elementUI: {
-                name: 'chunk-elementUI', // 将elementUI拆分为单个包
-                priority: 20, // 重量需要大于libs和app，否则将打包为libs或app
-                test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // 为了适应cnpm
-              },
-              commons: {
-                name: 'chunk-commons',
-                test: resolve('src/components'), // 可以自定义规则
-                minChunks: 3, // 最小公共数
-                priority: 5,
-                reuseExistingChunk: true
-              }
-            }
-          })
-          config.optimization.runtimeChunk('single') // 设定runtime代码单独抽取打包
+          }
+        ])
+        .end()
+      config.optimization.splitChunks({
+        chunks: 'all',
+        cacheGroups: {
+          libs: {
+            name: 'chunk-libs',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            chunks: 'initial' // 仅包最初依赖的第三方
+          },
+          elementUI: {
+            name: 'chunk-elementUI', // 将elementUI拆分为单个包
+            priority: 20, // 重量需要大于libs和app，否则将打包为libs或app
+            test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // 为了适应cnpm
+          },
+          commons: {
+            name: 'chunk-commons',
+            test: resolve('src/components'), // 可以自定义规则
+            minChunks: 3, // 最小公共数
+            priority: 5,
+            reuseExistingChunk: true
+          }
         }
-      )
+      })
+      config.optimization.runtimeChunk('single') // 设定runtime代码单独抽取打包
+    })
   }
 }
 

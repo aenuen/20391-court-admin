@@ -8,6 +8,7 @@ import { guaranteeApi } from '@/api/guarantee'
 import { downloadSave } from '../modules/utils'
 // mixin
 // plugins
+import { fileSuffixName } from 'abbott-methods/import'
 // settings
 export default {
   name: 'GuaranteeDownload',
@@ -21,7 +22,7 @@ export default {
     download(url, fileName) {
       fileName = fileName || '电子保函'
       guaranteeApi.download({ path: url }).then((data) => {
-        downloadSave(fileName + Date.now(), 'pdf', data)
+        downloadSave(fileName + Date.now(), fileSuffixName(url), data)
         this.$message.success('下载成功')
       })
     }

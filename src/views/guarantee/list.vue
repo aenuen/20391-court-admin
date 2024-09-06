@@ -231,6 +231,10 @@ export default {
       this.seeController = true
       this.sweatImg = url
     },
+    seeClose() {
+      this.seeController = false
+      this.sweatImg = ''
+    },
     // 下载
     download(url) {
       guaranteeApi.download({ path: url }).then((data) => {

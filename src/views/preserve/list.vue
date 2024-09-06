@@ -65,7 +65,7 @@
         </template>
       </el-table-column>
       <el-table-column label="发票" align="center" width="120">
-        <template slot-scope="{ row: { gFileUrl, status } }">
+        <template slot-scope="{ row: { gFileUrl, status, billUrl } }">
           <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl)">下载</a>
           <div v-else>--</div>
         </template>
@@ -82,6 +82,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog v-if="seeController" :visible.sync="seeController" title="支付凭证" :before-close="seeClose">
+      <el-image :src="sweatImg" style="width: 100%; height: 100%" fit="contain" />
+    </el-dialog>
     <!-- 分页 -->
     <div style="text-align: center">
       <Pagination :hidden="tableDataLength <= 0" :total="tableDataLength" :page.sync="queryList.pageNum" :limit.sync="queryList.pageSize" @pagination="refresh" />
@@ -122,6 +125,8 @@ export default {
   data() {
     return {
       fields,
+      sweatImg: '',
+      seeController: false,
       courtAry: [],
       ensureAry: [
         { name: '有担保', dictValue: '1' },
@@ -140,6 +145,14 @@ export default {
     startHandle() {
       this.gainList()
       this.gainCourtList()
+    },
+    seeClose() {
+      this.seeController = false
+      this.sweatImg = ''
+    },
+    seeImage(url) {
+      this.seeController = true
+      this.sweatImg = url
     },
     // 获取网址
     getPayFullUrl(url) {

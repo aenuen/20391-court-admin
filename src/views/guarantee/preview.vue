@@ -316,19 +316,21 @@ export default {
     },
     approve() {
       if (this.isPreserve) {
+        // 保全提交审核
         approveApi.preserveApprove({ cId: this.updateId }).then(({ code, data, msg }) => {
           if (code === 200) {
             this.$message.success(msg)
-            this.routerClose(`/preserve/audit/${this.updateId}`)
+            this.routerClose(`/preserve/audits/${this.updateId}`)
           } else {
             this.$message.error(msg)
           }
         })
       } else {
+        // 担保提交审核
         approveApi.approve({ gId: this.updateId }).then(({ code, data, msg }) => {
           if (code === 200) {
             this.$message.success(msg)
-            this.routerClose(`/guarantee/audits/${this.updateId}`)
+            this.routerClose(`/guarantee/audit/${this.updateId}`)
           } else {
             this.message.error(msg)
           }

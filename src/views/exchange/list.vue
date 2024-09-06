@@ -39,7 +39,7 @@
             </li>
             <li>
               <b>{{ fields.cost }}</b>
-              ：{{ item.cost | costFilter(fields.percent) }}
+              ：{{ item.cost | costFilter(item.percent) }}
             </li>
           </ul>
         </template>
