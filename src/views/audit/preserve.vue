@@ -30,8 +30,8 @@
         </template>
       </el-table-column>
       <el-table-column label="发票" align="center" width="120">
-        <template slot-scope="{ row: { gFileUrl, status } }">
-          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl)">下载</a>
+        <template slot-scope="{ row: { gFileUrl, status, billUrl } }">
+          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl, '发票')">下载</a>
           <div v-else>--</div>
         </template>
       </el-table-column>
@@ -40,17 +40,6 @@
           <el-button icon="el-icon-view" @click="goSee(row.cId)">保全资料查看</el-button>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="状态" align="center" width="120">
-        <template slot-scope="{ row: { status } }">
-          <span>{{ status | filterStatus }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="审核" align="center" width="120">
-        <template slot-scope="{ row }">
-          <el-alert v-if="+row.status === 1" type="success" center show-icon :closable="false">完成</el-alert>
-          <el-button v-else :disabled="+row.status === 3" type="primary" icon="el-icon-bangzhu" @click="goApproval(row.approveId, row.cId)">审批</el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
     <!-- 分页 -->
     <div style="text-align: center">
