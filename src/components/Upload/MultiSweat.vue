@@ -8,6 +8,8 @@
             <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="fit" :style="{ width: width + 'px', height: height + 'px' }" />
             <el-image v-else-if="fileClassify(item.url) === 'xls'" :src="xls" fit="fit" :style="{ width: width + 'px', height: height + 'px' }" />
             <el-image v-else-if="fileClassify(item.url) === 'pdf'" :src="pdf" fit="fit" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'ofd'" :src="ofd" fit="fit" :style="{ width: width + 'px', height: height + 'px' }" />
+            <el-image v-else-if="fileClassify(item.url) === 'xml'" :src="xml" fit="fit" :style="{ width: width + 'px', height: height + 'px' }" />
           </div>
           <div class="mask" :style="{ width: width + 'px', height: height + 'px' }" />
           <div class="icon">
@@ -46,6 +48,7 @@
 // function
 import { fileSave } from '@/libs/fileSave'
 // mixin
+import FileType from '@/components/Mixins/FileType'
 // plugins
 import { getToken } from '@/libs/utils/token'
 import { fileClassify } from 'abbott-methods/import'
@@ -55,7 +58,7 @@ import { guaranteeApi } from '@/api/guarantee'
 export default {
   name: 'ComponentsUploadMulti',
   components: {},
-  mixins: [],
+  mixins: [FileType],
   props: {
     fileList: { type: Array, default: () => [] },
     action: { type: String, default: '' },
@@ -73,10 +76,7 @@ export default {
       dialogVisible: '',
       dialogImageUrl: '',
       percentage: 0,
-      progress: false,
-      doc: require(`@/assets/image/fileType/word.png`),
-      xls: require(`@/assets/image/fileType/excel.png`),
-      pdf: require(`@/assets/image/fileType/PDF.png`)
+      progress: false
     }
   },
   computed: {

@@ -23,8 +23,7 @@ export const ApplicantCommon = {
   name: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.name, '填写', 2, 20) }],
   area: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.area, '选择') }],
   certType: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.certType, '选择') }],
-  certNo: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.certNo, '填写', 8, 18) }],
-  mobile: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }]
+  certNo: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.certNo, '填写', 8, 18) }]
 }
 
 export const ApplicantOne = {
@@ -44,6 +43,10 @@ export const ApplicantTwo = {
   unitAddress: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.unitAddress) }],
   signArea: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.signArea, '选择') }],
   signAddress: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, ApplicantFields.signAddress) }]
+}
+
+export const ApplicantThree = {
+  mobile: [{ validator: (rule, value, callback) => validateMobile(rule, value, callback) }]
 }
 
 // 代理人

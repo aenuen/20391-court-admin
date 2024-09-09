@@ -1,38 +1,42 @@
 .details {
   min-width: 1015px;
-  .itemBox {
-    width: 100%;
-    font-size: 14px;
-    .boxTitle {
-      height: 45px;
-      border-bottom: 1px solid #dfe6ec;
-      padding: 15px 0;
-      display: flex;
-      .titleName {
-        width: 200px;
-        height: 25px;
-        line-height: 25px;
-        border-left: 8px solid #1890ff;
-        text-indent: 22px;
-        font-weight: bold;
-      }
-      .titleIcon {
-        display: block;
-        height: 25px;
-        line-height: 25px;
-        margin-left: 50px;
-        color: #1189ff;
-      }
-    }
-    .boxContent {
-      padding: 30px;
-      width: 100%;
-      .liTitle {
-        border-left: 5px solid #1189ff;
-        padding-left: 25px;
-        margin: 10px 0;
-        font-weight: bold;
-      }
-    }
+}
+.itemBox {
+  width: 100%;
+  font-size: 14px;
+}
+
+.boxTitle {
+  height: 45px;
+  border-bottom: 1px solid #dfe6ec;
+  padding: 15px 0;
+  display: flex;
+}
+
+.titleName {
+  width: 200px;
+  height: 25px;
+  line-height: 25px;
+  border-left: 8px solid #1890ff;
+  text-indent: 22px;
+  font-weight: bold;
+}
+
+.titleIcon {
+  display: block;
+  height: 25px;
+  line-height: 25px;
+  margin-left: 50px;
+  color: #1189ff;
+}
+
+.boxContent {
+  padding: 30px;
+  width: 100%;
+  .liTitle {
+    border-left: 5px solid #1189ff;
+    padding-left: 25px;
+    margin: 10px 0;
+    font-weight: bold;
   }
 }

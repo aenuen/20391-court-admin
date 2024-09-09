@@ -31,6 +31,8 @@
         <el-image v-else-if="fileClassify(item) === 'doc'" :src="doc" fit="fit" />
         <el-image v-else-if="fileClassify(item) === 'xls'" :src="xls" fit="fit" />
         <el-image v-else-if="fileClassify(item) === 'pdf'" :src="pdf" fit="fit" />
+        <el-image v-else-if="fileClassify(item) === 'ofd'" :src="ofd" fit="fit" />
+        <el-image v-else-if="fileClassify(item) === 'xml'" :src="xml" fit="fit" />
       </div>
     </div>
     <!-- 弹窗 -->
@@ -41,11 +43,13 @@
 </template>
 
 <script>
+import FileType from '@/components/Mixins/FileType'
 import { fileClassify } from 'abbott-methods/import'
 import { getToken } from '@/libs/utils/token'
 import { serveUrl } from '@/settings'
 export default {
   name: 'UploadDefault',
+  mixins: [FileType],
   props: {
     fileList: { type: Array, default: () => [] },
     fileDisabled: { type: Boolean, default: false },
@@ -59,9 +63,6 @@ export default {
   data() {
     return {
       fileClassify,
-      doc: require(`@/assets/image/fileType/word.png`),
-      xls: require(`@/assets/image/fileType/excel.png`),
-      pdf: require(`@/assets/image/fileType/PDF.png`),
       dialogVisible: false,
       dialogImage: ''
     }

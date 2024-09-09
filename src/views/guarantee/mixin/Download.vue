@@ -25,6 +25,13 @@ export default {
         downloadSave(fileName + Date.now(), fileSuffixName(url), data)
         this.$message.success('下载成功')
       })
+    },
+    fileDownload(url, fileName) {
+      fileName = fileName || '电子保函'
+      guaranteeApi.download({ path: url }).then((data) => {
+        downloadSave(fileName + Date.now(), fileSuffixName(url), data)
+        this.$message.success('下载成功')
+      })
     }
   }
 }

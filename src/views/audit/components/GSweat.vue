@@ -6,7 +6,7 @@
       <el-row>
         <el-col>
           <el-form-item class="is-required" prop="warrantyNumber" label="保单号" :label-width="labelWidth">
-            <el-input v-model="postForm.warrantyNumber" placeholder="保单号" clearable />
+            <el-input v-model="postForm.warrantyNumber" placeholder="保单号" clearable style="width: 500px" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      accept: ['.pdf'].join(','),
+      accept: ['.pdf', '.ofd', '.xml'].join(','),
       fileList: [],
       fileListBill: [],
       rulesForm: {
@@ -130,7 +130,7 @@ export default {
               })
               .then(({ code, data, msg }) => {
                 if (code === 200) {
-                  if (this.postForm.invoice !== '') {
+                  if (this.postForm.invoice) {
                     this.app()
                   } else {
                     this.$message.success('出函成功')

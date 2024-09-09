@@ -142,7 +142,7 @@
               <td><FileShow :file-list="fileListEight" /></td>
             </tr>
             <!-- 电子保函 -->
-            <tr v-if="fileLIstNine.url">
+            <tr v-if="fileLIstNine.length > 0">
               <!-- gFileUrl -->
               <td><div class="liTitle">电子保函</div></td>
               <td>
@@ -159,7 +159,7 @@
                 </div>
               </td>
             </tr>
-            <tr v-if="fileLIstTen.url">
+            <tr v-if="fileLIstTen.length > 0">
               <!-- 发票 -->
               <td><div class="liTitle">发票</div></td>
               <td>
@@ -170,6 +170,8 @@
                       <el-image v-else-if="fileClassify(fileLIstTen.url) === 'doc'" :src="doc" fit="fit" />
                       <el-image v-else-if="fileClassify(fileLIstTen.url) === 'xls'" :src="xls" fit="fit" />
                       <el-image v-else-if="fileClassify(fileLIstTen.url) === 'pdf'" :src="pdf" fit="fit" />
+                      <el-image v-else-if="fileClassify(fileLIstTen.url) === 'ofd'" :src="ofd" fit="fit" />
+                      <el-image v-else-if="fileClassify(fileLIstTen.url) === 'xml'" :src="xml" fit="fit" />
                     </div>
                     <div class="name">{{ fileLIstTen.fileName }}</div>
                   </div>
@@ -204,6 +206,7 @@ import { baseData, baseGain, applicantData, agentData, propertyData } from './mo
 // mixin
 import DetailMixin from '@/components/Mixins/DetailMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import FileType from '@/components/Mixins/FileType'
 import Download from './mixin/Download'
 // plugins
 import { fileClassify } from 'abbott-methods/import'
@@ -211,7 +214,7 @@ import { fileClassify } from 'abbott-methods/import'
 export default {
   name: 'GuaranteePreview',
   components: { Steps, StepPre, BaseData, FileShow },
-  mixins: [DetailMixin, MethodsMixin, Download],
+  mixins: [DetailMixin, MethodsMixin, FileType, Download],
   props: {
     isPreview: { type: Boolean, default: false },
     isPreserve: { type: Boolean, default: false }
@@ -219,9 +222,6 @@ export default {
   data() {
     return {
       fileClassify,
-      doc: require(`@/assets/image/fileType/word.png`),
-      xls: require(`@/assets/image/fileType/excel.png`),
-      pdf: require(`@/assets/image/fileType/PDF.png`),
       isUpdate: true,
       baseObj: {},
       baseData: [],

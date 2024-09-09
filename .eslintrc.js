@@ -105,7 +105,7 @@ module.exports = {
     'key-spacing': [2, { beforeColon: false, afterColon: true }],
 
     // 确保在对象字面量中使用一致的引号风格
-    'quote-props': [2, 'consistent-as-needed'],
+    'quote-props': 0,
 
     // 确保代码中点号（‌.）‌的使用位置一致，‌提高代码可读性。‌
     'dot-location': [2, 'property'],

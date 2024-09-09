@@ -94,6 +94,7 @@ import { downloadSave } from '../guarantee/modules/utils'
 // mixin
 import ListMixin from '@/components/Mixins/ListMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
+import FileType from '@/components/Mixins/FileType'
 // plugins
 // settings
 import { serveUrl } from '@/settings'
@@ -123,7 +124,7 @@ export default {
       return str ? str.replace(/\|/g, '') : '--'
     }
   },
-  mixins: [ListMixin, MethodsMixin],
+  mixins: [ListMixin, MethodsMixin, FileType],
   data() {
     return {
       fields,
@@ -137,8 +138,7 @@ export default {
       gid: '',
       warranty: '',
       fileUrl: '',
-      appId: '',
-      pdf: require(`@/assets/image/fileType/PDF.png`)
+      appId: ''
     }
   },
   created() {},

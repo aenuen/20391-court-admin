@@ -153,7 +153,7 @@
       <el-row>
         <!-- 手机号码 -->
         <el-col :span="12">
-          <el-form-item class="is-required" prop="mobile" :label="fields.mobile" :label-width="labelWidth">
+          <el-form-item :class="{ 'is-required': applicant }" prop="mobile" :label="fields.mobile" :label-width="labelWidth">
             <el-input v-model="postForm.mobile" :placeholder="fields.mobile" maxlength="11" style="width: 100%" />
           </el-form-item>
         </el-col>
@@ -195,7 +195,7 @@ import { respondentApi } from '@/api/respondent'
 // components
 // data
 import { ApplicantFields as fields } from '../modules/fields'
-import { ApplicantCommon, ApplicantOne, ApplicantTwo } from '../modules/rules'
+import { ApplicantCommon, ApplicantOne, ApplicantTwo, ApplicantThree } from '../modules/rules'
 // filter
 // function
 import { getAddressText, getAddressArea } from '@/libs/utils/area'
@@ -241,6 +241,10 @@ export default {
       } else {
         this.rulesForm = { ...ApplicantCommon, ...ApplicantTwo }
         this.certTypeAry = [...this.saveCertTwo]
+      }
+      if (this.applicant) {
+        // 被申请人才需要手机
+        this.rulesForm = { ...this.rulesForm, ...ApplicantThree }
       }
     }
   },

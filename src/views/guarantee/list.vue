@@ -143,6 +143,7 @@ import { toUpdate, toPages } from './modules/tPage'
 import ListMixin from '@/components/Mixins/ListMixin'
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 import GainDict from '@/components/Mixins/GainDict'
+import FileType from '@/components/Mixins/FileType'
 import Download from '@/views/mixins/Download'
 import ShowImage from '@/views/mixins/ShowImage'
 // plugins
@@ -173,10 +174,9 @@ export default {
       return (str || '').replace(/\|/g, '')
     }
   },
-  mixins: [ListMixin, MethodsMixin, GainDict, Download, ShowImage],
+  mixins: [ListMixin, MethodsMixin, GainDict, FileType, Download, ShowImage],
   data() {
     return {
-      pdf: require(`@/assets/image/fileType/PDF.png`),
       fields,
       dialogVisible: false,
       expStatus: '-1',

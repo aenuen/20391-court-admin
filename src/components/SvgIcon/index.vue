@@ -29,8 +29,7 @@ export default {
     },
     styleExternalIcon() {
       return {
-        mask: `url(${this.iconClass}) no-repeat 50% 50%`,
-        '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`
+        mask: `url(${this.iconClass}) no-repeat 50% 50%`
       }
     }
   }

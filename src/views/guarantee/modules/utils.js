@@ -153,7 +153,7 @@ export const getTemplateFileName = (id) => {
       name = '立案受理通知书'
       break
     case 4:
-      name = '身份证明材料'
+      name = '代理人委托授权书'
       break
     case 5:
       name = '证据材料'

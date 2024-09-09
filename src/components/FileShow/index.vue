@@ -1,6 +1,6 @@
 <template>
   <div class="fileShow">
-    <div v-for="(item, key) in fileList" :key="key" class="item" @click="download(item.url, '材料')">
+    <div v-for="(item, key) in fileList" :key="key" class="item" @click="fileDownload(item.url, '材料')">
       <div class="file">
         <el-image v-if="fileClassify(item.url) === 'pic'" :src="getFullUrl(item.url)" fit="cover" />
         <el-image v-else-if="fileClassify(item.url) === 'doc'" :src="doc" fit="fit" />
@@ -14,11 +14,12 @@
 <script>
 // api
 // components
-import Download from '@/views/mixins/Download.vue'
 // data
 // filter
 // function
 // mixin
+import Download from '@/views/mixins/Download.vue'
+import FileType from '@/components/Mixins/FileType'
 // plugins
 import { fileClassify } from 'abbott-methods/import'
 // settings
@@ -26,16 +27,13 @@ import { serveUrl } from '@/settings'
 export default {
   name: 'ComponentsFileShow',
   components: {},
-  mixins: [Download],
+  mixins: [Download, FileType],
   props: {
     fileList: { type: Array, default: () => [] }
   },
   data() {
     return {
-      fileClassify,
-      doc: require(`@/assets/image/fileType/word.png`),
-      xls: require(`@/assets/image/fileType/excel.png`),
-      pdf: require(`@/assets/image/fileType/PDF.png`)
+      fileClassify
     }
   },
   created() {},
@@ -44,7 +42,6 @@ export default {
     getFullUrl(url) {
       const arr = url.split('/')
       const path = `${serveUrl}/file/images/${arr[arr.length - 1]}`
-
       return path
     }
   }
@@ -73,7 +70,13 @@ export default {
     }
     .name {
       display: flex;
+      width: 210px;
+      height: 50px;
+      line-height: 25px;
       align-items: center; /* 垂直居中 */
+      white-space: nowrap; /* 确保文本在一行内显示 */
+      overflow: hidden; /* 超出部分隐藏 */
+      text-overflow: ellipsis; /* 超出部分显示省略号 */
     }
   }
 }
