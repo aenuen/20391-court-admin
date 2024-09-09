@@ -51,22 +51,23 @@
         </template>
       </el-table-column>
       <el-table-column prop="cIssueStatus" :label="fields.cIssueStatus" align="center" />
+      <!-- 支付凭证 -->
       <el-table-column prop="userName" :label="fields.userName" align="center" />
       <el-table-column label="支付凭证" align="center" width="120">
         <template slot-scope="{ row: { payImage } }">
-          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="seeImage(getPayFullUrl(payImage))" />
+          <el-image v-if="payImage" :src="getPayFullUrl(payImage)" style="width: 36px; height: 36px; cursor: pointer" fit="cover" @click="showImageMethods(getPayFullUrl(payImage))" />
           <div v-else>--</div>
         </template>
       </el-table-column>
       <el-table-column label="电子保函" align="center" width="120">
         <template slot-scope="{ row: { gFileUrl, status } }">
-          <a v-if="gFileUrl && status === 1" style="color: #1890ff" @click="download(gFileUrl)">下载</a>
+          <a v-if="gFileUrl && status === 1" style="color: #1890ff" @click="fileDownload(gFileUrl)">下载</a>
           <div v-else>--</div>
         </template>
       </el-table-column>
       <el-table-column label="发票" align="center" width="120">
         <template slot-scope="{ row: { gFileUrl, status, billUrl } }">
-          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="download(billUrl)">下载</a>
+          <a v-if="billUrl && status === 1" style="color: #1890ff" @click="fileDownload(billUrl, '发票')">下载</a>
           <div v-else>--</div>
         </template>
       </el-table-column>
@@ -82,8 +83,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog v-if="seeController" :visible.sync="seeController" title="支付凭证" :before-close="seeClose">
-      <el-image :src="sweatImg" style="width: 100%; height: 100%" fit="contain" />
+    <el-dialog v-if="showImageController" :visible.sync="showImageController" title="支付凭证" :before-close="showImageClose">
+      <el-image v-if="showImageController" :src="showImagePhoto" style="width: 100%; height: 100%" fit="contain" />
     </el-dialog>
     <!-- 分页 -->
     <div style="text-align: center">
@@ -95,7 +96,6 @@
 // api
 import { courtApi } from '@/api/court'
 import { preserveApi } from '@/api/preserve.js'
-import { guaranteeApi } from '@/api/guarantee'
 // components
 import Pagination from '@/components/Pagination'
 // data
@@ -104,11 +104,12 @@ import { DetailFields as fields } from './modules/fields'
 import { emptyValueFilter } from '@/libs/filter'
 // function
 import { toPages, toUpdate } from './modules/tPage.js'
-import { downloadSave } from '../guarantee/modules/utils'
 // mixin
 import MethodsMixin from '@/components/Mixins/MethodsMixin'
 import ListMixin from '@/components/Mixins/ListMixin'
 import GainDict from '@/components/Mixins/GainDict'
+import Download from '@/views/mixins/Download'
+import ShowImage from '@/views/mixins/ShowImage'
 // plugins
 // settings
 import { serveUrl } from '@/settings'
@@ -121,12 +122,10 @@ export default {
       return val ? val.replace(/\|/g, '') : '--'
     }
   },
-  mixins: [MethodsMixin, ListMixin, GainDict],
+  mixins: [MethodsMixin, ListMixin, GainDict, Download, ShowImage],
   data() {
     return {
       fields,
-      sweatImg: '',
-      seeController: false,
       courtAry: [],
       ensureAry: [
         { name: '有担保', dictValue: '1' },
@@ -135,7 +134,6 @@ export default {
     }
   },
   async created() {
-    // this.gainDict_courtTypeAry() // 保全类型
     this.gainDict_courtCategoryAry() // 保全类别
     this.gainDict_issueStatusAry() // 提交人
     this.gainDict_caseTypeAry() // 案件类型
@@ -146,25 +144,10 @@ export default {
       this.gainList()
       this.gainCourtList()
     },
-    seeClose() {
-      this.seeController = false
-      this.sweatImg = ''
-    },
-    seeImage(url) {
-      this.seeController = true
-      this.sweatImg = url
-    },
     // 获取网址
     getPayFullUrl(url) {
       const arr = url.split('/')
       return `${serveUrl}/file/pay/${arr[arr.length - 2]}/${arr[arr.length - 1]}`
-    },
-    // 下载
-    download(url) {
-      guaranteeApi.download({ path: url }).then((data) => {
-        downloadSave('电子保函' + Date.now(), 'pdf', data)
-        this.$message.success('下载成功')
-      })
     },
     getEnsureName(val) {
       let name = ''

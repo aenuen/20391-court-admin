@@ -14,7 +14,7 @@
 <script>
 // api
 // components
-import Download from '@/views/guarantee/mixin/Download.vue'
+import Download from '@/views/mixins/Download.vue'
 // data
 // filter
 // function
