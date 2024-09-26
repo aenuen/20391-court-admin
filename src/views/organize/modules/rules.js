@@ -3,7 +3,7 @@ import { fields } from './fields'
 
 // 基本资料
 export const rulesForm = {
-  name: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.name, '填写', 2, 30) }],
+  // name: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.name, '填写', 2, 30) }],
   type: [{ validator: (rule, value, callback) => validateRequire(rule, value, callback, fields.type) }],
   orgCode: [{ validator: (rule, value, callback) => validateLicense(rule, value, callback, fields.orgCode) }],
   orgEmail: [{ validator: (rule, value, callback) => validateEmail(rule, value, callback, 5, 30) }],
