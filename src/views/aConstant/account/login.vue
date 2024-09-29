@@ -102,7 +102,7 @@ export default {
       this.postForm.code = holdLetterNumber(value)
     }
   },
-  created() {
+  mounted() {
     this.refreshCode()
   },
   methods: {
